@@ -12,7 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
   ]),
 ]);
 
-export default eslintConfig;
+export default eslintConfig;  
