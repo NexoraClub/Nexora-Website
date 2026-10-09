@@ -1,26 +1,50 @@
-
 import Image from "next/image";
+import {GridScan} from "./GridScan";
 
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-[calc(100vh-96px)] w-full flex-col
+      className="relative flex min-h-screen w-full flex-col
         items-center overflow-hidden bg-black px-5 pb-10 pt-8 text-white
         sm:px-8 sm:pt-10 lg:pt-8"
     >
+      {/* Full-screen GridScan background */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+      >
+        <GridScan
+          sensitivity={0.55}
+          lineThickness={1}
+          linesColor="#2F293A"
+          gridScale={0.1}
+          scanColor="#9ff1ff"
+          scanOpacity={0.4}
+          enablePost
+          bloomIntensity={0.6}
+          chromaticAberration={0.002}
+          noiseIntensity={0.01}
+          lineJitter={0.1}
+          scanGlow={0.5}
+          scanSoftness={2}
+          enableWebcam={false}
+          showPreview={false}
+        />
+      </div>
+
       {/* Background neon glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-36
+        className="pointer-events-none absolute left-1/2 top-36 z-[1]
           h-64 w-64 -translate-x-1/2 rounded-full bg-sky-500/10
           blur-[120px] sm:h-96 sm:w-96"
       />
 
       {/* Department heading */}
-      <div className="relative z-10 mt-4 w-full text-center sm:mt-6">
+      <div className="relative z-10 mt-4 pt-18 w-full text-center sm:mt-6">
         <h1
-          className="font-serif text-base font-medium uppercase
+          className="font-jersey text-base font-medium uppercase
             leading-relaxed tracking-wide text-white
             sm:text-xl md:text-2xl lg:text-3xl"
         >
@@ -31,9 +55,10 @@ export default function Hero() {
         <div className="mt-3 flex items-center justify-center gap-4 sm:mt-5">
           <span className="h-[2px] w-8 bg-sky-400 shadow-[0_0_10px_#38bdf8] sm:w-16" />
 
-          <p className="text-base font-bold tracking-[0.3em] text-sky-400
-            drop-shadow-[0_0_12px_rgba(56,189,248,0.65)]
-            sm:text-xl md:text-2xl"
+          <p
+            className="font-jersey text-base tracking-[0.3em] text-sky-400
+              drop-shadow-[0_0_12px_rgba(56,189,248,0.65)]
+              sm:text-xl md:text-2xl"
           >
             PRESENTS
           </p>
@@ -50,8 +75,9 @@ export default function Hero() {
           lg:mt-12 lg:gap-12"
       >
         {/* Nexora */}
-        <div className="group relative flex aspect-square w-48 items-center
-          justify-center sm:w-44 md:w-56 lg:w-72"
+        <div
+          className="group relative flex aspect-square w-48 items-center
+            justify-center sm:w-44 md:w-56 lg:w-72"
         >
           <div
             aria-hidden="true"
@@ -84,8 +110,9 @@ export default function Hero() {
         </div>
 
         {/* Heka */}
-        <div className="group relative flex aspect-square w-48 items-center
-          justify-center sm:w-44 md:w-56 lg:w-72"
+        <div
+          className="group relative flex aspect-square w-48 items-center
+            justify-center sm:w-44 md:w-56 lg:w-72"
         >
           <div
             aria-hidden="true"
@@ -114,23 +141,29 @@ export default function Hero() {
           sm:mt-12 sm:grid-cols-3 sm:gap-3 lg:mt-14"
       >
         <p
-          className="font-mono text-3xl font-black tracking-[0.12em]
-            text-white sm:text-xl md:text-2xl lg:text-4xl"
+          className="cursor-pointer font-jersey text-3xl font-black
+            tracking-[0.12em] text-white transition duration-300
+            ease-in-out hover:scale-105 hover:text-sky-400
+            sm:text-xl md:text-2xl lg:text-7xl"
         >
           THINK
         </p>
 
         <p
-          className="font-mono text-3xl font-black tracking-[0.12em]
-            text-sky-400 drop-shadow-[0_0_14px_rgba(56,189,248,0.6)]
-            sm:text-xl md:text-2xl lg:text-4xl"
+          className="cursor-pointer font-jersey text-3xl font-black
+            tracking-[0.12em] text-sky-400
+            drop-shadow-[0_0_14px_rgba(56,189,248,0.6)]
+            transition duration-300 ease-in-out hover:scale-105
+            sm:text-xl md:text-2xl lg:text-7xl"
         >
           BUILD
         </p>
 
         <p
-          className="font-mono text-3xl font-black tracking-[0.08em]
-            text-white sm:text-xl md:text-2xl lg:text-4xl"
+          className="cursor-pointer font-jersey text-3xl font-black
+            tracking-[0.08em] text-white transition duration-300
+            ease-in-out hover:scale-105 hover:text-sky-400
+            sm:text-xl md:text-2xl lg:text-7xl"
         >
           INNOVATE
         </p>
