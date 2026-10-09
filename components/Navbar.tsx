@@ -18,7 +18,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="w-full bg-black px-4 pt-3 pb-3 sm:px-8 sm:pt-8">
+    <header className="w-full absolute top-0 left-0 z-10  px-4 pt-3 pb-3 sm:px-8 sm:pt-8">
       <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between rounded-full border border-sky-400/50 bg-black px-5 text-white shadow-[0_0_12px_2px_rgba(56,189,248,0.35),0_0_30px_5px_rgba(56,189,248,0.18)] sm:px-8 lg:px-12" >
         {/* College Logo */}
         <Link
