@@ -18,7 +18,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="w-full absolute top-0 left-0 z-10  px-4 pt-3 pb-3 sm:px-8 sm:pt-8">
+    <header className="w-full absolute top-0 left-0 z-30  px-4 pt-3 pb-3 sm:px-8 sm:pt-8">
       <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between rounded-full border border-sky-400/50 bg-black px-5 text-white shadow-[0_0_12px_2px_rgba(56,189,248,0.35),0_0_30px_5px_rgba(56,189,248,0.18)] sm:px-8 lg:px-12" >
         {/* College Logo */}
         <Link
@@ -40,13 +40,13 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <div className="hidden items-center gap-6 md:flex lg:gap-10">
+        <div className="hidden z-20 items-center gap-6 md:flex lg:gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
               onClick={() => setActiveLink(link.name)}
-              className={`relative whitespace-nowrap py-2 text-xs font-semibold
+              className={`relative whitespace-nowrap cursor-pointer py-2 text-xs font-semibold
                 transition-colors duration-300 ease-in-out lg:text-sm
                 hover:text-sky-400
                 ${
