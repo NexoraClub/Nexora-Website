@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id        String   @id @db.Uuid   // same UUID as the Supabase Auth user
+  username  String   @unique
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("admins")
+}
+
+model Notice {
+  id        BigInt   @id @default(autoincrement())
+  date      DateTime @default(now()) @db.Date
+  title     String
+  content   String?
+  image     String?
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("notices")
+}
