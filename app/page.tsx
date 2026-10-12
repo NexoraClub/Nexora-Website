@@ -1,8 +1,8 @@
 import Hero from '@/components/Hero'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import { GridScan } from '@/components/GridScan'
-import GlowCursor from '@/components/GlowCursor'
+// import { GridScan } from '@/components/GridScan'
+// import GlowCursor from '@/components/GlowCursor'
 import React from 'react'
 
 const page = () => {
@@ -10,7 +10,7 @@ const page = () => {
     <main className="relative min-h-screen w-full bg-[#050610] text-white">
       {/* Background layer */}
       <div className="pointer-events-none fixed inset-0 z-0">
-        <GridScan
+        {/* <GridScan
           sensitivity={0.55}
           lineThickness={1}
           linesColor="#2F293A"
@@ -26,10 +26,10 @@ const page = () => {
           scanSoftness={2}
           enableWebcam={false}
           showPreview={false}
-        />
+        /> */}
       </div>
 
-      <GlowCursor
+      {/* <GlowCursor
         color="#67E8F9"
         secondaryColor="#A78BFA"
         trailLength={40}
@@ -48,11 +48,11 @@ const page = () => {
         fadeDuration={900}
         blendMode="screen"
         className="relative z-10 w-full min-h-screen"
-      >
+      > */}
         <Navbar/>
         <Hero/>
         <Footer/>
-      </GlowCursor>
+      {/* </GlowCursor> */}
     </main>
   )
 }
