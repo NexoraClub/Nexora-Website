@@ -33,7 +33,7 @@ export default function Hero() {
               drop-shadow-[0_0_12px_rgba(56,189,248,0.65)]
               sm:text-xl md:text-2xl"
           >
-            PRESENT
+            PRESENTS
           </p>
 
           <span className="h-[2px] w-8 bg-sky-400 shadow-[0_0_10px_#38bdf8] sm:w-16" />
