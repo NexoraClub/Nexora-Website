@@ -23,8 +23,8 @@ export default function Navbar() {
     href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="w-full absolute top-0 left-0 z-30 px-4 pt-3 pb-3 sm:px-8 sm:pt-8">
-      <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between rounded-full border border-sky-400/50 bg-black px-5 text-white shadow-[0_0_12px_2px_rgba(56,189,248,0.35),0_0_30px_5px_rgba(56,189,248,0.18)] sm:px-8 lg:px-12">
+    <header className="w-full fixed top-0 left-0 right-0 z-40 px-3 pt-3 pb-2 sm:px-8 sm:pt-6 transition-all duration-300">
+      <nav className="relative mx-auto flex h-14 sm:h-16 max-w-7xl items-center justify-between rounded-full border border-sky-400/50 bg-black/85 px-4 sm:px-8 lg:px-12 text-white shadow-[0_0_12px_2px_rgba(56,189,248,0.35),0_0_30px_5px_rgba(56,189,248,0.18)] backdrop-blur-md">
         {/* College Logo */}
         <Link
           href="/"
@@ -37,7 +37,7 @@ export default function Navbar() {
             width={200}
             height={200}
             priority
-            className="h-auto w-40 object-contain sm:w-48 lg:w-78"
+            className="h-auto w-32 xs:w-36 sm:w-48 lg:w-64 object-contain"
           />
         </Link>
 
@@ -73,14 +73,14 @@ export default function Navbar() {
           aria-label={menuOpen ? "Close menu" : "Open menu"}
           aria-expanded={menuOpen}
           onClick={() => setMenuOpen(!menuOpen)}
-          className="ml-3 rounded-lg border border-sky-400/40 p-2
+          className="ml-2 rounded-xl border border-sky-400/40 p-2
             text-sky-400 transition duration-300
             hover:bg-sky-400/10 md:hidden cursor-pointer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="22"
-            height="22"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -96,32 +96,47 @@ export default function Navbar() {
           </svg>
         </button>
 
-        {/* Mobile Navigation Dropdown */}
+        {/* Mobile Navigation Dropdown & Backdrop */}
         {menuOpen && (
-          <div
-            className="absolute left-0 right-0 top-[calc(100%+14px)]
-              z-50 rounded-2xl border border-sky-400/40 bg-black p-4
-              shadow-[0_0_20px_rgba(56,189,248,0.2)] md:hidden"
-          >
-            <div className="flex flex-col gap-1">
-              {navLinks.map((link) => {
-                const active = isActive(link.href);
-                return (
-                  <Link
-                    key={link.name}
-                    href={link.href}
-                    onClick={() => setMenuOpen(false)}
-                    className={`rounded-lg px-4 py-3 text-sm font-semibold
-                      transition-colors duration-300
-                      hover:bg-sky-400/10 hover:text-sky-400
-                      ${active ? "text-sky-400" : "text-white"}`}
-                  >
-                    {link.name}
-                  </Link>
-                );
-              })}
+          <>
+            {/* Backdrop overlay to close when tapping outside */}
+            <div
+              className="fixed inset-0 -z-10 bg-black/60 backdrop-blur-xs md:hidden"
+              onClick={() => setMenuOpen(false)}
+              aria-hidden="true"
+            />
+
+            <div
+              className="absolute left-2 right-2 top-[calc(100%+10px)]
+                z-50 rounded-2xl border border-sky-400/40 bg-[#070b16]/95 p-3
+                shadow-[0_0_30px_rgba(56,189,248,0.25)] backdrop-blur-xl md:hidden max-h-[calc(100vh-85px)] overflow-y-auto"
+            >
+              <div className="flex flex-col gap-1">
+                {navLinks.map((link) => {
+                  const active = isActive(link.href);
+                  return (
+                    <Link
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setMenuOpen(false)}
+                      className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold
+                        transition-all duration-200
+                        ${
+                          active
+                            ? "bg-sky-500/20 text-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.25)]"
+                            : "text-white hover:bg-sky-400/10 hover:text-sky-300 active:bg-sky-400/20"
+                        }`}
+                    >
+                      <span>{link.name}</span>
+                      {active && (
+                        <span className="h-1.5 w-1.5 rounded-full bg-sky-400 animate-pulse" />
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-          </div>
+          </>
         )}
       </nav>
     </header>

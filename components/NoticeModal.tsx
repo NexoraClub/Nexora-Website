@@ -203,7 +203,7 @@ export default function NoticeModal({ notice, onClose }: NoticeModalProps) {
             onClick={onClose}
             className="rounded-xl border border-sky-400/40 bg-sky-500/20 px-5 py-2 text-xs font-semibold text-white transition-all hover:bg-sky-500/35 hover:shadow-[0_0_15px_rgba(56,189,248,0.4)] cursor-pointer"
           >
-            Close Noticee
+            Close Notice
           </button>
         </div>
       </div>

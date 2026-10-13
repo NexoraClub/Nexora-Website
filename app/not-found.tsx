@@ -27,7 +27,7 @@ export default function NotFound() {
           glitchInterval={3200}
           glitchDuration={200}
           fuzzRange={36}
-          fontSize="clamp(7rem, 24vw, 16rem)"
+          fontSize="clamp(5.5rem, 22vw, 16rem)"
           fontWeight={900}
           color="#38bdf8"
           gradient={['#38bdf8', '#818cf8', '#c084fc']}
