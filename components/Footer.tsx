@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -25,10 +26,11 @@ export default function Footer() {
         <div className="flex flex-col">
           <h3 className="mb-4 text-sm font-semibold uppercase tracking-wider text-white">Explore</h3>
           <ul className="flex flex-col gap-2 text-sm text-sky-200/60">
-            <li><a href="#home" className="transition-colors hover:text-sky-400 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">Our Vision</a></li>
-            <li><a href="#" className="transition-colors hover:text-sky-400 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">Upcoming Events</a></li>
-            <li><a href="#" className="transition-colors hover:text-sky-400 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">Projects & Hacks</a></li>
-            <li><a href="#" className="transition-colors hover:text-sky-400 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">Join the Club</a></li>
+            <li><Link href="/" className="transition-colors hover:text-sky-400 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">Home & Vision</Link></li>
+            <li><Link href="/notices" className="transition-colors hover:text-sky-400 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">Noticeboard</Link></li>
+            <li><Link href="/events" className="transition-colors hover:text-sky-400 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">Upcoming Events</Link></li>
+            <li><Link href="/achievements" className="transition-colors hover:text-sky-400 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">Achievements</Link></li>
+            <li><Link href="/about" className="transition-colors hover:text-sky-400 hover:drop-shadow-[0_0_8px_rgba(56,189,248,0.8)]">About the Club</Link></li>
           </ul>
         </div>
 

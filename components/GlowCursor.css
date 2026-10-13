@@ -1,0 +1,33 @@
+.glow-cursor {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  cursor: none;
+}
+
+html,
+body,
+.glow-cursor,
+.glow-cursor * {
+  cursor: none !important;
+}
+
+.glow-cursor__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  z-index: 9999;
+  height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.glow-cursor__content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+

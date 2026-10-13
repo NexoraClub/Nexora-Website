@@ -7,7 +7,8 @@ import { usePathname } from "next/navigation";
 
 const navLinks = [
   { name: "HOME", href: "/" },
-  { name: "NOTICE", href: "/notice" },
+  { name: "NOTICE", href: "/notices" },
+  { name: "EVENTS", href: "/events" },
   { name: "ACHIEVEMENTS", href: "/achievements" },
   { name: "ABOUT US", href: "/about" },
   { name: "LEARN", href: "/learn" },
@@ -15,25 +16,19 @@ const navLinks = [
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  const isLinkActive = (link: { name: string; href: string }) => {
-    if (link.href === "/learn") {
-      return pathname === "/learn";
-    }
-    return pathname === "/" && link.name === "HOME";
-  };
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header className="w-full absolute top-0 left-0 z-30  px-4 pt-3 pb-3 sm:px-8 sm:pt-8">
-      <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between rounded-full border border-sky-400/50 bg-black px-5 text-white shadow-[0_0_12px_2px_rgba(56,189,248,0.35),0_0_30px_5px_rgba(56,189,248,0.18)] sm:px-8 lg:px-12" >
+    <header className="w-full absolute top-0 left-0 z-30 px-4 pt-3 pb-3 sm:px-8 sm:pt-8">
+      <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between rounded-full border border-sky-400/50 bg-black px-5 text-white shadow-[0_0_12px_2px_rgba(56,189,248,0.35),0_0_30px_5px_rgba(56,189,248,0.18)] sm:px-8 lg:px-12">
         {/* College Logo */}
         <Link
-          href="/#home"
-          onClick={() => {
-            setMenuOpen(false);
-          }}
+          href="/"
+          onClick={() => setMenuOpen(false)}
           className="flex shrink-0 items-center"
         >
           <Image
@@ -49,7 +44,7 @@ export default function Navbar() {
         {/* Desktop Navigation */}
         <div className="hidden z-20 items-center gap-6 md:flex lg:gap-10">
           {navLinks.map((link) => {
-            const active = isLinkActive(link);
+            const active = isActive(link.href);
             return (
               <Link
                 key={link.name}
@@ -57,11 +52,7 @@ export default function Navbar() {
                 className={`relative whitespace-nowrap cursor-pointer py-2 text-xs font-semibold
                   transition-colors duration-300 ease-in-out lg:text-sm
                   hover:text-sky-400
-                  ${
-                    active
-                      ? "text-sky-400"
-                      : "text-gray-200"
-                  }`}
+                  ${active ? "text-sky-400" : "text-gray-200"}`}
               >
                 {link.name}
 
@@ -69,11 +60,7 @@ export default function Navbar() {
                 <span
                   className={`absolute bottom-0 left-0 h-[3px] rounded-full
                     bg-sky-400 transition-all duration-300 ease-in-out
-                    ${
-                      active
-                        ? "w-full opacity-100"
-                        : "w-0 opacity-0"
-                    }`}
+                    ${active ? "w-full opacity-100" : "w-0 opacity-0"}`}
                 />
               </Link>
             );
@@ -88,7 +75,7 @@ export default function Navbar() {
           onClick={() => setMenuOpen(!menuOpen)}
           className="ml-3 rounded-lg border border-sky-400/40 p-2
             text-sky-400 transition duration-300
-            hover:bg-sky-400/10 md:hidden"
+            hover:bg-sky-400/10 md:hidden cursor-pointer"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -118,22 +105,16 @@ export default function Navbar() {
           >
             <div className="flex flex-col gap-1">
               {navLinks.map((link) => {
-                const active = isLinkActive(link);
+                const active = isActive(link.href);
                 return (
                   <Link
                     key={link.name}
                     href={link.href}
-                    onClick={() => {
-                      setMenuOpen(false);
-                    }}
+                    onClick={() => setMenuOpen(false)}
                     className={`rounded-lg px-4 py-3 text-sm font-semibold
                       transition-colors duration-300
                       hover:bg-sky-400/10 hover:text-sky-400
-                      ${
-                        active
-                          ? "text-sky-400"
-                          : "text-white"
-                      }`}
+                      ${active ? "text-sky-400" : "text-white"}`}
                   >
                     {link.name}
                   </Link>

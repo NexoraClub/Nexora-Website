@@ -7,11 +7,11 @@ const page = () => {
   return (
     <main className="relative min-h-screen w-full bg-[#050610] text-white">
       <div className="pointer-events-none fixed inset-0 z-0">
-        
+
       </div>
-        <Navbar/>
-        <Hero/>
-        <Footer/>
+      <Navbar />
+      <Hero />
+      <Footer />
     </main>
   )
 }
