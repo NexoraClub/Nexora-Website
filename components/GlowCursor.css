@@ -3,14 +3,6 @@
   width: 100%;
   height: 100%;
   overflow: hidden;
-  cursor: none;
-}
-
-html,
-body,
-.glow-cursor,
-.glow-cursor * {
-  cursor: none !important;
 }
 
 .glow-cursor__canvas {

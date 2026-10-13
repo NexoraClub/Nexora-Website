@@ -25,23 +25,10 @@
         min-height: 100vh;
         margin: 0;
         overflow-x: hidden;
+        cursor: auto;
         background:
           radial-gradient(ellipse at 50% 24%, rgb(14 165 233 / 12%), transparent 42%),
           #050610;
-      }
-
-      body::before {
-        position: fixed;
-        z-index: -1;
-        inset: 0;
-        background-image:
-          linear-gradient(rgb(56 189 248 / 5%) 1px, transparent 1px),
-          linear-gradient(90deg, rgb(56 189 248 / 5%) 1px, transparent 1px);
-        background-position: center;
-        background-size: 52px 52px;
-        content: "";
-        mask-image: linear-gradient(to bottom, #000 0%, transparent 82%);
-        pointer-events: none;
       }
 
       .site-header {
