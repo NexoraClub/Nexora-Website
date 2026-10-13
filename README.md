@@ -1,36 +1,287 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌌 Nexora — Official ISE Club Web Platform
 
-## Getting Started
+<div align="center">
 
-First, run the development server:
+![Nexora Platform Banner](public/nexora.jpeg)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+[![Next.js](https://img.shields.io/badge/Next.js-16.4.0-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.3.0-blue?style=for-the-badge&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4.0-38B2AC?style=for-the-badge&logo=tailwind-css)](https://tailwindcss.com/)
+[![Prisma](https://img.shields.io/badge/Prisma-7.10-2D3748?style=for-the-badge&logo=prisma)](https://www.prisma.io/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com/)
+
+**Department of Information Science and Engineering**  
+*A J Institute of Engineering and Technology (AJIET), Kottara Chowki, Mangaluru*  
+*(A Unit of Laxmi Memorial Educational Trust® • NBA Accredited B.E. Program)*
+
+[Public Portal](#-public-features) • [Admin CMS](#-enterprise-admin-dashboard) • [Architecture](#-technology-stack) • [Getting Started](#-getting-started) • [API Routes](#-api-reference)
+
+---
+
+</div>
+
+## 📌 Overview
+
+**Nexora** is the flagship digital ecosystem of the Information Science and Engineering (ISE) department student club at AJIET. Designed with a **Clean Minimal + Cyber Neon SaaS** aesthetic, the platform unifies student collaboration, academic resources, event registrations, and administrative content management into a fast, mobile-first web application.
+
+The project features a **public community portal** for students and visitors, alongside an **enterprise-grade administrative CMS** with granular role-based permissions, real-time database persistence on Supabase PostgreSQL, and automated audit logging.
+
+---
+
+## ✨ Features
+
+### 🌐 Public Portal
+
+- **Interactive Cyber Hero:**
+  - Modern typography powered by Jersey 10 and Geist fonts.
+  - Showcases the department and club collaboration (*Nexora X Heka*).
+  - Emphasizes the core pillars: **THINK • BUILD • INNOVATE**.
+  - Quick action links for events, notices, and academic materials.
+
+- **Bulletin & Noticeboard (`/notices`):**
+  - Urgent announcement beacon with live pulse indicators.
+  - Real-time search across titles, summaries, contents, and author credentials.
+  - Multi-category pill filters (*Urgent, Projects, Events, General*).
+  - List and Grid view toggles.
+  - Interactive notice modal with downloadable attachments and direct link sharing.
+
+- **Events & Hackathons Hub (`/events`):**
+  - Event track categorization (*Hackathons, Technical Competitions, Workshops, Seminars*).
+  - Past vs. Upcoming event filtering.
+  - Rich event details modal with date, venue, eligibility, and tags.
+  - Live student registration modal with real-time feedback.
+
+- **Achievement Gallery (`/achievements`):**
+  - Showcases state-level and national hackathon victories (e.g., Smart India Hackathon, InCTF).
+  - Verified achievement cards with staggered intersection-observer animations.
+
+- **Academic & Skill Portal (`/learn`):**
+  - Semester-wise study materials, lab manuals, and VTU question papers.
+  - Upcoming internal and semester exam schedules with live countdown badges.
+  - Hands-on skill tracks across Full-Stack, Cloud, DSA, and Open Source.
+
+- **Department Profile (`/about`):**
+  - Overview of the NBA-accredited B.E. program established in 2016.
+  - Formal Vision & Mission statements.
+  - HOD Desk message and department photo gallery.
+  - Comprehensive directory of professors, lecturers, and technical staff.
+
+- **Cyber 404 Error Experience (`/_not-found`):**
+  - Custom canvas-based `<FuzzyText />` component featuring dynamic pixel displacement.
+  - Interactive mouse hover intensity shifts, click-burst effects, and periodic glitch spikes.
+
+---
+
+### 🛡️ Enterprise Admin Dashboard (`/admin`)
+
+- **Secure Authentication & Session Management:**
+  - JWT-based authentication using bcrypt-hashed password verification.
+  - Secure, HTTP-Only session cookies with automated session invalidation.
+  - Super Admin and Role delegation architecture (`SUPER_ADMIN`, `ADMIN`, `EDITOR`).
+
+- **Unified Control Panel:**
+  - **Overview Analytics:** Real-time metrics for total events, active notices, published resources, and admin users.
+  - **Events Manager:** Create, update, publish, or archive hackathons and technical symposiums.
+  - **Noticeboard CMS:** Publish critical department bulletins, pin urgent notices, and link resource attachments.
+  - **Achievements CMS:** Add and update student competition milestones.
+  - **Learning Hub Manager:** Upload notes, past exam papers, and syllabus updates.
+  - **Category Taxonomies:** Dynamic category assignment across events and resources.
+  - **Admin User Management:** Manage admin credentials, assign roles, and view last login activity.
+  - **Audit Logs:** Immutable audit trail recording every create, update, and delete action with actor ID and timestamp.
+  - **Active Sessions:** Monitor active administrator login sessions.
+
+---
+
+## 🛠 Technology Stack
+
+| Layer | Technologies | Purpose |
+| :--- | :--- | :--- |
+| **Frontend Framework** | [Next.js 16.4.0](https://nextjs.org/) (App Router, Turbopack) | High-performance server rendering & client navigation |
+| **UI Library** | [React 19.3.0](https://react.dev/) | Modern concurrent UI component tree |
+| **Styling & Design** | [Tailwind CSS v4](https://tailwindcss.com/) | Cyberpunk dark theme & enterprise light dashboard |
+| **Database & ORM** | [Prisma 7.10](https://www.prisma.io/) & [PostgreSQL](https://www.postgresql.org/) | Type-safe queries via `@prisma/adapter-pg` driver |
+| **Cloud Database** | [Supabase](https://supabase.com/) | Hosted PostgreSQL, pooling, and asset storage |
+| **Authentication** | [Bcrypt.js](https://github.com/dcodeIO/bcrypt.js) + JWT | Secure salted password hashing and token verification |
+| **Smooth Scrolling** | [Lenis 1.3](https://lenis.darkroom.engineering/) | Hardware-accelerated inertial smooth scroll |
+| **Visuals & Icons** | [Lucide React](https://lucide.dev/), HTML5 Canvas, Three.js | Scalable SVG icons and generative canvas animations |
+| **Runtime & Tooling** | [Bun](https://bun.sh/) / [Node.js](https://nodejs.org/) (v20+) | Fast package execution and build lifecycle |
+
+---
+
+## 📂 Project Structure
+
+```text
+Nexora-Website/
+├── app/                              # Next.js App Router
+│   ├── about/                        # Department profile & faculty directory
+│   ├── achievements/                 # Hackathons & milestones gallery
+│   ├── admin/                        # Enterprise admin portal & login
+│   ├── api/                          # Serverless API routes
+│   │   ├── achievements/             # Public & admin achievements endpoints
+│   │   ├── admin/                    # Auth, audit logs, sessions, users, CMS
+│   │   ├── events/                   # Events retrieval & submission endpoints
+│   │   ├── notices/                  # Department noticeboard endpoints
+│   │   └── resources/                # Academic resources & materials
+│   ├── events/                       # Technical events, hackathons & registration
+│   ├── learn/                        # Study materials, VTU exams, skill tracks
+│   ├── notices/                      # Public noticeboard & urgent alerts
+│   ├── globals.css                   # Tailwind CSS v4 styling & mobile reset
+│   ├── layout.tsx                    # Root layout with fonts & smooth scroll
+│   ├── not-found.tsx                 # Interactive 404 FuzzyText experience
+│   └── page.tsx                      # Public landing page (Hero section)
+├── components/                       # Modular UI components
+│   ├── admin/                        # Admin layout, sidebar, header & CMS views
+│   │   └── views/                    # Dashboard, Events, Notices, Users, Logs
+│   ├── events/                       # Event cards, hero, filters, and modal
+│   ├── learn/                        # Academic cards, countdowns, exam lists
+│   ├── AchievementGallery.tsx        # Milestone cards with scroll observer
+│   ├── Footer.tsx                    # Responsive department footer
+│   ├── FuzzyText.tsx                 # React Bits HTML5 canvas fuzz displacement
+│   ├── Hero.tsx                      # Landing hero & club collaboration
+│   ├── Navbar.tsx                    # Responsive floating pill navigation
+│   ├── NoticeCard.tsx                # Noticeboard item card & category badges
+│   └── NoticeModal.tsx               # Notice details dialog & attachment links
+├── lib/                              # Core backend utilities & data layer
+│   ├── admin-auth.ts                 # JWT generation, verification & cookies
+│   ├── events-data.ts                # Event filtering logic & initial datasets
+│   ├── prisma.ts                     # Prisma client singleton with PG adapter
+│   ├── supabase.ts                   # Supabase client initialization
+│   └── types.ts                      # Shared TypeScript data models
+├── prisma/                           # Database schema & migrations
+│   └── schema.prisma                 # PostgreSQL database schema definition
+├── public/                           # Static public media, logos, and fonts
+└── .gitignore                        # Git ignore rules (includes agent configs)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prerequisites
 
-## Learn More
+Ensure you have installed:
+- [Node.js](https://nodejs.org/) (version `20.x` or higher)
+- [Bun](https://bun.sh/) (recommended) or `npm` / `pnpm`
+- A [Supabase](https://supabase.com/) PostgreSQL database project
 
-To learn more about Next.js, take a look at the following resources:
+### 1. Clone the Repository
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+git clone https://github.com/NexoraIse/Nexora-Website.git
+cd Nexora-Website
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 2. Install Dependencies
 
-## Deploy on Vercel
+```bash
+bun install
+# or
+npm install
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3. Configure Environment Variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Create a `.env` file in the root directory:
+
+```env
+# Database Connections (Supabase PostgreSQL)
+DATABASE_URL="postgresql://postgres.[PROJECT_REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?pgbouncer=true"
+DIRECT_URL="postgresql://postgres.[PROJECT_REF]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:5432/postgres"
+
+# Supabase Public API Keys
+NEXT_PUBLIC_SUPABASE_URL="https://[PROJECT_REF].supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+# Admin Security Secret
+ADMIN_JWT_SECRET="super-secure-random-secret-key-for-nexora-admin"
+```
+
+### 4. Sync Database Schema
+
+Generate the Prisma Client and push the schema to your Supabase PostgreSQL instance:
+
+```bash
+bunx prisma generate
+bunx prisma db push
+```
+
+### 5. Start the Development Server
+
+```bash
+bun dev
+# or
+npm run dev
+```
+
+Visit [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🗄️ Database Schema Overview
+
+The relational PostgreSQL schema in `prisma/schema.prisma` models all core entities:
+
+- **`Admin` (`admins`):** System administrators with bcrypt-hashed credentials and roles (`SUPER_ADMIN`, `ADMIN`, `EDITOR`).
+- **`Event` (`events`):** Department hackathons, workshops, and competitions with dates, venues, status, and registration links.
+- **`Notice` (`notices`):** Circulars and announcements categorized by priority (`NORMAL`, `IMPORTANT`, `URGENT`) and pinned state.
+- **`Achievement` (`achievements`):** Student hackathon achievements, awards, and event recognitions.
+- **`LearningResource` (`learning_resources`):** Semester-indexed study notes, VTU previous question papers, and lab manuals.
+- **`Category` (`categories`):** Taxonomies across events and academic resources.
+- **`AuditLog` (`audit_logs`):** Immutable log entries recording administrative updates, creations, and deletions.
+- **`AdminSession` (`admin_sessions`):** Active user sessions with IP and user-agent tracking.
+
+---
+
+## 📡 API Reference
+
+### Public API Routes
+
+| Endpoint | Method | Description |
+| :--- | :--- | :--- |
+| `/api/events` | `GET` | Fetches all published upcoming and past events |
+| `/api/notices` | `GET` | Fetches active department notices and urgent bulletins |
+| `/api/achievements` | `GET` | Retrieves verified student achievements and awards |
+| `/api/resources` | `GET` | Retrieves study notes, exam papers, and learning links |
+
+### Administrative API Routes (Protected)
+
+| Endpoint | Method | Description |
+| :--- | :--- | :--- |
+| `/api/admin/login` | `POST` | Authenticates administrator and sets secure HTTP-only JWT cookie |
+| `/api/admin/logout` | `POST` | Clears administrator authentication cookie |
+| `/api/admin/session` | `GET` | Validates session token and returns current admin profile |
+| `/api/admin/dashboard` | `GET` | Aggregates live metrics and counts for the dashboard overview |
+| `/api/admin/events` | `GET`, `POST`, `PUT`, `DELETE` | Full CRUD operations for department events |
+| `/api/admin/notices` | `GET`, `POST`, `PUT`, `DELETE` | Full CRUD operations for bulletin board announcements |
+| `/api/admin/achievements`| `GET`, `POST`, `PUT`, `DELETE` | Full CRUD operations for student achievement gallery |
+| `/api/admin/resources` | `GET`, `POST`, `PUT`, `DELETE` | Full CRUD operations for academic study materials |
+| `/api/admin/users` | `GET`, `POST`, `PUT`, `DELETE` | Super Admin management of administrative user accounts |
+| `/api/admin/audit-logs` | `GET` | Retrieves security and action audit logs |
+
+---
+
+## 📱 Mobile Responsiveness & Performance
+
+- **Fluid Layouts:** Uses responsive flexbox, CSS grids, and Tailwind breakpoints (`sm`, `md`, `lg`, `xl`).
+- **Floating Pill Navigation:** Persists across scroll states with dynamic backdrop blur and an accessible touch-drawer menu.
+- **Horizontal Overflow Guards:** Configured global CSS rules (`overflow-x: hidden`, `max-width: 100vw`) to eliminate unwanted viewport panning.
+- **Turbopack Optimized:** Bundles and renders efficiently with Next.js 16 Partial Prefetching and Cache Components.
+
+---
+
+## 🧑‍💻 Contributing
+
+1. Fork the repository.
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m 'feat: Add some AmazingFeature'`).
+4. Push to the branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
+
+---
+
+## 📄 License & Attribution
+
+Designed and maintained by the **Nexora Information Science and Engineering Club** at **A J Institute of Engineering and Technology (AJIET)**, Mangaluru.
+
+All rights reserved © 2026 Nexora ISE Club.
