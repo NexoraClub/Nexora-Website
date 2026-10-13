@@ -23,7 +23,37 @@ export * from './enums';
  */
 export type Admin = Prisma.AdminModel
 /**
+ * Model Event
+ * 
+ */
+export type Event = Prisma.EventModel
+/**
  * Model Notice
  * 
  */
 export type Notice = Prisma.NoticeModel
+/**
+ * Model Achievement
+ * 
+ */
+export type Achievement = Prisma.AchievementModel
+/**
+ * Model LearningResource
+ * 
+ */
+export type LearningResource = Prisma.LearningResourceModel
+/**
+ * Model ContentCategory
+ * 
+ */
+export type ContentCategory = Prisma.ContentCategoryModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model ActiveSession
+ * 
+ */
+export type ActiveSession = Prisma.ActiveSessionModel

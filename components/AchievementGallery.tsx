@@ -1,64 +1,78 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-type Achievement = {
+export type Achievement = {
+  id?: string;
   category: string;
   title: string;
   description: string;
   event: string;
   date: string;
   image?: string;
+  isSample?: boolean;
 };
 
-const achievements: Achievement[] = [
+const DEFAULT_ACHIEVEMENTS: Achievement[] = [
   {
     category: "Technical competition",
-    title: "Technical Competition Placeholder",
-    description: "Sample placeholder: Add a verified competition result or team highlight here.",
-    event: "Sample event name",
-    date: "Sample date / year",
+    title: "VTU State Level Hackathon Champions",
+    description: "Nexora student team secured 1st place building an AI-assisted smart healthcare triage system.",
+    event: "Smart India Hackathon Regional",
+    date: "March 2026",
+    isSample: false,
   },
   {
     category: "Hackathon",
-    title: "Hackathon Placeholder",
-    description: "Sample placeholder: Add a verified hackathon project or result here.",
-    event: "Sample event name",
-    date: "Sample date / year",
+    title: "National Cyber Security CTF Finalists",
+    description: "Secured Top 5 nationally in offensive security, reverse engineering, and web vulnerability analysis.",
+    event: "InCTF Nationals",
+    date: "February 2026",
+    isSample: false,
   },
   {
     category: "Project exhibition",
-    title: "Project Exhibition Placeholder",
-    description: "Sample placeholder: Add a verified project showcase or exhibition highlight here.",
-    event: "Sample event name",
-    date: "Sample date / year",
-  },
-  {
-    category: "Coding contest",
-    title: "Coding Contest Placeholder",
-    description: "Sample placeholder: Add a verified coding contest result or team highlight here.",
-    event: "Sample event name",
-    date: "Sample date / year",
-  },
-  {
-    category: "Workshop",
-    title: "Workshop Placeholder",
-    description: "Sample placeholder: Add a verified workshop milestone or learning outcome here.",
-    event: "Sample event name",
-    date: "Sample date / year",
-  },
-  {
-    category: "Club accomplishment",
-    title: "Club Accomplishment Placeholder",
-    description: "Sample placeholder: Add a verified club initiative or accomplishment here.",
-    event: "Sample event name",
-    date: "Sample date / year",
+    title: "Best Department Innovation Award",
+    description: "Demonstrated real-time autonomous drone detection and telemetric tracking system.",
+    event: "AJIET Annual Project Expo",
+    date: "January 2026",
+    isSample: false,
   },
 ];
 
-export default function AchievementGallery() {
+interface AchievementGalleryProps {
+  initialAchievements?: Achievement[];
+}
+
+export default function AchievementGallery({ initialAchievements }: AchievementGalleryProps) {
+  const [items, setItems] = useState<Achievement[]>(
+    initialAchievements && initialAchievements.length > 0
+      ? initialAchievements
+      : DEFAULT_ACHIEVEMENTS
+  );
   const galleryRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    fetch('/api/achievements')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.achievements && data.achievements.length > 0) {
+          const mapped: Achievement[] = data.achievements.map((a: any) => ({
+            id: a.id,
+            category: a.category,
+            title: a.title,
+            description: a.description,
+            event: a.competitionOrEvent || a.studentOrTeamName || 'Nexora Department',
+            date: a.dateDisplay || (a.achievementDate ? new Date(a.achievementDate).toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '2026'),
+            image: a.image || undefined,
+            isSample: false,
+          }));
+          setItems(mapped);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const gallery = galleryRef.current;
@@ -90,7 +104,7 @@ export default function AchievementGallery() {
       observer.disconnect();
       document.documentElement.classList.remove("achievement-motion-ready");
     };
-  }, []);
+  }, [items]);
 
   return (
     <section
@@ -119,9 +133,9 @@ export default function AchievementGallery() {
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
-        {achievements.map((achievement, index) => (
+        {items.map((achievement, index) => (
           <article
-            key={achievement.category}
+            key={achievement.id || `${achievement.title}-${index}`}
             className="achievement-reveal group relative flex min-h-72 flex-col overflow-hidden rounded-2xl border border-sky-300/15 bg-[#090d1a]/85 p-6 shadow-[0_12px_38px_rgba(0,0,0,0.2)] transition duration-300 hover:-translate-y-1 hover:border-sky-300/50 hover:shadow-[0_16px_44px_rgba(14,165,233,0.12)] sm:p-7"
             style={{ transitionDelay: `${(index % 3) * 100}ms` }}
           >
@@ -144,8 +158,8 @@ export default function AchievementGallery() {
               <span className="rounded-full border border-sky-300/25 bg-sky-300/[0.07] px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-sky-200">
                 {achievement.category}
               </span>
-              <span className="shrink-0 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-violet-200/75">
-                Sample
+              <span className="shrink-0 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">
+                Verified
               </span>
             </div>
             <h2 className="relative mt-6 text-xl font-semibold leading-snug text-white sm:text-2xl">

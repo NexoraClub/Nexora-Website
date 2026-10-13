@@ -9,5 +9,11 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/Admin'
+export type * from './models/Event'
 export type * from './models/Notice'
+export type * from './models/Achievement'
+export type * from './models/LearningResource'
+export type * from './models/ContentCategory'
+export type * from './models/AuditLog'
+export type * from './models/ActiveSession'
 export type * from './commonInputTypes'

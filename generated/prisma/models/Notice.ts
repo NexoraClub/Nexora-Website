@@ -38,27 +38,72 @@ export type NoticeMinAggregateOutputType = {
   id: bigint | null
   date: Date | null
   title: string | null
+  slug: string | null
+  summary: string | null
   content: string | null
+  category: string | null
+  priority: $Enums.NoticePriority | null
+  status: $Enums.PublishStatus | null
+  publishDate: Date | null
+  expiryDate: Date | null
   image: string | null
+  attachmentUrl: string | null
+  attachmentType: string | null
+  attachmentName: string | null
+  isPinned: boolean | null
+  authorName: string | null
+  authorRole: string | null
+  createdById: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type NoticeMaxAggregateOutputType = {
   id: bigint | null
   date: Date | null
   title: string | null
+  slug: string | null
+  summary: string | null
   content: string | null
+  category: string | null
+  priority: $Enums.NoticePriority | null
+  status: $Enums.PublishStatus | null
+  publishDate: Date | null
+  expiryDate: Date | null
   image: string | null
+  attachmentUrl: string | null
+  attachmentType: string | null
+  attachmentName: string | null
+  isPinned: boolean | null
+  authorName: string | null
+  authorRole: string | null
+  createdById: string | null
   createdAt: Date | null
+  updatedAt: Date | null
 }
 
 export type NoticeCountAggregateOutputType = {
   id: number
   date: number
   title: number
+  slug: number
+  summary: number
   content: number
+  category: number
+  priority: number
+  status: number
+  publishDate: number
+  expiryDate: number
   image: number
+  attachmentUrl: number
+  attachmentType: number
+  attachmentName: number
+  isPinned: number
+  authorName: number
+  authorRole: number
+  createdById: number
   createdAt: number
+  updatedAt: number
   _all: number
 }
 
@@ -75,27 +120,72 @@ export type NoticeMinAggregateInputType = {
   id?: true
   date?: true
   title?: true
+  slug?: true
+  summary?: true
   content?: true
+  category?: true
+  priority?: true
+  status?: true
+  publishDate?: true
+  expiryDate?: true
   image?: true
+  attachmentUrl?: true
+  attachmentType?: true
+  attachmentName?: true
+  isPinned?: true
+  authorName?: true
+  authorRole?: true
+  createdById?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type NoticeMaxAggregateInputType = {
   id?: true
   date?: true
   title?: true
+  slug?: true
+  summary?: true
   content?: true
+  category?: true
+  priority?: true
+  status?: true
+  publishDate?: true
+  expiryDate?: true
   image?: true
+  attachmentUrl?: true
+  attachmentType?: true
+  attachmentName?: true
+  isPinned?: true
+  authorName?: true
+  authorRole?: true
+  createdById?: true
   createdAt?: true
+  updatedAt?: true
 }
 
 export type NoticeCountAggregateInputType = {
   id?: true
   date?: true
   title?: true
+  slug?: true
+  summary?: true
   content?: true
+  category?: true
+  priority?: true
+  status?: true
+  publishDate?: true
+  expiryDate?: true
   image?: true
+  attachmentUrl?: true
+  attachmentType?: true
+  attachmentName?: true
+  isPinned?: true
+  authorName?: true
+  authorRole?: true
+  createdById?: true
   createdAt?: true
+  updatedAt?: true
   _all?: true
 }
 
@@ -189,9 +279,24 @@ export type NoticeGroupByOutputType = {
   id: bigint
   date: Date
   title: string
+  slug: string | null
+  summary: string | null
   content: string | null
+  category: string
+  priority: $Enums.NoticePriority
+  status: $Enums.PublishStatus
+  publishDate: Date | null
+  expiryDate: Date | null
   image: string | null
+  attachmentUrl: string | null
+  attachmentType: string | null
+  attachmentName: string | null
+  isPinned: boolean
+  authorName: string | null
+  authorRole: string | null
+  createdById: string | null
   createdAt: Date
+  updatedAt: Date
   _count: NoticeCountAggregateOutputType | null
   _avg: NoticeAvgAggregateOutputType | null
   _sum: NoticeSumAggregateOutputType | null
@@ -221,39 +326,102 @@ export type NoticeWhereInput = {
   id?: Prisma.BigIntFilter<"Notice"> | bigint | number
   date?: Prisma.DateTimeFilter<"Notice"> | Date | string
   title?: Prisma.StringFilter<"Notice"> | string
+  slug?: Prisma.StringNullableFilter<"Notice"> | string | null
+  summary?: Prisma.StringNullableFilter<"Notice"> | string | null
   content?: Prisma.StringNullableFilter<"Notice"> | string | null
+  category?: Prisma.StringFilter<"Notice"> | string
+  priority?: Prisma.EnumNoticePriorityFilter<"Notice"> | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFilter<"Notice"> | $Enums.PublishStatus
+  publishDate?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
+  expiryDate?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
   image?: Prisma.StringNullableFilter<"Notice"> | string | null
+  attachmentUrl?: Prisma.StringNullableFilter<"Notice"> | string | null
+  attachmentType?: Prisma.StringNullableFilter<"Notice"> | string | null
+  attachmentName?: Prisma.StringNullableFilter<"Notice"> | string | null
+  isPinned?: Prisma.BoolFilter<"Notice"> | boolean
+  authorName?: Prisma.StringNullableFilter<"Notice"> | string | null
+  authorRole?: Prisma.StringNullableFilter<"Notice"> | string | null
+  createdById?: Prisma.UuidNullableFilter<"Notice"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  createdBy?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
 }
 
 export type NoticeOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrderInput | Prisma.SortOrder
+  summary?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiryDate?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachmentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachmentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachmentName?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPinned?: Prisma.SortOrder
+  authorName?: Prisma.SortOrderInput | Prisma.SortOrder
+  authorRole?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
+  createdBy?: Prisma.AdminOrderByWithRelationInput
 }
 
 export type NoticeWhereUniqueInput = Prisma.AtLeast<{
   id?: bigint | number
+  slug?: string
   AND?: Prisma.NoticeWhereInput | Prisma.NoticeWhereInput[]
   OR?: Prisma.NoticeWhereInput[]
   NOT?: Prisma.NoticeWhereInput | Prisma.NoticeWhereInput[]
   date?: Prisma.DateTimeFilter<"Notice"> | Date | string
   title?: Prisma.StringFilter<"Notice"> | string
+  summary?: Prisma.StringNullableFilter<"Notice"> | string | null
   content?: Prisma.StringNullableFilter<"Notice"> | string | null
+  category?: Prisma.StringFilter<"Notice"> | string
+  priority?: Prisma.EnumNoticePriorityFilter<"Notice"> | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFilter<"Notice"> | $Enums.PublishStatus
+  publishDate?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
+  expiryDate?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
   image?: Prisma.StringNullableFilter<"Notice"> | string | null
+  attachmentUrl?: Prisma.StringNullableFilter<"Notice"> | string | null
+  attachmentType?: Prisma.StringNullableFilter<"Notice"> | string | null
+  attachmentName?: Prisma.StringNullableFilter<"Notice"> | string | null
+  isPinned?: Prisma.BoolFilter<"Notice"> | boolean
+  authorName?: Prisma.StringNullableFilter<"Notice"> | string | null
+  authorRole?: Prisma.StringNullableFilter<"Notice"> | string | null
+  createdById?: Prisma.UuidNullableFilter<"Notice"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
-}, "id">
+  updatedAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  createdBy?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
+}, "id" | "slug">
 
 export type NoticeOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrderInput | Prisma.SortOrder
+  summary?: Prisma.SortOrderInput | Prisma.SortOrder
   content?: Prisma.SortOrderInput | Prisma.SortOrder
+  category?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishDate?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiryDate?: Prisma.SortOrderInput | Prisma.SortOrder
   image?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachmentUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachmentType?: Prisma.SortOrderInput | Prisma.SortOrder
+  attachmentName?: Prisma.SortOrderInput | Prisma.SortOrder
+  isPinned?: Prisma.SortOrder
+  authorName?: Prisma.SortOrderInput | Prisma.SortOrder
+  authorRole?: Prisma.SortOrderInput | Prisma.SortOrder
+  createdById?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
   _count?: Prisma.NoticeCountOrderByAggregateInput
   _avg?: Prisma.NoticeAvgOrderByAggregateInput
   _max?: Prisma.NoticeMaxOrderByAggregateInput
@@ -268,81 +436,225 @@ export type NoticeScalarWhereWithAggregatesInput = {
   id?: Prisma.BigIntWithAggregatesFilter<"Notice"> | bigint | number
   date?: Prisma.DateTimeWithAggregatesFilter<"Notice"> | Date | string
   title?: Prisma.StringWithAggregatesFilter<"Notice"> | string
+  slug?: Prisma.StringNullableWithAggregatesFilter<"Notice"> | string | null
+  summary?: Prisma.StringNullableWithAggregatesFilter<"Notice"> | string | null
   content?: Prisma.StringNullableWithAggregatesFilter<"Notice"> | string | null
+  category?: Prisma.StringWithAggregatesFilter<"Notice"> | string
+  priority?: Prisma.EnumNoticePriorityWithAggregatesFilter<"Notice"> | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusWithAggregatesFilter<"Notice"> | $Enums.PublishStatus
+  publishDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Notice"> | Date | string | null
+  expiryDate?: Prisma.DateTimeNullableWithAggregatesFilter<"Notice"> | Date | string | null
   image?: Prisma.StringNullableWithAggregatesFilter<"Notice"> | string | null
+  attachmentUrl?: Prisma.StringNullableWithAggregatesFilter<"Notice"> | string | null
+  attachmentType?: Prisma.StringNullableWithAggregatesFilter<"Notice"> | string | null
+  attachmentName?: Prisma.StringNullableWithAggregatesFilter<"Notice"> | string | null
+  isPinned?: Prisma.BoolWithAggregatesFilter<"Notice"> | boolean
+  authorName?: Prisma.StringNullableWithAggregatesFilter<"Notice"> | string | null
+  authorRole?: Prisma.StringNullableWithAggregatesFilter<"Notice"> | string | null
+  createdById?: Prisma.UuidNullableWithAggregatesFilter<"Notice"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Notice"> | Date | string
+  updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Notice"> | Date | string
 }
 
 export type NoticeCreateInput = {
   id?: bigint | number
   date?: Date | string
   title: string
+  slug?: string | null
+  summary?: string | null
   content?: string | null
+  category?: string
+  priority?: $Enums.NoticePriority
+  status?: $Enums.PublishStatus
+  publishDate?: Date | string | null
+  expiryDate?: Date | string | null
   image?: string | null
+  attachmentUrl?: string | null
+  attachmentType?: string | null
+  attachmentName?: string | null
+  isPinned?: boolean
+  authorName?: string | null
+  authorRole?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
+  createdBy?: Prisma.AdminCreateNestedOneWithoutNoticesInput
 }
 
 export type NoticeUncheckedCreateInput = {
   id?: bigint | number
   date?: Date | string
   title: string
+  slug?: string | null
+  summary?: string | null
   content?: string | null
+  category?: string
+  priority?: $Enums.NoticePriority
+  status?: $Enums.PublishStatus
+  publishDate?: Date | string | null
+  expiryDate?: Date | string | null
   image?: string | null
+  attachmentUrl?: string | null
+  attachmentType?: string | null
+  attachmentName?: string | null
+  isPinned?: boolean
+  authorName?: string | null
+  authorRole?: string | null
+  createdById?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type NoticeUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.EnumNoticePriorityFieldUpdateOperationsInput | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+  publishDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  authorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.AdminUpdateOneWithoutNoticesNestedInput
 }
 
 export type NoticeUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.EnumNoticePriorityFieldUpdateOperationsInput | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+  publishDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  authorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NoticeCreateManyInput = {
   id?: bigint | number
   date?: Date | string
   title: string
+  slug?: string | null
+  summary?: string | null
   content?: string | null
+  category?: string
+  priority?: $Enums.NoticePriority
+  status?: $Enums.PublishStatus
+  publishDate?: Date | string | null
+  expiryDate?: Date | string | null
   image?: string | null
+  attachmentUrl?: string | null
+  attachmentType?: string | null
+  attachmentName?: string | null
+  isPinned?: boolean
+  authorName?: string | null
+  authorRole?: string | null
+  createdById?: string | null
   createdAt?: Date | string
+  updatedAt?: Date | string
 }
 
 export type NoticeUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.EnumNoticePriorityFieldUpdateOperationsInput | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+  publishDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  authorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type NoticeUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
   date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.EnumNoticePriorityFieldUpdateOperationsInput | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+  publishDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  authorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type NoticeListRelationFilter = {
+  every?: Prisma.NoticeWhereInput
+  some?: Prisma.NoticeWhereInput
+  none?: Prisma.NoticeWhereInput
+}
+
+export type NoticeOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type NoticeCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  summary?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishDate?: Prisma.SortOrder
+  expiryDate?: Prisma.SortOrder
   image?: Prisma.SortOrder
+  attachmentUrl?: Prisma.SortOrder
+  attachmentType?: Prisma.SortOrder
+  attachmentName?: Prisma.SortOrder
+  isPinned?: Prisma.SortOrder
+  authorName?: Prisma.SortOrder
+  authorRole?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type NoticeAvgOrderByAggregateInput = {
@@ -353,22 +665,94 @@ export type NoticeMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  summary?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishDate?: Prisma.SortOrder
+  expiryDate?: Prisma.SortOrder
   image?: Prisma.SortOrder
+  attachmentUrl?: Prisma.SortOrder
+  attachmentType?: Prisma.SortOrder
+  attachmentName?: Prisma.SortOrder
+  isPinned?: Prisma.SortOrder
+  authorName?: Prisma.SortOrder
+  authorRole?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type NoticeMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   date?: Prisma.SortOrder
   title?: Prisma.SortOrder
+  slug?: Prisma.SortOrder
+  summary?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  category?: Prisma.SortOrder
+  priority?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  publishDate?: Prisma.SortOrder
+  expiryDate?: Prisma.SortOrder
   image?: Prisma.SortOrder
+  attachmentUrl?: Prisma.SortOrder
+  attachmentType?: Prisma.SortOrder
+  attachmentName?: Prisma.SortOrder
+  isPinned?: Prisma.SortOrder
+  authorName?: Prisma.SortOrder
+  authorRole?: Prisma.SortOrder
+  createdById?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  updatedAt?: Prisma.SortOrder
 }
 
 export type NoticeSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+}
+
+export type NoticeCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.NoticeCreateWithoutCreatedByInput, Prisma.NoticeUncheckedCreateWithoutCreatedByInput> | Prisma.NoticeCreateWithoutCreatedByInput[] | Prisma.NoticeUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.NoticeCreateOrConnectWithoutCreatedByInput | Prisma.NoticeCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.NoticeCreateManyCreatedByInputEnvelope
+  connect?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+}
+
+export type NoticeUncheckedCreateNestedManyWithoutCreatedByInput = {
+  create?: Prisma.XOR<Prisma.NoticeCreateWithoutCreatedByInput, Prisma.NoticeUncheckedCreateWithoutCreatedByInput> | Prisma.NoticeCreateWithoutCreatedByInput[] | Prisma.NoticeUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.NoticeCreateOrConnectWithoutCreatedByInput | Prisma.NoticeCreateOrConnectWithoutCreatedByInput[]
+  createMany?: Prisma.NoticeCreateManyCreatedByInputEnvelope
+  connect?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+}
+
+export type NoticeUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.NoticeCreateWithoutCreatedByInput, Prisma.NoticeUncheckedCreateWithoutCreatedByInput> | Prisma.NoticeCreateWithoutCreatedByInput[] | Prisma.NoticeUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.NoticeCreateOrConnectWithoutCreatedByInput | Prisma.NoticeCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.NoticeUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.NoticeUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.NoticeCreateManyCreatedByInputEnvelope
+  set?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+  disconnect?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+  delete?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+  connect?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+  update?: Prisma.NoticeUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.NoticeUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.NoticeUpdateManyWithWhereWithoutCreatedByInput | Prisma.NoticeUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.NoticeScalarWhereInput | Prisma.NoticeScalarWhereInput[]
+}
+
+export type NoticeUncheckedUpdateManyWithoutCreatedByNestedInput = {
+  create?: Prisma.XOR<Prisma.NoticeCreateWithoutCreatedByInput, Prisma.NoticeUncheckedCreateWithoutCreatedByInput> | Prisma.NoticeCreateWithoutCreatedByInput[] | Prisma.NoticeUncheckedCreateWithoutCreatedByInput[]
+  connectOrCreate?: Prisma.NoticeCreateOrConnectWithoutCreatedByInput | Prisma.NoticeCreateOrConnectWithoutCreatedByInput[]
+  upsert?: Prisma.NoticeUpsertWithWhereUniqueWithoutCreatedByInput | Prisma.NoticeUpsertWithWhereUniqueWithoutCreatedByInput[]
+  createMany?: Prisma.NoticeCreateManyCreatedByInputEnvelope
+  set?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+  disconnect?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+  delete?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+  connect?: Prisma.NoticeWhereUniqueInput | Prisma.NoticeWhereUniqueInput[]
+  update?: Prisma.NoticeUpdateWithWhereUniqueWithoutCreatedByInput | Prisma.NoticeUpdateWithWhereUniqueWithoutCreatedByInput[]
+  updateMany?: Prisma.NoticeUpdateManyWithWhereWithoutCreatedByInput | Prisma.NoticeUpdateManyWithWhereWithoutCreatedByInput[]
+  deleteMany?: Prisma.NoticeScalarWhereInput | Prisma.NoticeScalarWhereInput[]
 }
 
 export type BigIntFieldUpdateOperationsInput = {
@@ -379,8 +763,199 @@ export type BigIntFieldUpdateOperationsInput = {
   divide?: bigint | number
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type EnumNoticePriorityFieldUpdateOperationsInput = {
+  set?: $Enums.NoticePriority
+}
+
+export type NoticeCreateWithoutCreatedByInput = {
+  id?: bigint | number
+  date?: Date | string
+  title: string
+  slug?: string | null
+  summary?: string | null
+  content?: string | null
+  category?: string
+  priority?: $Enums.NoticePriority
+  status?: $Enums.PublishStatus
+  publishDate?: Date | string | null
+  expiryDate?: Date | string | null
+  image?: string | null
+  attachmentUrl?: string | null
+  attachmentType?: string | null
+  attachmentName?: string | null
+  isPinned?: boolean
+  authorName?: string | null
+  authorRole?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type NoticeUncheckedCreateWithoutCreatedByInput = {
+  id?: bigint | number
+  date?: Date | string
+  title: string
+  slug?: string | null
+  summary?: string | null
+  content?: string | null
+  category?: string
+  priority?: $Enums.NoticePriority
+  status?: $Enums.PublishStatus
+  publishDate?: Date | string | null
+  expiryDate?: Date | string | null
+  image?: string | null
+  attachmentUrl?: string | null
+  attachmentType?: string | null
+  attachmentName?: string | null
+  isPinned?: boolean
+  authorName?: string | null
+  authorRole?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type NoticeCreateOrConnectWithoutCreatedByInput = {
+  where: Prisma.NoticeWhereUniqueInput
+  create: Prisma.XOR<Prisma.NoticeCreateWithoutCreatedByInput, Prisma.NoticeUncheckedCreateWithoutCreatedByInput>
+}
+
+export type NoticeCreateManyCreatedByInputEnvelope = {
+  data: Prisma.NoticeCreateManyCreatedByInput | Prisma.NoticeCreateManyCreatedByInput[]
+  skipDuplicates?: boolean
+}
+
+export type NoticeUpsertWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.NoticeWhereUniqueInput
+  update: Prisma.XOR<Prisma.NoticeUpdateWithoutCreatedByInput, Prisma.NoticeUncheckedUpdateWithoutCreatedByInput>
+  create: Prisma.XOR<Prisma.NoticeCreateWithoutCreatedByInput, Prisma.NoticeUncheckedCreateWithoutCreatedByInput>
+}
+
+export type NoticeUpdateWithWhereUniqueWithoutCreatedByInput = {
+  where: Prisma.NoticeWhereUniqueInput
+  data: Prisma.XOR<Prisma.NoticeUpdateWithoutCreatedByInput, Prisma.NoticeUncheckedUpdateWithoutCreatedByInput>
+}
+
+export type NoticeUpdateManyWithWhereWithoutCreatedByInput = {
+  where: Prisma.NoticeScalarWhereInput
+  data: Prisma.XOR<Prisma.NoticeUpdateManyMutationInput, Prisma.NoticeUncheckedUpdateManyWithoutCreatedByInput>
+}
+
+export type NoticeScalarWhereInput = {
+  AND?: Prisma.NoticeScalarWhereInput | Prisma.NoticeScalarWhereInput[]
+  OR?: Prisma.NoticeScalarWhereInput[]
+  NOT?: Prisma.NoticeScalarWhereInput | Prisma.NoticeScalarWhereInput[]
+  id?: Prisma.BigIntFilter<"Notice"> | bigint | number
+  date?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  title?: Prisma.StringFilter<"Notice"> | string
+  slug?: Prisma.StringNullableFilter<"Notice"> | string | null
+  summary?: Prisma.StringNullableFilter<"Notice"> | string | null
+  content?: Prisma.StringNullableFilter<"Notice"> | string | null
+  category?: Prisma.StringFilter<"Notice"> | string
+  priority?: Prisma.EnumNoticePriorityFilter<"Notice"> | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFilter<"Notice"> | $Enums.PublishStatus
+  publishDate?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
+  expiryDate?: Prisma.DateTimeNullableFilter<"Notice"> | Date | string | null
+  image?: Prisma.StringNullableFilter<"Notice"> | string | null
+  attachmentUrl?: Prisma.StringNullableFilter<"Notice"> | string | null
+  attachmentType?: Prisma.StringNullableFilter<"Notice"> | string | null
+  attachmentName?: Prisma.StringNullableFilter<"Notice"> | string | null
+  isPinned?: Prisma.BoolFilter<"Notice"> | boolean
+  authorName?: Prisma.StringNullableFilter<"Notice"> | string | null
+  authorRole?: Prisma.StringNullableFilter<"Notice"> | string | null
+  createdById?: Prisma.UuidNullableFilter<"Notice"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Notice"> | Date | string
+}
+
+export type NoticeCreateManyCreatedByInput = {
+  id?: bigint | number
+  date?: Date | string
+  title: string
+  slug?: string | null
+  summary?: string | null
+  content?: string | null
+  category?: string
+  priority?: $Enums.NoticePriority
+  status?: $Enums.PublishStatus
+  publishDate?: Date | string | null
+  expiryDate?: Date | string | null
+  image?: string | null
+  attachmentUrl?: string | null
+  attachmentType?: string | null
+  attachmentName?: string | null
+  isPinned?: boolean
+  authorName?: string | null
+  authorRole?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type NoticeUpdateWithoutCreatedByInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.EnumNoticePriorityFieldUpdateOperationsInput | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+  publishDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  authorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type NoticeUncheckedUpdateWithoutCreatedByInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.EnumNoticePriorityFieldUpdateOperationsInput | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+  publishDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  authorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type NoticeUncheckedUpdateManyWithoutCreatedByInput = {
+  id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  summary?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  priority?: Prisma.EnumNoticePriorityFieldUpdateOperationsInput | $Enums.NoticePriority
+  status?: Prisma.EnumPublishStatusFieldUpdateOperationsInput | $Enums.PublishStatus
+  publishDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  expiryDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  attachmentName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  authorName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  authorRole?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 
@@ -389,50 +964,139 @@ export type NoticeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   id?: boolean
   date?: boolean
   title?: boolean
+  slug?: boolean
+  summary?: boolean
   content?: boolean
+  category?: boolean
+  priority?: boolean
+  status?: boolean
+  publishDate?: boolean
+  expiryDate?: boolean
   image?: boolean
+  attachmentUrl?: boolean
+  attachmentType?: boolean
+  attachmentName?: boolean
+  isPinned?: boolean
+  authorName?: boolean
+  authorRole?: boolean
+  createdById?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  createdBy?: boolean | Prisma.Notice$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["notice"]>
 
 export type NoticeSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   date?: boolean
   title?: boolean
+  slug?: boolean
+  summary?: boolean
   content?: boolean
+  category?: boolean
+  priority?: boolean
+  status?: boolean
+  publishDate?: boolean
+  expiryDate?: boolean
   image?: boolean
+  attachmentUrl?: boolean
+  attachmentType?: boolean
+  attachmentName?: boolean
+  isPinned?: boolean
+  authorName?: boolean
+  authorRole?: boolean
+  createdById?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  createdBy?: boolean | Prisma.Notice$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["notice"]>
 
 export type NoticeSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   date?: boolean
   title?: boolean
+  slug?: boolean
+  summary?: boolean
   content?: boolean
+  category?: boolean
+  priority?: boolean
+  status?: boolean
+  publishDate?: boolean
+  expiryDate?: boolean
   image?: boolean
+  attachmentUrl?: boolean
+  attachmentType?: boolean
+  attachmentName?: boolean
+  isPinned?: boolean
+  authorName?: boolean
+  authorRole?: boolean
+  createdById?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
+  createdBy?: boolean | Prisma.Notice$createdByArgs<ExtArgs>
 }, ExtArgs["result"]["notice"]>
 
 export type NoticeSelectScalar = {
   id?: boolean
   date?: boolean
   title?: boolean
+  slug?: boolean
+  summary?: boolean
   content?: boolean
+  category?: boolean
+  priority?: boolean
+  status?: boolean
+  publishDate?: boolean
+  expiryDate?: boolean
   image?: boolean
+  attachmentUrl?: boolean
+  attachmentType?: boolean
+  attachmentName?: boolean
+  isPinned?: boolean
+  authorName?: boolean
+  authorRole?: boolean
+  createdById?: boolean
   createdAt?: boolean
+  updatedAt?: boolean
 }
 
-export type NoticeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "title" | "content" | "image" | "createdAt", ExtArgs["result"]["notice"]>
+export type NoticeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "date" | "title" | "slug" | "summary" | "content" | "category" | "priority" | "status" | "publishDate" | "expiryDate" | "image" | "attachmentUrl" | "attachmentType" | "attachmentName" | "isPinned" | "authorName" | "authorRole" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["notice"]>
+export type NoticeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  createdBy?: boolean | Prisma.Notice$createdByArgs<ExtArgs>
+}
+export type NoticeIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  createdBy?: boolean | Prisma.Notice$createdByArgs<ExtArgs>
+}
+export type NoticeIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  createdBy?: boolean | Prisma.Notice$createdByArgs<ExtArgs>
+}
 
 export type $NoticePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Notice"
-  objects: {}
+  objects: {
+    createdBy: Prisma.$AdminPayload<ExtArgs> | null
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
     date: Date
     title: string
+    slug: string | null
+    summary: string | null
     content: string | null
+    category: string
+    priority: $Enums.NoticePriority
+    status: $Enums.PublishStatus
+    publishDate: Date | null
+    expiryDate: Date | null
     image: string | null
+    attachmentUrl: string | null
+    attachmentType: string | null
+    attachmentName: string | null
+    isPinned: boolean
+    authorName: string | null
+    authorRole: string | null
+    createdById: string | null
     createdAt: Date
+    updatedAt: Date
   }, ExtArgs["result"]["notice"]>
   composites: {}
 }
@@ -827,6 +1491,7 @@ readonly fields: NoticeFieldRefs;
  */
 export interface Prisma__NoticeClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  createdBy<T extends Prisma.Notice$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Notice$createdByArgs<ExtArgs>>): Prisma.Prisma__AdminClient<runtime.Types.Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -859,9 +1524,24 @@ export interface NoticeFieldRefs {
   readonly id: Prisma.FieldRef<"Notice", 'BigInt'>
   readonly date: Prisma.FieldRef<"Notice", 'DateTime'>
   readonly title: Prisma.FieldRef<"Notice", 'String'>
+  readonly slug: Prisma.FieldRef<"Notice", 'String'>
+  readonly summary: Prisma.FieldRef<"Notice", 'String'>
   readonly content: Prisma.FieldRef<"Notice", 'String'>
+  readonly category: Prisma.FieldRef<"Notice", 'String'>
+  readonly priority: Prisma.FieldRef<"Notice", 'NoticePriority'>
+  readonly status: Prisma.FieldRef<"Notice", 'PublishStatus'>
+  readonly publishDate: Prisma.FieldRef<"Notice", 'DateTime'>
+  readonly expiryDate: Prisma.FieldRef<"Notice", 'DateTime'>
   readonly image: Prisma.FieldRef<"Notice", 'String'>
+  readonly attachmentUrl: Prisma.FieldRef<"Notice", 'String'>
+  readonly attachmentType: Prisma.FieldRef<"Notice", 'String'>
+  readonly attachmentName: Prisma.FieldRef<"Notice", 'String'>
+  readonly isPinned: Prisma.FieldRef<"Notice", 'Boolean'>
+  readonly authorName: Prisma.FieldRef<"Notice", 'String'>
+  readonly authorRole: Prisma.FieldRef<"Notice", 'String'>
+  readonly createdById: Prisma.FieldRef<"Notice", 'String'>
   readonly createdAt: Prisma.FieldRef<"Notice", 'DateTime'>
+  readonly updatedAt: Prisma.FieldRef<"Notice", 'DateTime'>
 }
     
 
@@ -878,6 +1558,10 @@ export type NoticeFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the Notice
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
   /**
    * Filter, which Notice to fetch.
    */
@@ -897,6 +1581,10 @@ export type NoticeFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
+  /**
    * Filter, which Notice to fetch.
    */
   where: Prisma.NoticeWhereUniqueInput
@@ -914,6 +1602,10 @@ export type NoticeFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the Notice
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
   /**
    * Filter, which Notice to fetch.
    */
@@ -963,6 +1655,10 @@ export type NoticeFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
+  /**
    * Filter, which Notice to fetch.
    */
   where?: Prisma.NoticeWhereInput
@@ -1010,6 +1706,10 @@ export type NoticeFindManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Notice
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
   /**
    * Filter, which Notices to fetch.
    */
@@ -1059,6 +1759,10 @@ export type NoticeCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
+  /**
    * The data needed to create a Notice.
    */
   data: Prisma.XOR<Prisma.NoticeCreateInput, Prisma.NoticeUncheckedCreateInput>
@@ -1092,6 +1796,10 @@ export type NoticeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    */
   data: Prisma.NoticeCreateManyInput | Prisma.NoticeCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1106,6 +1814,10 @@ export type NoticeUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Notice
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
   /**
    * The data needed to update a Notice.
    */
@@ -1158,6 +1870,10 @@ export type NoticeUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensio
    * Limit how many Notices to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1172,6 +1888,10 @@ export type NoticeUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Notice
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
   /**
    * The filter to search for the Notice to update in case it exists.
    */
@@ -1199,6 +1919,10 @@ export type NoticeDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
+  /**
    * Filter which Notice to delete.
    */
   where: Prisma.NoticeWhereUniqueInput
@@ -1219,6 +1943,25 @@ export type NoticeDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
+ * Notice.createdBy
+ */
+export type Notice$createdByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Admin
+   */
+  select?: Prisma.AdminSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Admin
+   */
+  omit?: Prisma.AdminOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AdminInclude<ExtArgs> | null
+  where?: Prisma.AdminWhereInput
+}
+
+/**
  * Notice without action
  */
 export type NoticeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1230,4 +1973,8 @@ export type NoticeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Notice
    */
   omit?: Prisma.NoticeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NoticeInclude<ExtArgs> | null
 }

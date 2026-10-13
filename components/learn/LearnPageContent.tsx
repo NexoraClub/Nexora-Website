@@ -17,7 +17,6 @@ import {
   INITIAL_ANNOUNCEMENTS,
   INITIAL_SKILLS,
 } from "./learnData";
-import { supabase } from "./supabaseClient";
 
 export default function LearnPageContent() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -27,51 +26,36 @@ export default function LearnPageContent() {
   const [skills] = useState<SkillResource[]>(INITIAL_SKILLS);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Attempt real-time Supabase integration gracefully if configured
+  // Real-time integration with backend database
   useEffect(() => {
-    async function fetchFromSupabase() {
-      if (!supabase) return;
-
+    async function fetchFromDatabase() {
       try {
         setIsLoading(true);
-        // Attempt fetching learning resources if table exists in Supabase
-        const { data: remoteMaterials, error: matError } = await supabase
-          .from("learning_resources")
-          .select("*")
-          .order("uploaded_at", { ascending: false });
-
-        if (!matError && remoteMaterials && remoteMaterials.length > 0) {
-          setMaterials(remoteMaterials as unknown as LearningResource[]);
-        }
-
-        // Attempt fetching exams if table exists
-        const { data: remoteExams, error: examError } = await supabase
-          .from("exam_schedules")
-          .select("*")
-          .order("date", { ascending: true });
-
-        if (!examError && remoteExams && remoteExams.length > 0) {
-          setExams(remoteExams as unknown as ExamSchedule[]);
-        }
-
-        // Attempt fetching announcements if table exists
-        const { data: remoteAnnouncements, error: annError } = await supabase
-          .from("academic_announcements")
-          .select("*")
-          .order("published_at", { ascending: false });
-
-        if (!annError && remoteAnnouncements && remoteAnnouncements.length > 0) {
-          setAnnouncements(remoteAnnouncements as unknown as AcademicAnnouncement[]);
+        const res = await fetch("/api/resources");
+        const data = await res.json();
+        if (data.resources && data.resources.length > 0) {
+          const mapped: LearningResource[] = data.resources.map((r: any) => ({
+            id: r.id,
+            title: r.title,
+            subject: r.subject,
+            semester: r.semester || 3,
+            category: (r.category || "notes") as any,
+            description: r.description,
+            fileType: (r.resourceType || "PDF") as any,
+            fileUrl: r.fileUrl || "#",
+            uploadedAt: r.createdAt ? new Date(r.createdAt).toISOString().slice(0, 10) : "2026-03-01",
+            tags: r.tags || [],
+          }));
+          setMaterials(mapped);
         }
       } catch (err) {
-        // Fallback to verified local academic data without disrupting the user experience
-        console.warn("Supabase tables not configured, using verified club data.", err);
+        console.warn("Fallback to initial study materials", err);
       } finally {
         setIsLoading(false);
       }
     }
 
-    fetchFromSupabase();
+    fetchFromDatabase();
   }, []);
 
   return (

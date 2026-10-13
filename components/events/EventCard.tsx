@@ -71,16 +71,6 @@ export default function EventCard({ event, onViewDetails, onRegister }: EventCar
             <span>Upcoming</span>
           </span>
         </div>
-
-        {/* Sample concept marker */}
-        {event.isSample && (
-          <div className="absolute bottom-2.5 right-3.5">
-            <span className="inline-flex items-center gap-1 rounded-md border border-white/10 bg-black/70 px-2 py-0.5 text-[10px] text-sky-200/60 backdrop-blur-sm">
-              <Sparkles className="h-2.5 w-2.5 text-sky-400" />
-              Sample Concept
-            </span>
-          </div>
-        )}
       </div>
 
       {/* Card Content */}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import NoticeCard, {
@@ -11,215 +11,59 @@ import NoticeCard, {
 } from "@/components/NoticeCard";
 import NoticeModal from "@/components/NoticeModal";
 
-// Local Mock Data (No backend database, Prisma, or Supabase)
-const INITIAL_NOTICES: Notice[] = [
-  {
-    id: "notice-urgent-1",
-    title: "Internal Hackathon 2026: Team Registration Closes Tonight at 11:59 PM",
-    summary:
-      "Final call for teams participating in the Nexora 36-Hour Hackathon. Ensure your GitHub repo and team roster of 3-4 members are locked in before the deadline.",
-    content:
-      "Attention all ISE Department students!\n\nTeam registration for the upcoming Nexora 36-Hour Hackathon will officially close tonight at 11:59 PM IST. No extensions will be granted under any circumstances as cloud compute instances, GPU nodes, and mentor slots are being provisioned overnight.\n\nKey Submission Rules:\n• Team Size: Strictly 3 to 4 members (inter-year collaborations are welcome).\n• Project Domains: AI/ML Systems, Distributed Cloud Architectures, Web3, or Cyber-Physical IoT.\n• Repository Requirement: Every team must submit a GitHub repository containing a detailed README outlining the proposed problem statement, architecture diagram, and tech stack.\n\nPlease refer to the attached official rulebook for evaluation criteria, judging benchmarks, and code submission guidelines.",
-    category: "Urgent",
-    isPinned: true,
-    isUrgentHero: true,
-    postedAt: "2 hours ago",
-    date: "Oct 12, 2026",
-    author: {
-      name: "Dr. Rajesh K.",
-      role: "Faculty Advisor • ISE Dept",
-    },
-    attachment: {
-      name: "Hackathon_Rulebook_2026.pdf",
-      url: "#",
-      type: "pdf",
-      size: "2.4 MB",
-    },
-    tags: ["hackathon", "deadline", "urgent", "team"],
-  },
-  {
-    id: "notice-events-1",
-    title: "Nexora DevCon 2026: Keynote on Distributed AI & Systems Engineering",
-    summary:
-      "Join us for our annual flagship technical symposium featuring keynote talks from senior engineers at Google and NVIDIA, hands-on workshops, and project exhibitions.",
-    content:
-      "We are thrilled to unveil the speaker lineup for Nexora DevCon 2026!\n\nThis year's flagship technical symposium will be held on Friday, November 6th at the Main Auditorium. The event brings together industry pioneers, researchers, and student builders.\n\nFeatured Highlights:\n• Keynote on 'Scalable LLM Inference Systems' by Dr. Ananya Sen (Staff Systems Engineer).\n• Interactive panel discussion: 'Transitioning from College to High-Scale Tech Companies'.\n• Live demonstration of autonomous robotics systems built by Nexora's hardware division.\n\nSeats are limited to 300 attendees. Registered members will receive their digital entry badges via email.",
-    category: "Events",
-    isPinned: true,
-    isUrgentHero: false,
-    postedAt: "5 hours ago",
-    date: "Oct 12, 2026",
-    author: {
-      name: "Aarav Sharma",
-      role: "Club President",
-    },
-    attachment: {
-      name: "DevCon_Schedule_and_Track_Details.pdf",
-      url: "#",
-      type: "pdf",
-      size: "1.8 MB",
-    },
-    tags: ["devcon", "conference", "ai", "keynote"],
-  },
-  {
-    id: "notice-projects-1",
-    title: "Nexora Open Source Initiative: Call for Project Contributors & Mentors",
-    summary:
-      "Contribute to Nexora's production open-source tools including our campus event scheduler, automated grading assistant, and department portal.",
-    content:
-      "The Nexora Technical Committee is opening applications for student contributors and module mentors for the Fall semester.\n\nWhether you are a seasoned developer or looking to make your very first Git pull request, this initiative pairs you with experienced seniors to build production-grade software used across the campus.\n\nActive Repositories:\n• Nexora-Core: Campus Event Orchestration Platform (Next.js, TypeScript, PostgreSQL)\n• Automata-Bench: Code execution sandbox for lab assignments\n• Nexora UI System: Official club design library and component kit in Figma & Tailwind\n\nContributors will receive official department certificates and recommendation letters.",
-    category: "Projects",
-    isPinned: false,
-    isUrgentHero: false,
-    postedAt: "1 day ago",
-    date: "Oct 11, 2026",
-    author: {
-      name: "Kavya Menon",
-      role: "Technical Lead",
-    },
-    attachment: {
-      name: "Nexora_Design_System.figma",
-      url: "#",
-      type: "figma",
-      size: "14.2 MB",
-    },
-    tags: ["opensource", "github", "projects", "mentorship"],
-  },
-  {
-    id: "notice-urgent-2",
-    title: "High-Performance Compute Server Scheduled Maintenance & Downtime",
-    summary:
-      "The ISE GPU cluster (nodes 01 through 08) will be taken offline for driver updates and kernel patches on Saturday from 2:00 AM to 8:00 AM.",
-    content:
-      "Notice to all student researchers and project teams utilizing the Nexora GPU Cluster:\n\nScheduled maintenance has been slated for Saturday, October 17th, between 02:00 AM and 08:00 AM IST. All running Slurm jobs and training runs will be paused or checkpointed prior to reboot.\n\nActions Required:\n1. Save model checkpoints and intermediate weights before 01:30 AM.\n2. Ensure Jupyter kernel sessions are safely closed.\n3. Verify remote storage volumes are synchronized to cold storage.\n\nIf you have long-running research experiments that cannot be interrupted, please reach out to the Systems Lab Admin immediately.",
-    category: "Urgent",
-    isPinned: false,
-    isUrgentHero: false,
-    postedAt: "1 day ago",
-    date: "Oct 11, 2026",
-    author: {
-      name: "Prof. Sudhir Rao",
-      role: "Systems Administrator",
-    },
-    attachment: {
-      name: "GPU_Cluster_Maintenance_Log.pdf",
-      url: "#",
-      type: "pdf",
-      size: "640 KB",
-    },
-    tags: ["gpu", "server", "cluster", "maintenance"],
-  },
-  {
-    id: "notice-events-2",
-    title: "Hands-on Workshop: Building High-Performance Web Apps with Next.js",
-    summary:
-      "Master modern web development, server components, edge caching, and dynamic animation systems in this intensive 3-hour code-along session.",
-    content:
-      "Ready to level up your full-stack engineering skills? Nexora's Web Development wing is hosting a deep-dive workshop covering Next.js App Router architecture.\n\nPrerequisites:\n• Laptop with Node.js 20+ installed and VS Code or Cursor\n• Familiarity with modern JavaScript (ES6+) and React primitives\n\nCurriculum:\n• Module 1: React Server Components & Streaming SSR\n• Module 2: Tailwind CSS v4 and fluid responsive layouts\n• Module 3: Client-side state orchestration and offline resilience\n\nParticipants will build and deploy a working web application during the workshop.",
-    category: "Events",
-    isPinned: false,
-    isUrgentHero: false,
-    postedAt: "2 days ago",
-    date: "Oct 10, 2026",
-    author: {
-      name: "Rohan V.",
-      role: "Web Dev Lead",
-    },
-    attachment: {
-      name: "Workshop_Starter_Pack.pdf",
-      url: "#",
-      type: "pdf",
-      size: "1.1 MB",
-    },
-    tags: ["workshop", "nextjs", "react", "tailwindcss"],
-  },
-  {
-    id: "notice-general-1",
-    title: "Executive Committee Elections: Call for 2026-2027 Core Nominations",
-    summary:
-      "Applications are now open for core student leadership positions in Nexora including Vice President, Tech Head, Design Lead, and Event Coordinators.",
-    content:
-      "Nexora is inviting passionate 2nd and 3rd year Information Science students to step up and lead the department club for the 2026-2027 academic tenure.\n\nOpen Positions:\n• Vice President (1 Post)\n• Technical Head (Software & Systems) (2 Posts)\n• Design & Creative Director (1 Post)\n• Competitive Programming Lead (1 Post)\n• Operations & Logistics Lead (2 Posts)\n\nEligibility:\n• Minimum CGPA: 7.5\n• Proven contribution to club events or technical repositories\n• Statement of purpose outlining your vision for Nexora\n\nInterviews with the faculty board and outgoing committee will be conducted next week.",
-    category: "General",
-    isPinned: false,
-    isUrgentHero: false,
-    postedAt: "3 days ago",
-    date: "Oct 9, 2026",
-    author: {
-      name: "Dr. Rajesh K.",
-      role: "Faculty Advisor • ISE Dept",
-    },
-    attachment: {
-      name: "Nomination_Form_and_Eligibility.pdf",
-      url: "#",
-      type: "pdf",
-      size: "480 KB",
-    },
-    tags: ["elections", "leadership", "nominations", "core-team"],
-  },
-  {
-    id: "notice-projects-2",
-    title: "IoT & Embedded Systems Lab: Sensor Kits & Microcontrollers Available",
-    summary:
-      "ESP32-S3 boards, LoRa transceivers, LiDAR modules, and camera sensors are now available for checkout at Lab 304 for approved semester capstone projects.",
-    content:
-      "The Department has procured new hardware toolkits to support IoT and embedded intelligence projects for ISE students.\n\nAvailable Hardware Inventory:\n• ESP32-S3 Dual-Core SoC development boards with Wi-Fi & BLE 5.0\n• Raspberry Pi 5 (8GB) boards with active cooling cases\n• LoRa SX1262 long-range telemetry modules\n• VL53L1X Time-of-Flight LiDAR distance sensors\n\nCheckout Rules:\n• Hardware can be borrowed for a period of up to 4 weeks with faculty approval.\n• Proper ESD handling procedures must be followed in the lab.\n• Damaged components must be reported within 24 hours.",
-    category: "Projects",
-    isPinned: false,
-    isUrgentHero: false,
-    postedAt: "4 days ago",
-    date: "Oct 8, 2026",
-    author: {
-      name: "Pooja Hegde",
-      role: "Hardware & IoT Head",
-    },
-    attachment: {
-      name: "Hardware_Kit_Inventory.pdf",
-      url: "#",
-      type: "pdf",
-      size: "890 KB",
-    },
-    tags: ["iot", "hardware", "esp32", "lab"],
-  },
-  {
-    id: "notice-general-2",
-    title: "Academic Digital Subscriptions: IEEE Xplore & ACM Digital Library Access",
-    summary:
-      "Institutional proxy credentials and off-campus VPN profiles have been refreshed for the new semester. Access millions of peer-reviewed papers freely.",
-    content:
-      "All registered Nexora club members and ISE students have institutional access to top-tier computer science research journals and conference proceedings.\n\nEnabled Portals:\n• IEEE Xplore Digital Library\n• ACM Digital Library\n• SpringerLink Computer Science Collections\n• ScienceDirect Computer Science Journals\n\nHow to Access from Home:\n1. Download the campus OpenVPN profile from the intranet portal.\n2. Connect using your student USN and institutional email.\n3. Navigate to ieeexplore.ieee.org or dl.acm.org — your session will automatically reflect institutional licensing.\n\nFor support configuring proxy settings on Linux or macOS, contact the Nexora sysadmin team.",
-    category: "General",
-    isPinned: false,
-    isUrgentHero: false,
-    postedAt: "5 days ago",
-    date: "Oct 7, 2026",
-    author: {
-      name: "Nexora Academic Committee",
-      role: "Research Wing",
-    },
-    tags: ["research", "ieee", "acm", "library"],
-  },
-];
-
 type CategoryFilter = "All" | NoticeCategory;
 
 const CATEGORIES: CategoryFilter[] = ["All", "Urgent", "Projects", "Events", "General"];
 
 export default function NoticesPage() {
+  const [noticesList, setNoticesList] = useState<Notice[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>("All");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
   const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
 
+  useEffect(() => {
+    fetch('/api/notices')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.notices && data.notices.length > 0) {
+          const formatted: Notice[] = data.notices.map((n: any) => ({
+            id: n.id,
+            title: n.title,
+            summary: n.summary || n.content?.slice(0, 160) || '',
+            content: n.content || '',
+            category: (n.priority === 'URGENT' ? 'Urgent' : n.category || 'General') as NoticeCategory,
+            isPinned: n.isPinned || false,
+            isUrgentHero: n.priority === 'URGENT' || n.isPinned,
+            postedAt: 'Recently',
+            date: n.date || new Date().toISOString().slice(0, 10),
+            author: {
+              name: n.authorName || 'Nexora Executive Board',
+              role: n.authorRole || 'ISE Department',
+            },
+            attachment: n.attachmentUrl ? {
+              name: n.attachmentName || 'Attachment',
+              url: n.attachmentUrl,
+              type: (n.attachmentType || 'pdf') as any,
+              size: 'File',
+            } : undefined,
+            tags: [n.category?.toLowerCase() || 'general'],
+          }));
+          setNoticesList(formatted);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Distinct Pinned / Urgent Hero Card Notice (Top priority)
   const heroNotice = useMemo(() => {
-    return INITIAL_NOTICES.find((n) => n.isUrgentHero) || INITIAL_NOTICES[0];
-  }, []);
+    return noticesList.find((n) => n.isUrgentHero) || noticesList[0];
+  }, [noticesList]);
 
   // Filter and search logic
   const filteredNotices = useMemo(() => {
-    let result = [...INITIAL_NOTICES];
+    let result = [...noticesList];
 
     // Filter by Category
     if (selectedCategory !== "All") {
@@ -246,22 +90,22 @@ export default function NoticesPage() {
     }
 
     return result;
-  }, [selectedCategory, searchQuery, sortOrder]);
+  }, [noticesList, selectedCategory, searchQuery, sortOrder]);
 
   // Category counts for pill badges
   const categoryCounts = useMemo(() => {
     const counts: Record<CategoryFilter, number> = {
-      All: INITIAL_NOTICES.length,
+      All: noticesList.length,
       Urgent: 0,
       Projects: 0,
       Events: 0,
       General: 0,
     };
-    INITIAL_NOTICES.forEach((n) => {
+    noticesList.forEach((n) => {
       counts[n.category] = (counts[n.category] || 0) + 1;
     });
     return counts;
-  }, []);
+  }, [noticesList]);
 
   // Check if Hero card matches current search/filter
   const showHeroBanner = useMemo(() => {

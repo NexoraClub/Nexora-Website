@@ -104,13 +104,6 @@ export default function EventModal({
               <Tag className="h-3.5 w-3.5 text-sky-400" />
               <span>{event.category}</span>
             </span>
-
-            {event.isSample && (
-              <span className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/80 px-3 py-1 text-[11px] text-sky-200/80">
-                <Sparkles className="h-3 w-3 text-sky-400" />
-                Sample Concept
-              </span>
-            )}
           </div>
         </div>
 

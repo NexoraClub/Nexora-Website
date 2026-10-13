@@ -52,7 +52,13 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Admin: 'Admin',
-  Notice: 'Notice'
+  Event: 'Event',
+  Notice: 'Notice',
+  Achievement: 'Achievement',
+  LearningResource: 'LearningResource',
+  ContentCategory: 'ContentCategory',
+  AuditLog: 'AuditLog',
+  ActiveSession: 'ActiveSession'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -73,23 +79,153 @@ export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof
 
 export const AdminScalarFieldEnum = {
   id: 'id',
-  username: 'username',
-  createdAt: 'createdAt'
+  email: 'email',
+  name: 'name',
+  password: 'password',
+  role: 'role',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
+
+
+export const EventScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  category: 'category',
+  description: 'description',
+  fullDescription: 'fullDescription',
+  imageUrl: 'imageUrl',
+  iconName: 'iconName',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  dateDisplay: 'dateDisplay',
+  venue: 'venue',
+  venueDisplay: 'venueDisplay',
+  status: 'status',
+  registrationOpen: 'registrationOpen',
+  registrationUrl: 'registrationUrl',
+  registrationDeadline: 'registrationDeadline',
+  eligibility: 'eligibility',
+  organizer: 'organizer',
+  tags: 'tags',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
 
 
 export const NoticeScalarFieldEnum = {
   id: 'id',
   date: 'date',
   title: 'title',
+  slug: 'slug',
+  summary: 'summary',
   content: 'content',
+  category: 'category',
+  priority: 'priority',
+  status: 'status',
+  publishDate: 'publishDate',
+  expiryDate: 'expiryDate',
   image: 'image',
-  createdAt: 'createdAt'
+  attachmentUrl: 'attachmentUrl',
+  attachmentType: 'attachmentType',
+  attachmentName: 'attachmentName',
+  isPinned: 'isPinned',
+  authorName: 'authorName',
+  authorRole: 'authorRole',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type NoticeScalarFieldEnum = (typeof NoticeScalarFieldEnum)[keyof typeof NoticeScalarFieldEnum]
+
+
+export const AchievementScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  studentOrTeamName: 'studentOrTeamName',
+  category: 'category',
+  competitionOrEvent: 'competitionOrEvent',
+  awardOrPosition: 'awardOrPosition',
+  achievementDate: 'achievementDate',
+  dateDisplay: 'dateDisplay',
+  image: 'image',
+  externalUrl: 'externalUrl',
+  status: 'status',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AchievementScalarFieldEnum = (typeof AchievementScalarFieldEnum)[keyof typeof AchievementScalarFieldEnum]
+
+
+export const LearningResourceScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  subject: 'subject',
+  semester: 'semester',
+  academicYear: 'academicYear',
+  category: 'category',
+  resourceType: 'resourceType',
+  fileUrl: 'fileUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  tags: 'tags',
+  status: 'status',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type LearningResourceScalarFieldEnum = (typeof LearningResourceScalarFieldEnum)[keyof typeof LearningResourceScalarFieldEnum]
+
+
+export const ContentCategoryScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  type: 'type',
+  description: 'description',
+  createdAt: 'createdAt'
+} as const
+
+export type ContentCategoryScalarFieldEnum = (typeof ContentCategoryScalarFieldEnum)[keyof typeof ContentCategoryScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  action: 'action',
+  entity: 'entity',
+  entityId: 'entityId',
+  details: 'details',
+  ipAddress: 'ipAddress',
+  adminId: 'adminId',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const ActiveSessionScalarFieldEnum = {
+  id: 'id',
+  tokenHash: 'tokenHash',
+  adminEmail: 'adminEmail',
+  userAgent: 'userAgent',
+  ipAddress: 'ipAddress',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+} as const
+
+export type ActiveSessionScalarFieldEnum = (typeof ActiveSessionScalarFieldEnum)[keyof typeof ActiveSessionScalarFieldEnum]
 
 
 export const SortOrder = {

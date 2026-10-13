@@ -7,21 +7,186 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
+
+enum PublishStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+enum NoticePriority {
+  NORMAL
+  IMPORTANT
+  URGENT
+}
+
 model Admin {
-  id        String   @id @db.Uuid   // same UUID as the Supabase Auth user
-  username  String   @unique
-  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+  id           String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email        String              @unique
+  name         String?
+  password     String?
+  role         Role                @default(ADMIN)
+  createdAt    DateTime            @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  events       Event[]
+  notices      Notice[]
+  achievements Achievement[]
+  resources    LearningResource[]
+  auditLogs    AuditLog[]
 
   @@map("admins")
 }
 
+model Event {
+  id                   String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                String
+  slug                 String        @unique
+  category             String
+  description          String
+  fullDescription      String?       @map("full_description")
+  imageUrl             String?       @map("image_url")
+  iconName             String?       @default("Code") @map("icon_name")
+  startDate            DateTime?     @map("start_date") @db.Timestamptz
+  endDate              DateTime?     @map("end_date") @db.Timestamptz
+  dateDisplay          String?       @map("date_display")
+  venue                String?
+  venueDisplay         String?       @map("venue_display")
+  status               PublishStatus @default(PUBLISHED)
+  registrationOpen     Boolean       @default(true) @map("registration_open")
+  registrationUrl      String?       @map("registration_url")
+  registrationDeadline DateTime?     @map("registration_deadline") @db.Timestamptz
+  eligibility          String?
+  organizer            String?       @default("Nexora ISE Technical Committee")
+  tags                 String[]      @default([])
+  createdById          String?       @map("created_by_id") @db.Uuid
+  createdBy            Admin?        @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt            DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt            DateTime      @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([status])
+  @@index([category])
+  @@map("events")
+}
+
 model Notice {
-  id        BigInt   @id @default(autoincrement())
-  date      DateTime @default(now()) @db.Date
-  title     String
-  content   String?
-  image     String?
+  id             BigInt         @id @default(autoincrement())
+  date           DateTime       @default(now()) @db.Date
+  title          String
+  slug           String?        @unique
+  summary        String?
+  content        String?
+  category       String         @default("General")
+  priority       NoticePriority @default(NORMAL)
+  status         PublishStatus  @default(PUBLISHED)
+  publishDate    DateTime?      @default(now()) @map("publish_date") @db.Timestamptz
+  expiryDate     DateTime?      @map("expiry_date") @db.Timestamptz
+  image          String?
+  attachmentUrl  String?        @map("attachment_url")
+  attachmentType String?        @map("attachment_type")
+  attachmentName String?        @map("attachment_name")
+  isPinned       Boolean        @default(false) @map("is_pinned")
+  authorName     String?        @default("Nexora Executive Board") @map("author_name")
+  authorRole     String?        @default("ISE Department") @map("author_role")
+  createdById    String?        @map("created_by_id") @db.Uuid
+  createdBy      Admin?         @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt      DateTime       @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime       @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([status])
+  @@index([category])
+  @@map("notices")
+}
+
+model Achievement {
+  id                 String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title              String
+  slug               String        @unique
+  description        String
+  studentOrTeamName  String?       @map("student_or_team_name")
+  category           String
+  competitionOrEvent String?       @map("competition_or_event")
+  awardOrPosition    String?       @map("award_or_position")
+  achievementDate    DateTime?     @map("achievement_date") @db.Timestamptz
+  dateDisplay        String?       @map("date_display")
+  image              String?
+  externalUrl        String?       @map("external_url")
+  status             PublishStatus @default(PUBLISHED)
+  createdById        String?       @map("created_by_id") @db.Uuid
+  createdBy          Admin?        @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt          DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt          DateTime      @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([status])
+  @@index([category])
+  @@map("achievements")
+}
+
+model LearningResource {
+  id           String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title        String
+  slug         String?       @unique
+  description  String
+  subject      String
+  semester     Int?
+  academicYear String?       @map("academic_year")
+  category     String        @default("notes")
+  resourceType String        @default("PDF") @map("resource_type")
+  fileUrl      String?       @map("file_url")
+  thumbnailUrl String?       @map("thumbnail_url")
+  tags         String[]      @default([])
+  status       PublishStatus @default(PUBLISHED)
+  createdById  String?       @map("created_by_id") @db.Uuid
+  createdBy    Admin?        @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt    DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt    DateTime      @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([status])
+  @@index([subject])
+  @@index([semester])
+  @@map("learning_resources")
+}
+
+model ContentCategory {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String   @unique
+  type        String
+  description String?
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("content_categories")
+}
+
+model AuditLog {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  action    String
+  entity    String
+  entityId  String?  @map("entity_id")
+  details   String?
+  ipAddress String?  @map("ip_address")
+  adminId   String?  @map("admin_id") @db.Uuid
+  admin     Admin?   @relation(fields: [adminId], references: [id], onDelete: SetNull)
   createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
 
-  @@map("notices")
+  @@index([action])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model ActiveSession {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tokenHash  String   @unique @map("token_hash")
+  adminEmail String   @map("admin_email")
+  userAgent  String?  @map("user_agent")
+  ipAddress  String?  @map("ip_address")
+  expiresAt  DateTime @map("expires_at") @db.Timestamptz
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("active_sessions")
 }

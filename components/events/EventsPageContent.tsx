@@ -3,7 +3,6 @@
 import React, { useState, useMemo } from 'react';
 import { SearchX, RefreshCcw } from 'lucide-react';
 import EventHero from './EventHero';
-import SampleDisclaimerBanner from './SampleDisclaimerBanner';
 import EventFilters from './EventFilters';
 import EventCard from './EventCard';
 import EventModal from './EventModal';
@@ -18,6 +17,7 @@ interface EventsPageContentProps {
 }
 
 export default function EventsPageContent({ initialEvents }: EventsPageContentProps) {
+  const [eventsList, setEventsList] = useState<EventItem[]>(initialEvents);
   // State for search and filtering
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<EventCategory | 'All Events'>('All Events');
@@ -29,10 +29,45 @@ export default function EventsPageContent({ initialEvents }: EventsPageContentPr
   const [registerEvent, setRegisterEvent] = useState<EventItem | null>(null);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
+  // Hydrate events dynamically from PostgreSQL database via API
+  React.useEffect(() => {
+    fetch('/api/events')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.events && data.events.length > 0) {
+          const mapped: EventItem[] = data.events.map((e: any) => ({
+            id: e.id,
+            title: e.title,
+            slug: e.slug,
+            category: e.category,
+            description: e.description,
+            fullDescription: e.fullDescription || e.description,
+            imageUrl: e.imageUrl || '/events/code-wars.svg',
+            iconName: e.iconName || 'Code',
+            eventDate: e.startDate || null,
+            dateDisplay: e.dateDisplay || 'To be announced (TBA)',
+            startTime: e.startDate ? new Date(e.startDate).toLocaleTimeString() : null,
+            endTime: e.endDate ? new Date(e.endDate).toLocaleTimeString() : null,
+            venue: e.venue || null,
+            venueDisplay: e.venueDisplay || 'Campus Tech Hub (TBA)',
+            status: 'upcoming',
+            registrationOpen: e.registrationOpen,
+            registrationUrl: e.registrationUrl || null,
+            eligibility: e.eligibility || 'Open to all students',
+            organizer: e.organizer || 'Nexora ISE Club',
+            tags: e.tags || [],
+            isSample: false,
+          }));
+          setEventsList(mapped);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
   // Filter events client-side using single source of truth logic
   const filteredEvents = useMemo(() => {
-    return filterEvents(initialEvents, selectedCategory, searchQuery);
-  }, [initialEvents, selectedCategory, searchQuery]);
+    return filterEvents(eventsList, selectedCategory, searchQuery);
+  }, [eventsList, selectedCategory, searchQuery]);
 
   const handleOpenDetails = (event: EventItem) => {
     setDetailsEvent(event);
@@ -54,10 +89,7 @@ export default function EventsPageContent({ initialEvents }: EventsPageContentPr
       {/* 1. Hero Section */}
       <EventHero />
 
-      {/* 2. Sample Concept Banner */}
-      <SampleDisclaimerBanner />
-
-      {/* 3. Main Events Grid Section */}
+      {/* 2. Main Events Grid Section */}
       <section id="events-grid" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-16">
         {/* Section Heading & Subtitle */}
         <div className="mb-8">
