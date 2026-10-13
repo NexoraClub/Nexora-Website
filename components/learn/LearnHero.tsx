@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import MagicRings from "@/components/MagicRings";
+import BlurText from "@/components/BlurText";
 import { Search } from "./Icons";
 
 interface LearnHeroProps {
@@ -22,8 +24,28 @@ export default function LearnHero({
   ];
 
   return (
-    <section className="relative flex w-full flex-col items-center justify-center pt-28 pb-14 px-4 text-center sm:px-6 lg:px-8">
-      {/* Background glow circle */}
+    <section className="relative flex w-full flex-col items-center justify-center pt-28 pb-14 px-4 text-center sm:px-6 lg:px-8 overflow-hidden">
+      {/* Background Magic Rings cosmic centerpiece */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-1/2 z-0 h-[480px] w-full max-w-4xl -translate-x-1/2 -translate-y-1/2 sm:h-[560px] opacity-80"
+      >
+        <MagicRings
+          color="#67E8F9"
+          colorTwo="#818CF8"
+          motion="pulse"
+          ringCount={6}
+          speed={1}
+          lineThickness={2}
+          glow={1.2}
+          hoverScale={1.2}
+          clickBurst={true}
+          tilt={-8}
+          opacity={0.85}
+        />
+      </div>
+
+      {/* Ambient background glow circle */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-1/2 top-20 z-0 h-80 w-80 -translate-x-1/2 rounded-full bg-sky-500/10 blur-[130px] sm:h-[450px] sm:w-[450px]"
@@ -35,10 +57,15 @@ export default function LearnHero({
         NEXORA ACADEMIC & SKILL PORTAL
       </div>
 
-      {/* Main Heading */}
-      <h1 className="relative z-10 font-jersey text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-wider text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
-        Learn Something New<span className="text-sky-400">.</span>
-      </h1>
+      {/* Main Heading with BlurText animation */}
+      <BlurText
+        text="Learn Something New."
+        as="h1"
+        delay={150}
+        animateBy="words"
+        direction="top"
+        className="relative z-10 font-jersey text-4xl sm:text-5xl md:text-6xl lg:text-7xl uppercase tracking-wider text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.3)] justify-center"
+      />
 
       {/* Subtitle */}
       <p className="relative z-10 mt-4 max-w-2xl text-base sm:text-lg text-sky-100/70 font-sans leading-relaxed">

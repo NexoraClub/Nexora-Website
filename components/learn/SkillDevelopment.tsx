@@ -86,11 +86,10 @@ export default function SkillDevelopment({
             key={cat}
             type="button"
             onClick={() => setSelectedCategory(cat)}
-            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 ${
-              selectedCategory === cat
+            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 ${selectedCategory === cat
                 ? "bg-indigo-500 text-white shadow-[0_0_12px_rgba(99,102,241,0.5)]"
                 : "border border-white/10 bg-black/40 text-white/70 hover:border-indigo-400/50 hover:text-white"
-            }`}
+              }`}
           >
             {cat === "all" ? "All Skill Domains" : cat}
           </button>
