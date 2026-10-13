@@ -35,7 +35,7 @@ const INITIAL_NOTICES: Notice[] = [
       type: "pdf",
       size: "2.4 MB",
     },
-    tags: ["hackathon", "deadline", "urgent", "teams"],
+    tags: ["hackathon", "deadline", "urgent", "team"],
   },
   {
     id: "notice-events-1",
