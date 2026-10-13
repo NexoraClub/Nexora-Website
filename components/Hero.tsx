@@ -1,10 +1,10 @@
-
+import Link from "next/link";
 
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen w-full flex-col overflow-hidden text-white flex-col items-center px-5 pb-10 pt-8 sm:px-8 sm:pt-10 lg:pt-8"
+      className="relative flex min-h-screen w-full flex-col overflow-hidden text-white items-center px-5 pb-10 pt-8 sm:px-8 sm:pt-10 lg:pt-8"
     >
       {/* Background neon glow */}
       <div
@@ -38,6 +38,8 @@ export default function Hero() {
 
           <span className="h-[2px] w-8 bg-sky-400 shadow-[0_0_10px_#38bdf8] sm:w-16" />
         </div>
+
+
       </div>
 
       {/* Bottom neon accent */}
