@@ -1,33 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { name: "HOME", href: "/" },
-  { name: "NOTICE", href: "/notices" },
-  { name: "ACHIEVEMENTS", href: "/achievements" },
-  { name: "ABOUT US", href: "/about" },
-  { name: "LEARN", href: "/learn" },
-  { name: "ATS", href: "/ats" },
+  { name: "HOME", href: "#home" },
+  { name: "NOTICE", href: "#notice" },
+  { name: "ACHIEVEMENTS", href: "#achievements" },
+  { name: "ABOUT US", href: "#about" },
+  { name: "LEARN", href: "#learn" },
+  { name: "ATS", href: "#learn" },
 ];
 
 export default function Navbar() {
+  const [activeLink, setActiveLink] = useState("HOME");
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = usePathname();
-
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
     <header className="w-full absolute top-0 left-0 z-30 px-4 pt-3 pb-3 sm:px-8 sm:pt-8">
       <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between rounded-full border border-sky-400/50 bg-black px-5 text-white shadow-[0_0_12px_2px_rgba(56,189,248,0.35),0_0_30px_5px_rgba(56,189,248,0.18)] sm:px-8 lg:px-12">
         {/* College Logo */}
         <Link
-          href="/"
-          onClick={() => setMenuOpen(false)}
+          href="#home"
+          onClick={() => {
+            setActiveLink("HOME");
+            setMenuOpen(false);
+          }}
           className="flex shrink-0 items-center"
         >
           <Image
@@ -42,18 +42,21 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <div className="hidden z-20 items-center gap-6 md:flex lg:gap-10">
-          {navLinks.map((link) => {
-            const active = isActive(link.href);
-            return (
-              <Link
-                key={link.name}
-                href={link.href}
-                className={`relative whitespace-nowrap cursor-pointer py-2 text-xs font-semibold
-                  transition-colors duration-300 ease-in-out lg:text-sm
-                  hover:text-sky-400
-                  ${active ? "text-sky-400" : "text-gray-200"}`}
-              >
-                {link.name}
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              onClick={() => setActiveLink(link.name)}
+              className={`relative whitespace-nowrap cursor-pointer py-2 text-xs font-semibold
+                transition-colors duration-300 ease-in-out lg:text-sm
+                hover:text-sky-400
+                ${
+                  activeLink === link.name
+                    ? "text-sky-400"
+                    : "text-gray-200"
+                }`}
+            >
+              {link.name}
 
                 {/* Animated Underline */}
                 <span
@@ -107,7 +110,10 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => {
+                    setActiveLink(link.name);
+                    setMenuOpen(false);
+                  }}
                   className={`rounded-lg px-4 py-3 text-sm font-semibold
                     transition-colors duration-300
                     hover:bg-sky-400/10 hover:text-sky-400
