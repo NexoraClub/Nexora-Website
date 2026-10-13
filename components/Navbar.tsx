@@ -1,28 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { name: "HOME", href: "#home" },
-  { name: "NOTICE", href: "#notice" },
-  { name: "ACHIEVEMENTS", href: "#achievements" },
-  { name: "ABOUT US", href: "#about" },
-  { name: "LEARN", href: "#learn" },
-  { name: "ATS", href: "#learn" },
+  { name: "HOME", href: "/#home", enabled: true },
+  { name: "NOTICE", href: "#", enabled: false },
+  { name: "ACHIEVEMENTS", href: "/achievements", enabled: true },
+  { name: "ABOUT US", href: "#", enabled: false },
+  { name: "LEARN", href: "#", enabled: false },
+  { name: "ATS", href: "#", enabled: false },
 ];
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [activeLink, setActiveLink] = useState("HOME");
   const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setActiveLink(pathname === "/achievements" ? "ACHIEVEMENTS" : "HOME");
+  }, [pathname]);
 
   return (
     <header className="w-full absolute top-0 left-0 z-30  px-4 pt-3 pb-3 sm:px-8 sm:pt-8">
       <nav className="relative mx-auto flex h-16 max-w-7xl items-center justify-between rounded-full border border-sky-400/50 bg-black px-5 text-white shadow-[0_0_12px_2px_rgba(56,189,248,0.35),0_0_30px_5px_rgba(56,189,248,0.18)] sm:px-8 lg:px-12" >
         {/* College Logo */}
         <Link
-          href="#home"
+          href="/#home"
           onClick={() => {
             setActiveLink("HOME");
             setMenuOpen(false);
@@ -45,7 +51,14 @@ export default function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              onClick={() => setActiveLink(link.name)}
+              aria-disabled={!link.enabled}
+              onClick={(event) => {
+                if (!link.enabled) {
+                  event.preventDefault();
+                  return;
+                }
+                setActiveLink(link.name);
+              }}
               className={`relative whitespace-nowrap cursor-pointer py-2 text-xs font-semibold
                 transition-colors duration-300 ease-in-out lg:text-sm
                 hover:text-sky-400
@@ -112,7 +125,12 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  onClick={() => {
+                  aria-disabled={!link.enabled}
+                  onClick={(event) => {
+                    if (!link.enabled) {
+                      event.preventDefault();
+                      return;
+                    }
                     setActiveLink(link.name);
                     setMenuOpen(false);
                   }}
