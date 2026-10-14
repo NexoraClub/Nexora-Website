@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Nexora Platform Banner](public/nexora.jpeg)
+
 
 [![Next.js](https://img.shields.io/badge/Next.js-16.4.0-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
 [![React](https://img.shields.io/badge/React-19.3.0-blue?style=for-the-badge&logo=react)](https://react.dev/)
@@ -282,6 +282,6 @@ The relational PostgreSQL schema in `prisma/schema.prisma` models all core entit
 
 ## 📄 License & Attribution
 
-Designed and maintained by the **Nexora Information Science and Engineering Club** at **A J Institute of Engineering and Technology (AJIET)**, Mangaluru.
+Designed and maintained by the **Nexora Club* Information Science and Engineering ** at **A J Institute of Engineering and Technology (AJIET)**, Mangaluru.
 
 All rights reserved © 2026 Nexora ISE Club.
