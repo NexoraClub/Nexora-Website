@@ -51,8 +51,12 @@ export const env = {
   ),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: getEnvVar(
     'NEXT_PUBLIC_SUPABASE_ANON_KEY',
-    'placeholder-anon-key',
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY || 'placeholder-anon-key',
     true
+  ),
+  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: getEnvVar(
+    'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
   ),
 
   // Security & Authentication
