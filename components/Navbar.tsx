@@ -69,56 +69,62 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Music Control Button */}
-        {audioInitialized && (
-          <button
-            onClick={toggleMusic}
-            aria-label={musicPlaying ? "Pause music" : "Play music"}
-            className="ml-2 flex h-9 w-9 items-center justify-center rounded-full
-              border border-sky-400/40 text-sky-400 transition-all duration-300
-              hover:bg-sky-400/10 hover:scale-105 active:scale-95 cursor-pointer"
-          >
-            {musicPlaying ? (
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                <rect x="6" y="4" width="4" height="16" rx="1" />
-                <rect x="14" y="4" width="4" height="16" rx="1" />
-              </svg>
-            ) : (
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                <path d="M5 3.868v16.264a1 1 0 001.574.832l12.198-8.132a1 1 0 000-1.664L6.574 3.036A1 1 0 005 3.868z" />
-              </svg>
-            )}
-          </button>
-        )}
+        {/* Action Controls: Music Toggle & Mobile Menu */}
+        <div className="flex items-center gap-2.5">
+          {audioInitialized && (
+            <button
+              type="button"
+              onClick={toggleMusic}
+              aria-label={musicPlaying ? "Pause background music" : "Play background music"}
+              title={musicPlaying ? "Mute music" : "Play music"}
+              className="group flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-sky-400/50 bg-black/60 text-sky-400 shadow-[0_0_12px_rgba(56,189,248,0.3)] transition-all duration-300 hover:scale-105 hover:bg-sky-400/15 hover:border-sky-300 active:scale-95 cursor-pointer"
+            >
+              {musicPlaying ? (
+                <span className="flex items-end gap-[3px] h-3.5 px-0.5">
+                  <span className="w-1 bg-sky-400 rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-full" />
+                  <span className="w-1 bg-sky-400 rounded-full animate-[pulse_0.8s_ease-in-out_infinite_200ms] h-2.5" />
+                  <span className="w-1 bg-sky-400 rounded-full animate-[pulse_0.8s_ease-in-out_infinite_400ms] h-3.5" />
+                </span>
+              ) : (
+                <svg
+                  className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-0.5 fill-current"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M5 3.868v16.264a1 1 0 001.574.832l12.198-8.132a1 1 0 000-1.664L6.574 3.036A1 1 0 005 3.868z" />
+                </svg>
+              )}
+            </button>
+          )}
 
-        {/* Mobile Menu Button */}
-        <button
-          type="button"
-          aria-label={menuOpen ? "Close menu" : "Open menu"}
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="ml-2 rounded-xl border border-sky-400/40 p-2
-            text-sky-400 transition duration-300
-            hover:bg-sky-400/10 md:hidden cursor-pointer"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
+          {/* Mobile Menu Button */}
+          <button
+            type="button"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="rounded-xl border border-sky-400/40 p-2
+              text-sky-400 transition duration-300
+              hover:bg-sky-400/10 md:hidden cursor-pointer"
           >
-            {menuOpen ? (
-              <path d="M18 6 6 18M6 6l12 12" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" />
-            )}
-          </svg>
-        </button>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              {menuOpen ? (
+                <path d="M18 6 6 18M6 6l12 12" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
 
         {/* Mobile Navigation Dropdown & Backdrop */}
         {menuOpen && (

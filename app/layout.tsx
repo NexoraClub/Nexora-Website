@@ -44,11 +44,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${jersey10.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <AudioProvider>
-          <SmoothScroll>
+
+        <SmoothScroll>
+          <AudioProvider>
             {children}
-          </SmoothScroll>
-        </AudioProvider>
+          </AudioProvider>
+        </SmoothScroll>
+        
       </body>
     </html>
   );

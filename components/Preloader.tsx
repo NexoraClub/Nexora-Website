@@ -18,7 +18,7 @@ export default function Preloader({ onFinish }: PreloaderProps) {
   const [hide, setHide] = useState(false);
   const [displayCount, setDisplayCount] = useState(0);
 
-  const text = "NEXORA'26";
+  const text = "NEXORA";
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -83,7 +83,7 @@ export default function Preloader({ onFinish }: PreloaderProps) {
           return (
             <span
               key={index}
-              className={`text-[8vw] sm:text-[6vw] font-bold leading-none inline-block transition-all duration-300 ${
+              className={`text-[10vw] sm:text-[7.5vw] font-bold leading-none inline-block transition-all duration-300 ${
                 isLit
                   ? "text-white opacity-100 drop-shadow-[0_0_12px_rgba(255,255,255,0.9)] animate-glitch"
                   : "text-gray-800 opacity-20 blur-[1px]"
