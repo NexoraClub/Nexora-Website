@@ -29,7 +29,7 @@ function TerminalMenu({
 }) {
   return (
     <div
-      className="relative flex h-full flex-col px-7 font-terminal text-[var(--theme-bg-hero,#c2e0a5)]
+      className="relative flex h-full flex-col px-7 font-terminal text-[var(--theme-bg-hero,#dce6ef)]
         pt-[calc(env(safe-area-inset-top,0px)+1.25rem)]
         pb-[calc(env(safe-area-inset-bottom,0px)+1.75rem)]"
     >
@@ -39,8 +39,8 @@ function TerminalMenu({
         onClick={onClose}
         aria-label="Close menu"
         data-cursor="Close"
-        className="-mr-1 shrink-0 self-end px-1 py-2 text-lg tracking-[0.35em] text-[var(--theme-primary,#84C87F)]
-          transition-colors hover:text-[var(--theme-bg-hero,#c2e0a5)]"
+        className="-mr-1 shrink-0 self-end px-1 py-2 text-lg tracking-[0.35em] text-[var(--theme-primary,#00f0ff)]
+          transition-colors hover:text-[var(--theme-bg-hero,#dce6ef)]"
       >
         [&thinsp;X&thinsp;]
       </button>
@@ -63,21 +63,21 @@ function TerminalMenu({
               {/* Active left bar */}
               <span
                 aria-hidden
-                className={`absolute -left-7 top-0 h-full w-[3px] bg-[var(--theme-primary,#84C87F)] transition-opacity duration-200 ${
+                className={`absolute -left-7 top-0 h-full w-[3px] bg-[var(--theme-primary,#00f0ff)] transition-opacity duration-200 ${
                   active ? 'opacity-100' : 'opacity-0'
                 }`}
               />
               <span
                 className={`block font-clash text-[2.1rem] font-bold lowercase leading-[1.04] tracking-tight
                   transition-transform duration-200 group-hover:translate-x-1.5 sm:text-[2.6rem] ${
-                    active ? 'text-[var(--theme-primary,#84C87F)]' : 'text-[var(--theme-bg-hero,#c2e0a5)]'
+                    active ? 'text-[var(--theme-primary,#00f0ff)]' : 'text-[var(--theme-bg-hero,#dce6ef)]'
                   }`}
               >
                 {r.label}
               </span>
-              <span className="mt-1 block text-[11px] tracking-wide text-[var(--theme-primary,#84C87F)]/35">
+              <span className="mt-1 block text-[11px] tracking-wide text-[var(--theme-primary,#00f0ff)]/35">
                 {String(i + 1).padStart(2, '0')} &nbsp; cd&nbsp;~{r.href}
-                {active && <span className="terminal-cursor ml-1 text-[var(--theme-primary,#84C87F)]">_</span>}
+                {active && <span className="terminal-cursor ml-1 text-[var(--theme-primary,#00f0ff)]">_</span>}
               </span>
             </Link>
           );
@@ -85,10 +85,10 @@ function TerminalMenu({
       </nav>
 
       {/* Terminal footer */}
-      <div className="shrink-0 pt-6 border-t border-[var(--theme-primary,#84C87F)]/15">
-        <p className="text-xs font-mono text-[var(--theme-primary,#84C87F)]/70">
-          <span className="text-[var(--theme-primary,#84C87F)]">nexora-shell:~$</span>{' '}
-          <span className="terminal-cursor text-[var(--theme-primary,#84C87F)]">▋</span>
+      <div className="shrink-0 pt-6 border-t border-[var(--theme-primary,#00f0ff)]/15">
+        <p className="text-xs font-mono text-[var(--theme-primary,#00f0ff)]/70">
+          <span className="text-[var(--theme-primary,#00f0ff)]">nexora-shell:~$</span>{' '}
+          <span className="terminal-cursor text-[var(--theme-primary,#00f0ff)]">▋</span>
         </p>
         <p className="mt-2 text-[10px] font-mono text-white/40 uppercase tracking-widest">
           Department of ISE · AJIET Mangaluru
@@ -166,7 +166,7 @@ const Navbar = () => {
 
   /* ─── Background color per pathname ─── */
   useEffect(() => {
-    const color = pathname === '/' ? 'var(--theme-bg-hero, #c2e0a5)' : 'var(--theme-bg-main, #064928)';
+    const color = pathname === '/' ? 'var(--theme-bg-hero, #dce6ef)' : 'var(--theme-bg-main, #060913)';
     document.body.style.backgroundColor = color;
     document.documentElement.style.backgroundColor = color;
   }, [pathname]);
@@ -181,7 +181,7 @@ const Navbar = () => {
     if (!bar) return;
     gsap.killTweensOf(bar);
     gsap.fromTo(bar, { scaleX: 0, transformOrigin: 'left center' }, { scaleX: 1, duration: 0.3, ease: 'power2.out' });
-    gsap.to(link, { color: 'var(--theme-primary, #84C87F)', duration: 0.2, ease: 'power1.out' });
+    gsap.to(link, { color: 'var(--theme-primary, #00f0ff)', duration: 0.2, ease: 'power1.out' });
   };
 
   const handleMouseLeave = (index: number) => {
@@ -200,7 +200,7 @@ const Navbar = () => {
         ref={navRef}
         className="relative z-50 mx-auto mt-3 sm:mt-5 w-[calc(100%-24px)]
           xl:w-[88%] xl:max-w-[1320px]
-          flex items-center justify-between bg-[var(--theme-bg-main,#064928)] text-white shadow-xl
+          flex items-center justify-between bg-[var(--theme-bg-main,#060913)] text-white shadow-xl
           py-3 md:py-5 px-4 xl:px-8 rounded-xl xl:rounded-2xl"
       >
         {/* ── Brand ── */}
@@ -211,19 +211,21 @@ const Navbar = () => {
             data-cursor="Home"
             className="flex items-center gap-2.5 shrink-0 select-none group"
           >
-            <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-[var(--theme-primary,#84C87F)] text-[var(--theme-bg-main,#064928)] font-clash font-extrabold text-base shadow-[0_0_15px_var(--theme-primary,#84C87F)]">
-              N
+            <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-[var(--theme-primary,#00f0ff)] text-[var(--theme-bg-main,#060913)] shadow-[0_0_15px_var(--theme-primary,#00f0ff)] group-hover:scale-105 transition-transform duration-200">
+              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
+                <path d="M12 2 L13.8 9.5 L21 12 L13.8 14.5 L12 22 L10.2 14.5 L3 12 L10.2 9.5 Z" />
+              </svg>
             </div>
-            <span className="font-clash font-bold whitespace-nowrap text-white group-hover:text-[var(--theme-primary,#84C87F)] transition-colors duration-200
+            <span className="font-clash font-bold whitespace-nowrap text-white group-hover:text-[var(--theme-primary,#00f0ff)] transition-colors duration-200
               text-base sm:text-lg md:text-xl lg:text-2xl tracking-wide">
               Nexora
             </span>
           </Link>
           <span
             aria-hidden
-            className="shrink-0 w-[3px] h-4 sm:h-5 rounded-full bg-gradient-to-b from-white/80 via-[var(--theme-bg-hero,#c2e0a5)] to-[var(--theme-primary,#84C87F)] hidden sm:block"
+            className="shrink-0 w-[3px] h-4 sm:h-5 rounded-full bg-gradient-to-b from-white/80 via-[var(--theme-bg-hero,#dce6ef)] to-[var(--theme-primary,#00f0ff)] hidden sm:block"
           />
-          <span className="text-[9px] font-mono tracking-wider text-[var(--theme-primary,#84C87F)]/70 hidden sm:inline uppercase">
+          <span className="text-[9px] font-mono tracking-wider text-[var(--theme-primary,#00f0ff)]/70 hidden sm:inline uppercase">
             ISE · AJIET
           </span>
         </div>
@@ -244,7 +246,7 @@ const Navbar = () => {
             >
               {link.label}
               <span
-                className="nav-bar absolute left-0 -bottom-1 w-full h-[2px] bg-[var(--theme-primary,#84C87F)]"
+                className="nav-bar absolute left-0 -bottom-1 w-full h-[2px] bg-[var(--theme-primary,#00f0ff)]"
                 style={{ transform: 'scaleX(0)', transformOrigin: 'left center', display: 'block' }}
               />
             </a>
@@ -260,13 +262,13 @@ const Navbar = () => {
               onClick={toggleMusic}
               data-cursor={musicPlaying ? 'Mute' : 'Play'}
               aria-label={musicPlaying ? 'Pause background music' : 'Play background music'}
-              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[var(--theme-primary,#84C87F)]/40 bg-[var(--theme-primary,#84C87F)]/10 text-[var(--theme-primary,#84C87F)] shadow-[0_0_12px_rgba(132,200,127,0.25)] transition-all duration-200 hover:scale-105 hover:bg-[var(--theme-primary,#84C87F)]/25 active:scale-95 cursor-pointer"
+              className="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full border border-[var(--theme-primary,#00f0ff)]/40 bg-[var(--theme-primary,#00f0ff)]/10 text-[var(--theme-primary,#00f0ff)] shadow-[0_0_12px_rgba(0, 240, 255,0.25)] transition-all duration-200 hover:scale-105 hover:bg-[var(--theme-primary,#00f0ff)]/25 active:scale-95 cursor-pointer"
             >
               {musicPlaying ? (
                 <span className="flex items-end gap-[2.5px] h-3.5 px-0.5">
-                  <span className="w-1 bg-[var(--theme-primary,#84C87F)] rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-full" />
-                  <span className="w-1 bg-[var(--theme-primary,#84C87F)] rounded-full animate-[pulse_0.8s_ease-in-out_infinite_200ms] h-2.5" />
-                  <span className="w-1 bg-[var(--theme-primary,#84C87F)] rounded-full animate-[pulse_0.8s_ease-in-out_infinite_400ms] h-3.5" />
+                  <span className="w-1 bg-[var(--theme-primary,#00f0ff)] rounded-full animate-[pulse_0.8s_ease-in-out_infinite] h-full" />
+                  <span className="w-1 bg-[var(--theme-primary,#00f0ff)] rounded-full animate-[pulse_0.8s_ease-in-out_infinite_200ms] h-2.5" />
+                  <span className="w-1 bg-[var(--theme-primary,#00f0ff)] rounded-full animate-[pulse_0.8s_ease-in-out_infinite_400ms] h-3.5" />
                 </span>
               ) : (
                 <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 ml-0.5 fill-current" viewBox="0 0 24 24">
@@ -279,7 +281,7 @@ const Navbar = () => {
           {/* Mobile hamburger */}
           <button
             onClick={toggleMenu}
-            className="xl:hidden -mr-1 p-1.5 text-[var(--theme-primary,#84C87F)] transition-colors hover:text-[var(--theme-bg-hero,#c2e0a5)]"
+            className="xl:hidden -mr-1 p-1.5 text-[var(--theme-primary,#00f0ff)] transition-colors hover:text-[var(--theme-bg-hero,#dce6ef)]"
             aria-label={menuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={menuOpen}
           >
@@ -298,7 +300,7 @@ const Navbar = () => {
           opacity: 0,
           pointerEvents: 'none',
         }}
-        className="xl:hidden bg-[var(--theme-bg-main,#064928)]"
+        className="xl:hidden bg-[var(--theme-bg-main,#060913)]"
       >
         <div aria-hidden className="terminal-scanlines opacity-[0.12]" />
         <TerminalMenu

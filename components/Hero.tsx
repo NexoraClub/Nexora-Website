@@ -54,7 +54,7 @@ function HeroClouds() {
             style={{ opacity: Math.min(0.15, 0.1 * HERO_CLOUD_DEPTHS[i]), filter: 'blur(0.8px)' }}
             aria-hidden
           >
-            <g fill="var(--theme-text-dark, #08414a)">
+            <g fill="var(--theme-text-dark, #060a14)">
               <ellipse cx="70" cy="60" rx="70" ry="28" />
               <ellipse cx="120" cy="52" rx="55" ry="34" />
               <ellipse cx="160" cy="62" rx="52" ry="26" />
@@ -95,13 +95,13 @@ function StatBlock({ value, suffix = '', label }: { value: number; suffix?: stri
   return (
     <div ref={containerRef} className="flex flex-col items-center text-center">
       <span
-        className="font-clash font-bold leading-none text-[var(--theme-bg-hero,#c2e0a5)] tabular-nums"
+        className="font-clash font-bold leading-none text-[var(--theme-bg-hero,#dce6ef)] tabular-nums"
         style={{ fontSize: 'clamp(2.2rem, 6.5vw, 4.5rem)' }}
       >
         <span ref={numberRef}>0</span>
         {suffix}
       </span>
-      <span className="mt-1 font-semibold uppercase tracking-[0.2em] text-[var(--theme-primary,#84C87F)]/70 text-xs sm:text-sm font-mono">
+      <span className="mt-1 font-semibold uppercase tracking-[0.2em] text-[var(--theme-primary,#00f0ff)]/70 text-xs sm:text-sm font-mono">
         {label}
       </span>
     </div>
@@ -204,7 +204,7 @@ export default function Hero() {
           1. TOP HERO SECTION – PINNED STICKY AT TOP (Curtain effect matches reference)
          ───────────────────────────────────────────────────────────────────────────── */}
       <div className="sticky top-0 z-0 w-full">
-        <section className="home-hero-text relative flex flex-col overflow-hidden bg-[var(--theme-bg-hero,#c2e0a5)]">
+        <section className="home-hero-text relative flex flex-col overflow-hidden bg-[var(--theme-bg-hero,#dce6ef)]">
           <HeroClouds />
 
           <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 pt-6 sm:pt-10 md:pt-16 lg:pt-20">
@@ -214,7 +214,7 @@ export default function Hero() {
                 ref={h1Ref}
                 onClick={handleTitleClick}
                 data-cursor="Recompile"
-                className="font-clash font-bold leading-none text-center text-[var(--theme-text-dark,#08414a)] whitespace-nowrap
+                className="font-clash font-bold leading-none text-center text-[var(--theme-text-dark,#060a14)] whitespace-nowrap
                   text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl cursor-pointer select-none"
               >
                 {FINAL_TEXT}
@@ -223,7 +223,7 @@ export default function Hero() {
               {/* Underline bar */}
               <div
                 ref={lineRef}
-                className="absolute left-0 right-0 bottom-0 h-1 sm:h-[5px] md:h-1.5 bg-[var(--theme-text-dark,#08414a)] opacity-0"
+                className="absolute left-0 right-0 bottom-0 h-1 sm:h-[5px] md:h-1.5 bg-[var(--theme-text-dark,#060a14)] opacity-0"
               />
 
               {/* Floating Motto Badge */}
@@ -231,10 +231,10 @@ export default function Hero() {
                 <div className="translate-y-1/2">
                   <div
                     ref={themeRef}
-                    className="opacity-0 bg-[var(--theme-text-dark,#08414a)] px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 shadow-xl"
+                    className="opacity-0 bg-[var(--theme-text-dark,#060a14)] px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 shadow-xl"
                   >
                     <p
-                      className="font-clash font-bold uppercase whitespace-nowrap text-[var(--theme-bg-hero,#c2e0a5)] tracking-[0.2em] sm:tracking-[0.25em] md:tracking-[0.3em]
+                      className="font-clash font-bold uppercase whitespace-nowrap text-[var(--theme-bg-hero,#dce6ef)] tracking-[0.2em] sm:tracking-[0.25em] md:tracking-[0.3em]
                         text-sm sm:text-base md:text-xl lg:text-2xl leading-none translate-y-[1px] ml-[0.2em] sm:ml-[0.25em] md:ml-[0.3em]"
                     >
                       Think · Build · Innovate
@@ -247,12 +247,12 @@ export default function Hero() {
             {/* Subtitle */}
             <p
               ref={dateRef}
-              className="font-bold uppercase text-[var(--theme-text-dark,#08414a)] opacity-0
+              className="font-bold uppercase text-[var(--theme-text-dark,#060a14)] opacity-0
                 tracking-[0.16em] sm:tracking-[0.2em]
                 text-xs sm:text-sm md:text-base lg:text-lg font-mono text-center max-w-xl px-4"
             >
               Department of Information Science &amp; Engineering
-              <span className="block text-[11px] sm:text-xs md:text-sm tracking-[0.25em] text-[var(--theme-text-dark,#08414a)]/80 mt-1 font-semibold">
+              <span className="block text-[11px] sm:text-xs md:text-sm tracking-[0.25em] text-[var(--theme-text-dark,#060a14)]/80 mt-1 font-semibold">
                 AJIET · Mangaluru
               </span>
             </p>
@@ -266,8 +266,8 @@ export default function Hero() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.92, y: -10 }}
                 transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-                className="fixed top-[14%] left-1/2 -translate-x-1/2 z-[999996] bg-[var(--theme-bg-main,#064928)] text-[var(--theme-primary,#84C87F)]
-                  font-clash font-bold text-base px-6 py-3.5 rounded-full border border-[var(--theme-primary,#84C87F)]/40
+                className="fixed top-[14%] left-1/2 -translate-x-1/2 z-[999996] bg-[var(--theme-bg-main,#060913)] text-[var(--theme-primary,#00f0ff)]
+                  font-clash font-bold text-base px-6 py-3.5 rounded-full border border-[var(--theme-primary,#00f0ff)]/40
                   flex items-center gap-2.5 whitespace-nowrap shadow-2xl"
               >
                 <span className="text-xl">💻</span>
@@ -288,29 +288,29 @@ export default function Hero() {
       {/* ─────────────────────────────────────────────────────────────────────────────
           3. MARQUEE STRIP (Continuous forward/reverse ticker)
          ───────────────────────────────────────────────────────────────────────────── */}
-      <div className="relative z-20 -mt-1 bg-[var(--theme-bg-main,#064928)] text-[var(--theme-primary,#84C87F)] py-3.5 sm:py-4 overflow-hidden w-full">
+      <div className="relative z-20 -mt-1 bg-[var(--theme-bg-main,#060913)] text-[var(--theme-primary,#00f0ff)] py-3.5 sm:py-4 overflow-hidden w-full">
         <Marquee />
       </div>
 
       {/* ─────────────────────────────────────────────────────────────────────────────
           4. HOMEPAGE CONTENT (With ASCII contour backdrop and authentic Nexora copy)
          ───────────────────────────────────────────────────────────────────────────── */}
-      <div className="relative z-20 bg-[var(--theme-bg-main,#064928)] text-[var(--theme-bg-hero,#c2e0a5)]">
+      <div className="relative z-20 bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
         <ContourBackdrop />
         <div className="relative">
           {/* Mission & Purpose Statement */}
           <section className="px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32 py-20 sm:py-28 md:py-36">
             <p
-              className="font-clash font-bold leading-[0.88] text-[var(--theme-bg-hero,#c2e0a5)]"
+              className="font-clash font-bold leading-[0.88] text-[var(--theme-bg-hero,#dce6ef)]"
               style={{ fontSize: 'clamp(2.5rem, 7vw, 6rem)' }}
             >
               Think.
               <br />
-              <span className="text-[var(--theme-primary,#84C87F)]">Build.</span>
+              <span className="text-[var(--theme-primary,#00f0ff)]">Build.</span>
               <br />
               Innovate.
             </p>
-            <p className="mt-8 max-w-2xl font-cabinet font-medium text-[var(--theme-primary,#84C87F)]/80 leading-relaxed text-sm sm:text-base md:text-lg">
+            <p className="mt-8 max-w-2xl font-cabinet font-medium text-[var(--theme-primary,#00f0ff)]/80 leading-relaxed text-sm sm:text-base md:text-lg">
               Nexora is the student-led technical body of the Department of Information Science &amp; Engineering
               at A J Institute of Engineering &amp; Technology, Mangaluru. From competitive programming and
               state-level hackathons to semester study repositories and project exhibitions — talent, curiosity,
@@ -321,7 +321,7 @@ export default function Hero() {
               <Link
                 href="/events"
                 data-cursor="Explore"
-                className="group inline-flex items-center gap-2.5 rounded-full bg-[var(--theme-primary,#84C87F)] px-6 py-3.5 text-xs sm:text-sm font-clash font-bold uppercase tracking-[0.15em] text-[var(--theme-bg-main,#064928)] shadow-lg transition-all duration-200 hover:scale-105 hover:bg-white active:scale-95"
+                className="group inline-flex items-center gap-2.5 rounded-full bg-[var(--theme-primary,#00f0ff)] px-6 py-3.5 text-xs sm:text-sm font-clash font-bold uppercase tracking-[0.15em] text-[var(--theme-bg-main,#060913)] shadow-lg transition-all duration-200 hover:scale-105 hover:bg-white active:scale-95"
               >
                 <Calendar className="w-4 h-4" />
                 <span>Explore Events</span>
@@ -330,7 +330,7 @@ export default function Hero() {
               <Link
                 href="/notices"
                 data-cursor="Notices"
-                className="inline-flex items-center gap-2.5 rounded-full border border-[var(--theme-primary,#84C87F)]/40 px-6 py-3 text-xs sm:text-sm font-clash font-bold uppercase tracking-[0.15em] text-[var(--theme-bg-hero,#c2e0a5)] transition-all duration-200 hover:bg-[var(--theme-primary,#84C87F)]/10 hover:border-[var(--theme-primary,#84C87F)] active:scale-95"
+                className="inline-flex items-center gap-2.5 rounded-full border border-[var(--theme-primary,#00f0ff)]/40 px-6 py-3 text-xs sm:text-sm font-clash font-bold uppercase tracking-[0.15em] text-[var(--theme-bg-hero,#dce6ef)] transition-all duration-200 hover:bg-[var(--theme-primary,#00f0ff)]/10 hover:border-[var(--theme-primary,#00f0ff)] active:scale-95"
               >
                 <Bell className="w-4 h-4" />
                 <span>Notice Board</span>
@@ -338,7 +338,7 @@ export default function Hero() {
               <Link
                 href="/learn"
                 data-cursor="Learn"
-                className="inline-flex items-center gap-2.5 rounded-full border border-[var(--theme-primary,#84C87F)]/40 px-6 py-3 text-xs sm:text-sm font-clash font-bold uppercase tracking-[0.15em] text-[var(--theme-bg-hero,#c2e0a5)] transition-all duration-200 hover:bg-[var(--theme-primary,#84C87F)]/10 hover:border-[var(--theme-primary,#84C87F)] active:scale-95"
+                className="inline-flex items-center gap-2.5 rounded-full border border-[var(--theme-primary,#00f0ff)]/40 px-6 py-3 text-xs sm:text-sm font-clash font-bold uppercase tracking-[0.15em] text-[var(--theme-bg-hero,#dce6ef)] transition-all duration-200 hover:bg-[var(--theme-primary,#00f0ff)]/10 hover:border-[var(--theme-primary,#00f0ff)] active:scale-95"
               >
                 <BookOpen className="w-4 h-4" />
                 <span>Learning Hub</span>
@@ -348,7 +348,7 @@ export default function Hero() {
 
           {/* Department & Club Milestones Stats Row */}
           <section className="px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32 pb-20 sm:pb-28">
-            <div className="h-px bg-[var(--theme-primary,#84C87F)]/20 mb-12 sm:mb-16" />
+            <div className="h-px bg-[var(--theme-primary,#00f0ff)]/20 mb-12 sm:mb-16" />
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 md:gap-12">
               {STATS.map((s) => (
                 <StatBlock key={s.label} value={s.value} suffix={s.suffix} label={s.label} />
@@ -359,19 +359,19 @@ export default function Hero() {
           {/* Bottom Action Callout */}
           <section
             className="px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32 py-20 sm:py-28 md:py-36
-              border-t border-[var(--theme-primary,#84C87F)]/10
+              border-t border-[var(--theme-primary,#00f0ff)]/10
               flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8"
           >
             <div>
               <p
-                className="font-clash font-bold leading-[0.9] text-[var(--theme-bg-hero,#c2e0a5)]"
+                className="font-clash font-bold leading-[0.9] text-[var(--theme-bg-hero,#dce6ef)]"
                 style={{ fontSize: 'clamp(2rem, 5vw, 4rem)' }}
               >
                 Ready to Build?
                 <br />
-                <span className="text-[var(--theme-primary,#84C87F)]">Connect With Nexora.</span>
+                <span className="text-[var(--theme-primary,#00f0ff)]">Connect With Nexora.</span>
               </p>
-              <p className="mt-2 text-xs sm:text-sm text-[var(--theme-primary,#84C87F)]/70 uppercase tracking-widest font-mono">
+              <p className="mt-2 text-xs sm:text-sm text-[var(--theme-primary,#00f0ff)]/70 uppercase tracking-widest font-mono">
                 AJIET Campus · Kottara Chowki, Mangaluru
               </p>
             </div>
@@ -380,15 +380,15 @@ export default function Hero() {
               <Link
                 href="/events"
                 data-cursor="Explore"
-                className="group flex items-center gap-4 border border-[var(--theme-primary,#84C87F)]/30
+                className="group flex items-center gap-4 border border-[var(--theme-primary,#00f0ff)]/30
                   px-6 py-4 sm:px-8 sm:py-5
-                  hover:bg-[var(--theme-primary,#84C87F)]/10 hover:border-[var(--theme-primary,#84C87F)] transition-all duration-300"
+                  hover:bg-[var(--theme-primary,#00f0ff)]/10 hover:border-[var(--theme-primary,#00f0ff)] transition-all duration-300"
               >
-                <span className="font-clash font-bold uppercase tracking-[0.2em] text-[var(--theme-bg-hero,#c2e0a5)] text-sm">
+                <span className="font-clash font-bold uppercase tracking-[0.2em] text-[var(--theme-bg-hero,#dce6ef)] text-sm">
                   Explore Events
                 </span>
                 <ArrowRight
-                  className="w-5 h-5 text-[var(--theme-primary,#84C87F)] group-hover:translate-x-1 transition-transform duration-300"
+                  className="w-5 h-5 text-[var(--theme-primary,#00f0ff)] group-hover:translate-x-1 transition-transform duration-300"
                 />
               </Link>
             </div>

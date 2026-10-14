@@ -49,7 +49,7 @@ function HeroClouds() {
             style={{ opacity: Math.min(0.15, 0.1 * HERO_CLOUD_DEPTHS[i]), filter: 'blur(0.8px)' }}
             aria-hidden
           >
-            <g fill="var(--theme-text-dark, #08414a)">
+            <g fill="var(--theme-text-dark, #060a14)">
               <ellipse cx="70" cy="60" rx="70" ry="28" />
               <ellipse cx="120" cy="52" rx="55" ry="34" />
               <ellipse cx="160" cy="62" rx="52" ry="26" />
@@ -150,7 +150,7 @@ export default function Header() {
   }, []);
 
   return (
-    <section className="home-hero-text relative flex flex-col overflow-hidden bg-[var(--theme-bg-hero,#c2e0a5)]">
+    <section className="home-hero-text relative flex flex-col overflow-hidden bg-[var(--theme-bg-hero,#dce6ef)]">
       <HeroClouds />
 
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 pt-6 sm:pt-10 md:pt-16 lg:pt-20">
@@ -160,7 +160,7 @@ export default function Header() {
             ref={h1Ref}
             onClick={handleTitleClick}
             data-cursor="Recompile"
-            className="font-clash font-bold leading-none text-center text-[var(--theme-text-dark,#08414a)] whitespace-nowrap
+            className="font-clash font-bold leading-none text-center text-[var(--theme-text-dark,#060a14)] whitespace-nowrap
               text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl cursor-pointer select-none"
           >
             {FINAL_TEXT}
@@ -169,7 +169,7 @@ export default function Header() {
           {/* Underline bar */}
           <div
             ref={lineRef}
-            className="absolute left-0 right-0 bottom-0 h-1 sm:h-[5px] md:h-1.5 bg-[var(--theme-text-dark,#08414a)] opacity-0"
+            className="absolute left-0 right-0 bottom-0 h-1 sm:h-[5px] md:h-1.5 bg-[var(--theme-text-dark,#060a14)] opacity-0"
           />
 
           {/* Floating Motto Badge */}
@@ -177,10 +177,10 @@ export default function Header() {
             <div className="translate-y-1/2">
               <div
                 ref={themeRef}
-                className="opacity-0 bg-[var(--theme-text-dark,#08414a)] px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 shadow-xl"
+                className="opacity-0 bg-[var(--theme-text-dark,#060a14)] px-5 sm:px-6 md:px-8 py-2 sm:py-2.5 md:py-3 shadow-xl"
               >
                 <p
-                  className="font-clash font-bold uppercase whitespace-nowrap text-[var(--theme-bg-hero,#c2e0a5)] tracking-[0.2em] sm:tracking-[0.25em] md:tracking-[0.3em]
+                  className="font-clash font-bold uppercase whitespace-nowrap text-[var(--theme-bg-hero,#dce6ef)] tracking-[0.2em] sm:tracking-[0.25em] md:tracking-[0.3em]
                     text-sm sm:text-base md:text-xl lg:text-2xl leading-none translate-y-[1px] ml-[0.2em] sm:ml-[0.25em] md:ml-[0.3em]"
                 >
                   Think · Build · Innovate
@@ -193,7 +193,7 @@ export default function Header() {
         {/* Subtitle */}
         <p
           ref={dateRef}
-          className="font-bold uppercase text-[var(--theme-text-dark,#08414a)] opacity-0
+          className="font-bold uppercase text-[var(--theme-text-dark,#060a14)] opacity-0
             tracking-[0.15em] sm:tracking-[0.2em]
             text-xs sm:text-sm md:text-lg lg:text-xl font-mono text-center max-w-xl"
         >
@@ -208,8 +208,8 @@ export default function Header() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: -10 }}
             transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-            className="fixed top-[14%] left-1/2 -translate-x-1/2 z-[999996] bg-[var(--theme-bg-main,#064928)] text-[var(--theme-primary,#84C87F)]
-              font-clash font-bold text-base px-6 py-3.5 rounded-full border border-[var(--theme-primary,#84C87F)]/40
+            className="fixed top-[14%] left-1/2 -translate-x-1/2 z-[999996] bg-[var(--theme-bg-main,#060913)] text-[var(--theme-primary,#00f0ff)]
+              font-clash font-bold text-base px-6 py-3.5 rounded-full border border-[var(--theme-primary,#00f0ff)]/40
               flex items-center gap-2.5 whitespace-nowrap shadow-2xl"
           >
             <span className="text-xl">💻</span>

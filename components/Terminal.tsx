@@ -438,8 +438,8 @@ export default function Terminal() {
         data-no-context-menu
         onClick={(e) => e.stopPropagation()}
         onContextMenu={(e) => e.preventDefault()}
-        className={`fixed z-[501] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden border border-[var(--theme-primary,#84C87F)]/25
-          bg-[#03080a] shadow-[0_0_0_1px_rgba(132,200,127,0.15),0_40px_100px_rgba(0,0,0,0.85)]
+        className={`fixed z-[501] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden border border-[var(--theme-primary,#00f0ff)]/25
+          bg-[#03080a] shadow-[0_0_0_1px_rgba(0, 240, 255,0.15),0_40px_100px_rgba(0,0,0,0.85)]
           font-terminal transition-[opacity,transform,width,height,border-radius] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]
           ${
             isFullscreen
@@ -452,7 +452,7 @@ export default function Terminal() {
           {/* Terminal Window Header Bar */}
           <div
             onDoubleClick={toggleFullscreen}
-            className="flex items-center justify-between px-4 py-2.5 bg-[#080f09] border-b border-[var(--theme-primary,#84C87F)]/10 relative z-10 select-none"
+            className="flex items-center justify-between px-4 py-2.5 bg-[#080f09] border-b border-[var(--theme-primary,#00f0ff)]/10 relative z-10 select-none"
           >
             <div className="flex items-center gap-2">
               <button
@@ -474,7 +474,7 @@ export default function Terminal() {
                 className="w-[12px] h-[12px] rounded-full bg-[#27C93F] hover:bg-[#27C93F]/80 transition-colors"
               />
             </div>
-            <span className="absolute left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.2em] text-[var(--theme-primary,#84C87F)]/60 font-mono">
+            <span className="absolute left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.2em] text-[var(--theme-primary,#00f0ff)]/60 font-mono">
               guest@nexora
             </span>
           </div>
@@ -486,8 +486,8 @@ export default function Terminal() {
             ref={outputRef}
             onClick={() => inputRef.current?.focus()}
             data-lenis-prevent
-            className="terminal-scroll relative h-[calc(100%-42px)] overflow-y-auto px-4 py-3 text-[13px] leading-relaxed text-[var(--theme-primary,#84C87F)]"
-            style={{ textShadow: '0 0 6px rgba(132,200,127,0.35)' }}
+            className="terminal-scroll relative h-[calc(100%-42px)] overflow-y-auto px-4 py-3 text-[13px] leading-relaxed text-[var(--theme-primary,#00f0ff)]"
+            style={{ textShadow: '0 0 6px rgba(0, 240, 255,0.35)' }}
           >
             <div ref={contentRef}>
               {lines.map((line, i) => {
@@ -497,10 +497,10 @@ export default function Terminal() {
                     key={i}
                     className={
                       line.type === 'input'
-                        ? 'text-[var(--theme-bg-hero,#c2e0a5)]'
+                        ? 'text-[var(--theme-bg-hero,#dce6ef)]'
                         : line.type === 'accent'
-                          ? 'text-[var(--theme-primary,#84C87F)] font-semibold'
-                          : 'text-[var(--theme-primary,#84C87F)]/80'
+                          ? 'text-[var(--theme-primary,#00f0ff)] font-semibold'
+                          : 'text-[var(--theme-primary,#00f0ff)]/80'
                     }
                   >
                     {line.text}
@@ -509,7 +509,7 @@ export default function Terminal() {
               })}
               {!busy && (
                 <div className="flex items-center gap-2 mt-0.5">
-                  <span className="text-[var(--theme-bg-hero,#c2e0a5)] shrink-0">{PROMPT}</span>
+                  <span className="text-[var(--theme-bg-hero,#dce6ef)] shrink-0">{PROMPT}</span>
                   <div className="relative flex-1 min-w-0">
                     <input
                       ref={inputRef}
@@ -525,10 +525,10 @@ export default function Terminal() {
                       spellCheck={false}
                       autoComplete="off"
                       autoCapitalize="off"
-                      className="w-full bg-transparent outline-none border-0 p-0 text-[var(--theme-bg-hero,#c2e0a5)] caret-transparent font-terminal"
+                      className="w-full bg-transparent outline-none border-0 p-0 text-[var(--theme-bg-hero,#dce6ef)] caret-transparent font-terminal"
                     />
                     <span
-                      className="terminal-cursor absolute top-1/2 bg-[var(--theme-primary,#84C87F)] pointer-events-none"
+                      className="terminal-cursor absolute top-1/2 bg-[var(--theme-primary,#00f0ff)] pointer-events-none"
                       style={{
                         left: caretIndex * charWidth,
                         width: charWidth,
@@ -556,9 +556,9 @@ export default function Terminal() {
             animate={{ opacity: 1, x: 0, scale: 1 }}
             exit={{ opacity: 0, x: -8, scale: 0.95 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-6 left-6 z-[9995] bg-[var(--theme-bg-main,#064928)] text-[var(--theme-primary,#84C87F)] text-xs font-semibold
-              px-3.5 py-2 rounded-full shadow-2xl border border-[var(--theme-primary,#84C87F)]/30 whitespace-nowrap
-              flex items-center gap-1.5 font-terminal cursor-pointer hover:bg-[var(--theme-primary,#84C87F)] hover:text-[var(--theme-bg-main,#064928)] transition-colors"
+            className="fixed bottom-6 left-6 z-[9995] bg-[var(--theme-bg-main,#060913)] text-[var(--theme-primary,#00f0ff)] text-xs font-semibold
+              px-3.5 py-2 rounded-full shadow-2xl border border-[var(--theme-primary,#00f0ff)]/30 whitespace-nowrap
+              flex items-center gap-1.5 font-terminal cursor-pointer hover:bg-[var(--theme-primary,#00f0ff)] hover:text-[var(--theme-bg-main,#060913)] transition-colors"
           >
             <TerminalWindow size={14} weight="bold" />
             {hintMessage}

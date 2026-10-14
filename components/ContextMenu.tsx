@@ -53,7 +53,7 @@ const HINT_MAX_POKES = 4;
 
 const ITEM_CLS =
   "w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-left " +
-  "text-white/80 text-[13px] font-medium hover:bg-white/10 hover:text-[var(--theme-primary,#84C87F)] transition-colors duration-150";
+  "text-white/80 text-[13px] font-medium hover:bg-white/10 hover:text-[var(--theme-primary,#00f0ff)] transition-colors duration-150";
 
 export default function ContextMenu() {
   const router = useRouter();
@@ -235,7 +235,7 @@ export default function ContextMenu() {
                 left: pos.x,
                 zIndex: 9999,
               }}
-              className="w-60 bg-[var(--theme-bg-main,#064928)] border border-white/10 rounded-md shadow-2xl overflow-hidden py-1.5"
+              className="w-60 bg-[var(--theme-bg-main,#060913)] border border-white/10 rounded-md shadow-2xl overflow-hidden py-1.5"
               onContextMenu={(e) => e.preventDefault()}
             >
               {/* Header */}
@@ -265,7 +265,7 @@ export default function ContextMenu() {
               <div className="px-1.5 py-1">
                 <button onClick={handleCopyLink} className={ITEM_CLS}>
                   {copied ? (
-                    <Check size={15} weight="bold" className="text-[var(--theme-primary,#84C87F)]" />
+                    <Check size={15} weight="bold" className="text-[var(--theme-primary,#00f0ff)]" />
                   ) : (
                     <LinkSimple size={15} weight="bold" />
                   )}
@@ -294,7 +294,7 @@ export default function ContextMenu() {
                 <button
                   onClick={handleHype}
                   className="w-full flex items-center gap-2.5 px-2.5 py-1.5 rounded-md text-left
-                  text-[var(--theme-primary,#84C87F)] text-[13px] font-semibold hover:bg-[var(--theme-primary,#84C87F)]/10 transition-colors duration-150"
+                  text-[var(--theme-primary,#00f0ff)] text-[13px] font-semibold hover:bg-[var(--theme-primary,#00f0ff)]/10 transition-colors duration-150"
                 >
                   <Sparkle size={15} weight="fill" />
                   Hype Me Up
@@ -320,8 +320,8 @@ export default function ContextMenu() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.97 }}
             transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] bg-[var(--theme-bg-main,#064928)] text-[var(--theme-primary,#84C87F)]
-              font-clash font-bold text-sm px-5 py-3 rounded-full shadow-2xl border border-[var(--theme-primary,#84C87F)]/30
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-[9999] bg-[var(--theme-bg-main,#060913)] text-[var(--theme-primary,#00f0ff)]
+              font-clash font-bold text-sm px-5 py-3 rounded-full shadow-2xl border border-[var(--theme-primary,#00f0ff)]/30
               flex items-center gap-2 whitespace-nowrap"
           >
             <Sparkle size={16} weight="fill" />
@@ -344,8 +344,8 @@ export default function ContextMenu() {
               left: hintPos.x + 20,
               zIndex: 999997,
             }}
-            className="pointer-events-none -translate-y-1/2 bg-[var(--theme-bg-main,#064928)] text-[var(--theme-primary,#84C87F)] text-xs font-semibold
-              px-3.5 py-2 rounded-full shadow-2xl border border-[var(--theme-primary,#84C87F)]/30 whitespace-nowrap
+            className="pointer-events-none -translate-y-1/2 bg-[var(--theme-bg-main,#060913)] text-[var(--theme-primary,#00f0ff)] text-xs font-semibold
+              px-3.5 py-2 rounded-full shadow-2xl border border-[var(--theme-primary,#00f0ff)]/30 whitespace-nowrap
               flex items-center gap-1.5"
           >
             <MouseRightClick size={14} weight="bold" />

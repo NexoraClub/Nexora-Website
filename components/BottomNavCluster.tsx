@@ -111,19 +111,19 @@ export default function BottomNavCluster() {
                 aria-label={menuOpen ? 'Close quick menu' : 'Open quick menu'}
                 aria-expanded={menuOpen}
                 data-cursor="Menu"
-                className="group relative z-[301] w-12 h-12 rounded-full border border-[var(--theme-primary,#84C87F)] bg-[var(--theme-bg-main,#064928)]
+                className="group relative z-[301] w-12 h-12 rounded-full border border-[var(--theme-primary,#00f0ff)] bg-[var(--theme-bg-main,#060913)]
                   flex flex-col items-center justify-center gap-1.5
-                  hover:bg-[var(--theme-primary,#84C87F)] shadow-2xl transition-colors cursor-pointer"
+                  hover:bg-[var(--theme-primary,#00f0ff)] shadow-2xl transition-colors cursor-pointer"
               >
                 <motion.span
                   animate={{ width: menuOpen ? 14 : 18, rotate: menuOpen ? 8 : 0 }}
                   transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="h-[2px] bg-[var(--theme-primary,#84C87F)] rounded-full group-hover:bg-[var(--theme-bg-main,#064928)]"
+                  className="h-[2px] bg-[var(--theme-primary,#00f0ff)] rounded-full group-hover:bg-[var(--theme-bg-main,#060913)]"
                 />
                 <motion.span
                   animate={{ width: menuOpen ? 18 : 14, rotate: menuOpen ? -8 : 0 }}
                   transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="h-[2px] bg-[var(--theme-primary,#84C87F)] rounded-full group-hover:bg-[var(--theme-bg-main,#064928)]"
+                  className="h-[2px] bg-[var(--theme-primary,#00f0ff)] rounded-full group-hover:bg-[var(--theme-bg-main,#060913)]"
                 />
               </button>
 
@@ -151,9 +151,9 @@ export default function BottomNavCluster() {
                           href={item.href}
                           onClick={() => setMenuOpen(false)}
                           data-cursor={item.label}
-                          className="block whitespace-nowrap rounded-full border border-[var(--theme-primary,#84C87F)]/40 bg-[var(--theme-bg-main,#064928)]
-                            px-3.5 py-2 text-xs font-bold uppercase tracking-wide text-[var(--theme-primary,#84C87F)] shadow-lg
-                            hover:bg-[var(--theme-primary,#84C87F)] hover:text-[var(--theme-bg-main,#064928)] transition-colors"
+                          className="block whitespace-nowrap rounded-full border border-[var(--theme-primary,#00f0ff)]/40 bg-[var(--theme-bg-main,#060913)]
+                            px-3.5 py-2 text-xs font-bold uppercase tracking-wide text-[var(--theme-primary,#00f0ff)] shadow-lg
+                            hover:bg-[var(--theme-primary,#00f0ff)] hover:text-[var(--theme-bg-main,#060913)] transition-colors"
                         >
                           {item.label}
                         </Link>

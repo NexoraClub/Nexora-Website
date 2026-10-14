@@ -6,23 +6,23 @@
  * ============================================================================= */
 :root {
   /* 1. Core Backgrounds */
-  --theme-bg-main: #064928;           /* Primary deep forest/cyber background */
-  --theme-bg-hero: #c2e0a5;           /* Top Hero retro-accent background */
-  --theme-bg-card: rgba(6, 73, 40, 0.85); /* Glassmorphic card surface */
+  --theme-bg-main: #060913;           /* Primary deep cyber obsidian / void */
+  --theme-bg-hero: #dce6ef;           /* Top Hero Lunar Silver / Platinum Frost */
+  --theme-bg-card: rgba(10, 16, 28, 0.85); /* Glassmorphic card surface */
 
   /* 2. Brand Accents & Neon */
-  --theme-primary: #84C87F;           /* Neon lime-green primary accent */
-  --theme-secondary: #38bdf8;         /* Cyan secondary glow */
-  --theme-accent: #84C87F;            /* Interactive highlight */
+  --theme-primary: #00f0ff;           /* Electric Cyber Cyan primary accent */
+  --theme-secondary: #818cf8;         /* Luminous violet secondary glow */
+  --theme-accent: #00f0ff;            /* Interactive highlight */
 
   /* 3. Typography Colors */
-  --theme-text-dark: #08414a;         /* High-contrast dark text (used on light hero) */
-  --theme-text-light: #f3f4f6;        /* High-contrast light text (used on dark body) */
-  --theme-text-muted: rgba(243, 244, 246, 0.7);
+  --theme-text-dark: #060a14;         /* High-contrast dark text (used on light hero) */
+  --theme-text-light: #f8fafc;        /* High-contrast light text (used on dark body) */
+  --theme-text-muted: rgba(226, 232, 240, 0.72);
 
   /* 4. Borders & Accents */
-  --theme-border: rgba(132, 200, 127, 0.28);
-  --theme-border-glow: rgba(132, 200, 127, 0.6);
+  --theme-border: rgba(0, 240, 255, 0.22);
+  --theme-border-glow: rgba(0, 240, 255, 0.6);
 
   /* 5. System mappings */
   --background: var(--theme-bg-main);
@@ -104,7 +104,7 @@ body::-webkit-scrollbar {
 /* Terminal scrollbar (used in mobile menu) */
 .terminal-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(132, 200, 127, 0.4) transparent;
+  scrollbar-color: rgba(0, 240, 255, 0.4) transparent;
 }
 .terminal-scroll::-webkit-scrollbar {
   width: 6px;
@@ -114,11 +114,11 @@ body::-webkit-scrollbar {
   background: transparent;
 }
 .terminal-scroll::-webkit-scrollbar-thumb {
-  background: rgba(132, 200, 127, 0.35);
+  background: rgba(0, 240, 255, 0.35);
   border-radius: 999px;
 }
 .terminal-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(132, 200, 127, 0.55);
+  background: rgba(0, 240, 255, 0.55);
 }
 
 /* Cloud Animations for Hero */

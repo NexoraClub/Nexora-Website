@@ -23,8 +23,8 @@ export default function ContourBackdrop() {
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const computed = getComputedStyle(document.documentElement);
-    const bgCol = computed.getPropertyValue('--theme-bg-main').trim() || '#064928';
-    const fgCol = computed.getPropertyValue('--theme-primary').trim() || '#84C87F';
+    const bgCol = computed.getPropertyValue('--theme-bg-main').trim() || '#060913';
+    const fgCol = computed.getPropertyValue('--theme-primary').trim() || '#00f0ff';
     const fam = computed.getPropertyValue('--font-ibm-plex-mono').trim() || 'ui-monospace';
     const font = `${CELL_H - 4}px ${fam}, monospace`;
 

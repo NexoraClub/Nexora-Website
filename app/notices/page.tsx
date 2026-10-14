@@ -126,7 +126,7 @@ export default function NoticesPage() {
   }, [heroNotice, selectedCategory, searchQuery]);
 
   return (
-    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#064928)] text-[var(--theme-bg-hero,#c2e0a5)]">
+    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
       <ContourBackdrop />
 
       {/* Global Navbar */}
@@ -141,25 +141,25 @@ export default function NoticesPage() {
         <section className="text-center mb-10 sm:mb-14">
           
           {/* Department Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--theme-primary,#84C87F)]/40 bg-[var(--theme-primary,#84C87F)]/10 px-4 py-1.5 text-xs font-bold text-[var(--theme-primary,#84C87F)] backdrop-blur-md shadow-[0_0_12px_rgba(132,200,127,0.2)] mb-4 uppercase tracking-[0.2em] font-terminal">
-            <span className="h-2 w-2 rounded-full bg-[var(--theme-primary,#84C87F)] animate-pulse shadow-[0_0_8px_var(--theme-primary,#84C87F)]" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--theme-primary,#00f0ff)]/40 bg-[var(--theme-primary,#00f0ff)]/10 px-4 py-1.5 text-xs font-bold text-[var(--theme-primary,#00f0ff)] backdrop-blur-md shadow-[0_0_12px_rgba(0, 240, 255,0.2)] mb-4 uppercase tracking-[0.2em] font-terminal">
+            <span className="h-2 w-2 rounded-full bg-[var(--theme-primary,#00f0ff)] animate-pulse shadow-[0_0_8px_var(--theme-primary,#00f0ff)]" />
             <span>ISE Department Bulletin</span>
           </div>
 
           {/* Main Title */}
-          <h1 className="font-clash font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight text-[var(--theme-bg-hero,#c2e0a5)]">
-            NEXORA <span className="text-[var(--theme-primary,#84C87F)]">NOTICEBOARD</span>
+          <h1 className="font-clash font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight text-[var(--theme-bg-hero,#dce6ef)]">
+            NEXORA <span className="text-[var(--theme-primary,#00f0ff)]">NOTICEBOARD</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-3 sm:mt-4 text-base sm:text-lg text-[var(--theme-primary,#84C87F)]/80 max-w-2xl mx-auto leading-relaxed font-cabinet">
+          <p className="mt-3 sm:mt-4 text-base sm:text-lg text-[var(--theme-primary,#00f0ff)]/80 max-w-2xl mx-auto leading-relaxed font-cabinet">
             Official announcements, team updates, and urgent alerts.
           </p>
 
           {/* Decorative Divider */}
           <div
             aria-hidden="true"
-            className="mt-6 mx-auto h-[1px] w-32 sm:w-48 bg-gradient-to-r from-transparent via-[var(--theme-primary,#84C87F)] to-transparent"
+            className="mt-6 mx-auto h-[1px] w-32 sm:w-48 bg-gradient-to-r from-transparent via-[var(--theme-primary,#00f0ff)] to-transparent"
           />
         </section>
 

@@ -34,7 +34,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#064928",
+  themeColor: "#060913",
 };
 
 export const metadata: Metadata = {
@@ -57,7 +57,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=window.location.pathname;if(p==='/'||p===''){document.documentElement.style.backgroundColor='#c2e0a5';}else{document.documentElement.style.backgroundColor='#064928';}}catch(e){}})()`,
+            __html: `(function(){try{var p=window.location.pathname;if(p==='/'||p===''){document.documentElement.style.backgroundColor='#dce6ef';}else{document.documentElement.style.backgroundColor='#060913';}}catch(e){}})()`,
           }}
         />
       </head>

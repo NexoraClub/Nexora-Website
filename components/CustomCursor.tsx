@@ -102,7 +102,7 @@ export default function CustomCursor() {
           width: 32,
           height: 32,
           borderRadius: '50%',
-          border: '2px solid var(--theme-accent, #84C87F)',
+          border: '2px solid var(--theme-accent, #00f0ff)',
           mixBlendMode: 'difference',
           willChange: 'transform',
         }}
@@ -119,8 +119,8 @@ export default function CustomCursor() {
           <motion.div
             key={mode}
             className="fixed top-0 left-0 pointer-events-none z-[999999] whitespace-nowrap
-              rounded-full border border-sky-400/40 bg-[#064928] px-2.5 py-1
-              text-[11px] font-bold uppercase tracking-[0.15em] text-[#84C87F] shadow-lg"
+              rounded-full border border-sky-400/40 bg-[#060913] px-2.5 py-1
+              text-[11px] font-bold uppercase tracking-[0.15em] text-[#00f0ff] shadow-lg"
             style={{ x: mouseX, y: mouseY, translate: '16px 16px', willChange: 'transform' }}
             initial={{ opacity: 0, scale: 0.85 }}
             animate={{ opacity: 1, scale: 1 }}

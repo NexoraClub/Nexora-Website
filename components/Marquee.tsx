@@ -23,7 +23,7 @@ function MarqueeItem({ text, size }: { text: string; size: 'sm' | 'lg' }) {
       >
         {text}
       </span>
-      <span className={`font-bold select-none ${size === 'lg' ? 'text-3xl sm:text-5xl' : 'text-lg text-[var(--theme-primary,#84C87F)]'}`}>
+      <span className={`font-bold select-none ${size === 'lg' ? 'text-3xl sm:text-5xl' : 'text-lg text-[var(--theme-primary,#00f0ff)]'}`}>
         ✦
       </span>
     </span>

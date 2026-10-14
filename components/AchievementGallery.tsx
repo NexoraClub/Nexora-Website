@@ -114,21 +114,21 @@ export default function AchievementGallery({ initialAchievements }: AchievementG
       className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 pt-36 sm:px-8 sm:pb-24 sm:pt-40 lg:px-12"
     >
       <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
-        <p className="mb-4 text-xs font-bold uppercase tracking-[0.35em] text-[var(--theme-primary,#84C87F)] font-terminal">
+        <p className="mb-4 text-xs font-bold uppercase tracking-[0.35em] text-[var(--theme-primary,#00f0ff)] font-terminal">
           Nexora · ISE Department
         </p>
         <h1
           id="achievements-title"
-          className="font-clash font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight text-[var(--theme-bg-hero,#c2e0a5)]"
+          className="font-clash font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight text-[var(--theme-bg-hero,#dce6ef)]"
         >
           Our Achievements
         </h1>
-        <p className="mt-4 text-base leading-relaxed text-[var(--theme-primary,#84C87F)]/80 sm:text-lg font-cabinet">
+        <p className="mt-4 text-base leading-relaxed text-[var(--theme-primary,#00f0ff)]/80 sm:text-lg font-cabinet">
           Celebrating innovation, competitive coding victories, and engineering milestones.
         </p>
         <div
           aria-hidden="true"
-          className="mx-auto mt-6 h-px w-36 bg-gradient-to-r from-transparent via-[var(--theme-primary,#84C87F)] to-transparent"
+          className="mx-auto mt-6 h-px w-36 bg-gradient-to-r from-transparent via-[var(--theme-primary,#00f0ff)] to-transparent"
         />
       </div>
 
@@ -136,13 +136,13 @@ export default function AchievementGallery({ initialAchievements }: AchievementG
         {items.map((achievement, index) => (
           <article
             key={achievement.id || `${achievement.title}-${index}`}
-            className="achievement-reveal group relative flex min-h-72 flex-col overflow-hidden rounded-xl border border-[var(--theme-primary,#84C87F)]/20 bg-[#03080a] p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[var(--theme-primary,#84C87F)]/60 sm:p-7"
+            className="achievement-reveal group relative flex min-h-72 flex-col overflow-hidden rounded-xl border border-[var(--theme-primary,#00f0ff)]/20 bg-[#03080a] p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[var(--theme-primary,#00f0ff)]/60 sm:p-7"
             style={{ transitionDelay: `${(index % 3) * 100}ms` }}
           >
             <div aria-hidden className="terminal-scanlines opacity-20 pointer-events-none" />
 
             {achievement.image ? (
-              <div className="relative mb-6 h-40 overflow-hidden rounded-xl border border-[var(--theme-primary,#84C87F)]/20">
+              <div className="relative mb-6 h-40 overflow-hidden rounded-xl border border-[var(--theme-primary,#00f0ff)]/20">
                 <Image
                   src={achievement.image}
                   alt={achievement.title}
@@ -153,22 +153,22 @@ export default function AchievementGallery({ initialAchievements }: AchievementG
               </div>
             ) : null}
             <div className="relative flex items-center justify-between gap-3">
-              <span className="rounded-full border border-[var(--theme-primary,#84C87F)]/30 bg-[var(--theme-primary,#84C87F)]/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--theme-primary,#84C87F)] font-mono">
+              <span className="rounded-full border border-[var(--theme-primary,#00f0ff)]/30 bg-[var(--theme-primary,#00f0ff)]/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--theme-primary,#00f0ff)] font-mono">
                 {achievement.category}
               </span>
-              <span className="shrink-0 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[var(--theme-primary,#84C87F)] font-mono">
+              <span className="shrink-0 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[var(--theme-primary,#00f0ff)] font-mono">
                 Verified
               </span>
             </div>
-            <h2 className="relative mt-5 text-xl font-clash font-bold leading-snug text-[var(--theme-bg-hero,#c2e0a5)] group-hover:text-white transition-colors">
+            <h2 className="relative mt-5 text-xl font-clash font-bold leading-snug text-[var(--theme-bg-hero,#dce6ef)] group-hover:text-white transition-colors">
               {achievement.title}
             </h2>
             <p className="relative mt-2.5 text-xs sm:text-sm leading-relaxed text-white/70 font-cabinet">
               {achievement.description}
             </p>
-            <div className="relative mt-auto flex flex-col gap-2 border-t border-[var(--theme-primary,#84C87F)]/15 pt-4 text-xs text-[var(--theme-primary,#84C87F)]/70 font-mono sm:flex-row sm:items-center sm:justify-between">
+            <div className="relative mt-auto flex flex-col gap-2 border-t border-[var(--theme-primary,#00f0ff)]/15 pt-4 text-xs text-[var(--theme-primary,#00f0ff)]/70 font-mono sm:flex-row sm:items-center sm:justify-between">
               <span>{achievement.event}</span>
-              <span className="text-[var(--theme-bg-hero,#c2e0a5)]">{achievement.date}</span>
+              <span className="text-[var(--theme-bg-hero,#dce6ef)]">{achievement.date}</span>
             </div>
           </article>
         ))}
