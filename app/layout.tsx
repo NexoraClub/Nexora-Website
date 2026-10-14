@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
+import { AudioProvider } from "@/components/AudioProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,11 +44,11 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${jersey10.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-
-        <SmoothScroll>
-          {children}
-        </SmoothScroll>
-        
+        <AudioProvider>
+          <SmoothScroll>
+            {children}
+          </SmoothScroll>
+        </AudioProvider>
       </body>
     </html>
   );
