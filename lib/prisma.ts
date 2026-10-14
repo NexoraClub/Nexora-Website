@@ -6,7 +6,9 @@ import { PrismaPg } from '@prisma/adapter-pg'
  * Configured with @prisma/adapter-pg for pooled PostgreSQL connections on Supabase.
  * In development, attaches to globalThis to prevent connection pool exhaustion during HMR.
  */
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL })
+const connectionString =
+  process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/nexora_db'
+const adapter = new PrismaPg({ connectionString })
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient }
 
