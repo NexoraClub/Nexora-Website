@@ -32,7 +32,7 @@ export default function EventFilters({
       <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
         {/* Search Field */}
         <div className="relative flex-1 max-w-xl">
-          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-sky-400">
+          <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-[var(--theme-primary,#84C87F)]">
             <Search className="h-4 w-4" />
           </div>
           <input
@@ -40,15 +40,15 @@ export default function EventFilters({
             id="event-search-input"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search events..."
-            className="w-full rounded-full border border-sky-400/30 bg-slate-950/70 py-3 pl-11 pr-11 text-sm text-white placeholder-sky-200/40 backdrop-blur-md transition-all duration-300 focus:border-sky-400 focus:bg-slate-900/90 focus:outline-none focus:ring-2 focus:ring-sky-400/30 shadow-[0_0_15px_rgba(56,189,248,0.1)]"
+            placeholder="Search events, workshops, hackathons..."
+            className="w-full rounded-full border border-[var(--theme-primary,#84C87F)]/30 bg-[#03080a] py-3 pl-11 pr-11 text-sm text-white placeholder-white/40 backdrop-blur-md transition-all duration-300 focus:border-[var(--theme-primary,#84C87F)] focus:outline-none focus:ring-2 focus:ring-[var(--theme-primary,#84C87F)]/20 shadow-[0_0_15px_rgba(132,200,127,0.1)] font-cabinet"
           />
           {searchQuery && (
             <button
               type="button"
               onClick={() => onSearchChange('')}
               aria-label="Clear search query"
-              className="absolute inset-y-0 right-0 flex items-center pr-4 text-sky-300 hover:text-white transition-colors cursor-pointer"
+              className="absolute inset-y-0 right-0 flex items-center pr-4 text-[var(--theme-primary,#84C87F)] hover:text-white transition-colors cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
@@ -57,11 +57,10 @@ export default function EventFilters({
 
         {/* Counter & Clear Filter indicator */}
         <div className="flex items-center justify-between sm:justify-end gap-3 text-xs">
-          <div className="flex items-center gap-2 text-sky-200/70">
-            <SlidersHorizontal className="h-3.5 w-3.5 text-sky-400" />
+          <div className="flex items-center gap-2 text-[var(--theme-primary,#84C87F)]/80 font-mono">
+            <span className="inline-block h-2 w-2 rounded-full bg-[var(--theme-primary,#84C87F)] animate-pulse" />
             <span>
-              Showing <span className="font-semibold text-sky-300">{totalFilteredCount}</span> of{' '}
-              <span className="font-semibold text-white">{totalCount}</span> events
+              Showing <strong className="text-white">{totalFilteredCount}</strong> of {totalCount} events
             </span>
           </div>
 
@@ -69,7 +68,7 @@ export default function EventFilters({
             <button
               type="button"
               onClick={onReset}
-              className="inline-flex items-center gap-1 rounded-full border border-sky-400/30 bg-sky-500/10 px-3 py-1.5 text-xs font-medium text-sky-300 hover:bg-sky-500/20 hover:text-white transition-all cursor-pointer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[var(--theme-primary,#84C87F)]/40 bg-[var(--theme-primary,#84C87F)]/10 px-3 py-1 font-mono text-xs text-[var(--theme-primary,#84C87F)] transition-colors hover:bg-[var(--theme-primary,#84C87F)] hover:text-[var(--theme-bg-main,#064928)] cursor-pointer"
             >
               <X className="h-3 w-3" />
               <span>Reset</span>
@@ -78,26 +77,39 @@ export default function EventFilters({
         </div>
       </div>
 
-      {/* Category Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-sky-500/20">
-        <div className="flex shrink-0 items-center gap-1.5 text-xs text-sky-400 font-semibold uppercase tracking-wider pl-1 pr-2">
-          <Tag className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">Track:</span>
+      {/* Category Pills Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+        <div className="mr-2 flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest text-[var(--theme-primary,#84C87F)]/70">
+          <Tag className="h-3 w-3" />
+          <span>Track:</span>
         </div>
-        {CATEGORIES.map((cat) => {
-          const isActive = selectedCategory === cat;
+
+        <button
+          type="button"
+          onClick={() => onCategoryChange('All Events')}
+          className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-clash font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+            selectedCategory === 'All Events'
+              ? 'bg-[var(--theme-primary,#84C87F)] text-[var(--theme-bg-main,#064928)] shadow-[0_0_15px_rgba(132,200,127,0.4)]'
+              : 'border border-[var(--theme-primary,#84C87F)]/30 bg-[#03080a] text-white/80 hover:border-[var(--theme-primary,#84C87F)] hover:text-white'
+          }`}
+        >
+          All Events
+        </button>
+
+        {CATEGORIES.map((category) => {
+          const isSelected = selectedCategory === category;
           return (
             <button
-              key={cat}
+              key={category}
               type="button"
-              onClick={() => onCategoryChange(cat)}
-              className={`shrink-0 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 cursor-pointer ${
-                isActive
-                  ? 'border border-sky-300 bg-gradient-to-r from-sky-400 to-cyan-400 text-slate-950 shadow-[0_0_15px_rgba(56,189,248,0.5)] font-bold'
-                  : 'border border-sky-500/20 bg-slate-950/60 text-sky-100/70 hover:border-sky-400/50 hover:bg-sky-500/10 hover:text-white'
+              onClick={() => onCategoryChange(category)}
+              className={`shrink-0 rounded-full px-4 py-1.5 text-xs font-clash font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer ${
+                isSelected
+                  ? 'bg-[var(--theme-primary,#84C87F)] text-[var(--theme-bg-main,#064928)] shadow-[0_0_15px_rgba(132,200,127,0.4)]'
+                  : 'border border-[var(--theme-primary,#84C87F)]/30 bg-[#03080a] text-white/80 hover:border-[var(--theme-primary,#84C87F)] hover:text-white'
               }`}
             >
-              {cat}
+              {category}
             </button>
           );
         })}

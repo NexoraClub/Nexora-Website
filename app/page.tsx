@@ -38,12 +38,12 @@ export default function HomePage() {
 
   // Show dark background while checking sessionStorage to prevent layout flash
   if (preloaderFinished === null) {
-    return <div className="min-h-screen bg-[#050610]" />;
+    return <div className="min-h-screen bg-[var(--theme-bg-main,#064928)]" />;
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#050610] text-white">
-      {/* Starting UI Animation ("NEXORA'26") */}
+    <div className="min-h-screen flex flex-col bg-[var(--theme-bg-hero,#c2e0a5)] text-white">
+      {/* Starting UI Animation ("NEXORA") */}
       {preloaderFinished === false && (
         <Preloader onFinish={handlePreloaderFinish} />
       )}
@@ -51,7 +51,7 @@ export default function HomePage() {
       {/* Music Choice Modal */}
       <EnterModal isOpen={showModal} onChoice={handleMusicChoice} />
 
-      <main className="relative min-h-screen w-full bg-[#050610] text-white">
+      <main className="relative min-h-screen w-full bg-[var(--theme-bg-hero,#c2e0a5)] text-white">
         <Navbar />
         <Hero />
         <Footer />

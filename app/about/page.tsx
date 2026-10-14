@@ -3,12 +3,7 @@
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-/* -------------------------------------------------------------------------- */
-/* DATA                                                                       */
-/* Put photos in /public/faculty/*.jpg and /public/about/*.jpg.               */
-/* If an image is missing, an initials avatar is shown instead.               */
-/* -------------------------------------------------------------------------- */
+import ContourBackdrop from "@/components/ContourBackdrop";
 
 type Member = { name: string; role: string; image: string };
 
@@ -35,21 +30,17 @@ const FACULTY: Member[] = [
 ];
 
 const MISSIONS = [
-  "To impart theoretical and practical knowledge through the concepts and technologies in Information Science and Engineering.",
-  "To foster research, collaboration and higher education with premier institutions and industries.",
-  "Promote innovation and entrepreneurship to fulfill the needs of the society and industry.",
+  "To impart theoretical and practical knowledge through modern concepts and technologies in Information Science and Engineering.",
+  "To foster research, collaboration, and higher education with premier institutions and industrial partners.",
+  "To promote student innovation and entrepreneurship to fulfill the technological needs of society and industry.",
 ];
 
 const STATS = [
   { value: "2016", label: "Established" },
-  { value: "60", label: "Annual intake" },
-  { value: "100+", label: "Research papers" },
-  { value: "NBA", label: "Accredited B.E. program" },
+  { value: "60", label: "Annual Student Intake" },
+  { value: "100+", label: "Research Publications" },
+  { value: "NBA", label: "Accredited B.E. Program" },
 ];
-
-/* -------------------------------------------------------------------------- */
-/* SMALL COMPONENTS                                                           */
-/* -------------------------------------------------------------------------- */
 
 function initials(name: string) {
   return name
@@ -62,296 +53,227 @@ function initials(name: string) {
     .toUpperCase();
 }
 
-function Photo({
-  src,
-  alt,
-  className = "",
-  fallbackText,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-  fallbackText: string;
-}) {
-  const [failed, setFailed] = useState(false);
+function FacultyCard({ member, index }: { member: Member; index: number }) {
+  const [imgFailed, setImgFailed] = useState(false);
+  const tag = `ISE_FAC_${String(index + 1).padStart(3, "0")}.dat`;
 
-  if (failed) {
-    return (
-      <div
-        role="img"
-        aria-label={alt}
-        className={`flex items-center justify-center bg-gradient-to-br from-sky-500/20 to-blue-700/20 text-sky-200 font-bold ${className}`}
-      >
-        {fallbackText}
-      </div>
-    );
-  }
-
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src}
-      alt={alt}
-      loading="lazy"
-      onError={() => setFailed(true)}
-      className={`object-cover ${className}`}
-    />
-  );
-}
-
-function SectionTitle({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="font-jersey text-3xl sm:text-4xl tracking-wide text-white drop-shadow-[0_0_14px_rgba(255,255,255,0.3)]">
-      {children}
-    </h2>
-  );
-}
-
-function Divider() {
   return (
     <div
-      aria-hidden="true"
-      className="h-px w-full bg-gradient-to-r from-transparent via-sky-400/40 to-transparent"
-    />
+      className="member-card group relative flex flex-col overflow-hidden rounded-lg
+        border border-[var(--theme-primary,#84C87F)]/20 bg-[#03080a] isolate transition-all duration-300 hover:border-[var(--theme-primary,#84C87F)]/50"
+      style={{ boxShadow: "0 0 0 1px rgba(132,200,127,0.08), 0 20px 50px rgba(0,0,0,0.35)" }}
+    >
+      {/* Terminal window header */}
+      <div className="flex items-center justify-between px-3 py-2 bg-[#080f09] border-b border-[var(--theme-primary,#84C87F)]/10 select-none">
+        <div className="flex items-center gap-1.5">
+          <span className="w-[7px] h-[7px] rounded-full bg-[#FF5F56]/70" />
+          <span className="w-[7px] h-[7px] rounded-full bg-[#FFBD2E]/70" />
+          <span className="w-[7px] h-[7px] rounded-full bg-[#27C93F]/70" />
+        </div>
+        <span className="font-terminal text-[9px] uppercase tracking-[0.2em] text-[var(--theme-primary,#84C87F)]/50">
+          {tag}
+        </span>
+      </div>
+
+      {/* Photo with scanline effect */}
+      <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#080f09]">
+        {!imgFailed ? (
+          <img
+            src={member.image}
+            alt={member.name}
+            loading="lazy"
+            onError={() => setImgFailed(true)}
+            className="absolute inset-0 w-full h-full object-cover contrast-105 group-hover:scale-105 transition-transform duration-500"
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-[#080f09]">
+            <span className="font-clash font-bold text-[var(--theme-primary,#84C87F)]/20 text-5xl">
+              {initials(member.name)}
+            </span>
+          </div>
+        )}
+        <div aria-hidden className="terminal-scanlines opacity-30 group-hover:opacity-0 transition-opacity duration-700" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+      </div>
+
+      {/* Member Details */}
+      <div className="flex flex-col gap-1 px-4 py-3 bg-[#03080a]">
+        <h3 className="font-clash font-bold text-[var(--theme-bg-hero,#c2e0a5)] text-base leading-tight group-hover:text-white transition-colors">
+          {member.name}
+        </h3>
+        <span className="font-terminal uppercase tracking-[0.15em] text-[var(--theme-primary,#84C87F)]/70 text-[10px]">
+          {member.role}
+        </span>
+      </div>
+    </div>
   );
 }
-
-function FacultyCard({ member }: { member: Member }) {
-  return (
-    <li className="group flex flex-col items-center rounded-2xl border border-sky-500/20 bg-[#070b16]/80 p-4 text-center backdrop-blur-md transition-all duration-300 hover:border-sky-400/60 hover:shadow-[0_0_24px_rgba(56,189,248,0.25)]">
-      <Photo
-        src={member.image}
-        alt={member.name}
-        fallbackText={initials(member.name)}
-        className="h-32 w-28 sm:h-36 sm:w-32 rounded-xl border border-sky-400/20 text-2xl"
-      />
-      <p className="mt-3 text-sm font-semibold text-white leading-snug">{member.name}</p>
-      <p className="mt-0.5 text-xs text-sky-200/60">{member.role}</p>
-    </li>
-  );
-}
-
-/* -------------------------------------------------------------------------- */
-/* PAGE                                                                       */
-/* -------------------------------------------------------------------------- */
 
 export default function AboutPage() {
   return (
-    <main className="relative min-h-screen w-full bg-[#050610] text-white selection:bg-sky-500 selection:text-white">
-      {/* Ambient glow, same as the noticeboard */}
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[600px] sm:w-[900px] rounded-full bg-sky-500/10 blur-[140px]" />
-        <div className="absolute top-[40%] -right-40 h-[400px] w-[500px] rounded-full bg-blue-600/5 blur-[150px]" />
-        <div className="absolute -bottom-20 left-10 h-[350px] w-[450px] rounded-full bg-cyan-500/5 blur-[120px]" />
-      </div>
+    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#064928)] text-[var(--theme-bg-hero,#c2e0a5)]">
+      <ContourBackdrop />
 
       <Navbar />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 sm:pt-36 lg:px-8 lg:pt-40">
-        {/* ------------------------------------------------------------------ */}
-        {/* 1. HERO BANNER (college + department, like the photo header)       */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="relative mb-14 overflow-hidden rounded-3xl border border-sky-500/30 shadow-[0_0_35px_rgba(56,189,248,0.15)]">
-          <Photo
-            src="/about/lab-banner.jpg"
-            alt="Students working in the department computer lab"
-            fallbackText=""
-            className="absolute inset-0 h-full w-full opacity-60"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-r from-[#050610] via-[#050610]/80 to-[#050610]/30"
-          />
-          <div className="relative z-10 px-6 py-12 sm:px-10 sm:py-16 lg:py-20 max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1.5 text-xs font-semibold text-sky-300 backdrop-blur-md shadow-[0_0_12px_rgba(56,189,248,0.25)]">
-              <span className="h-2 w-2 rounded-full bg-sky-400 animate-pulse shadow-[0_0_8px_#38bdf8]" />
-              <span className="tracking-wider uppercase">About the Department</span>
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 sm:pt-36 lg:px-8">
+        {/* 1. Header Hero Banner */}
+        <section className="relative mb-16 overflow-hidden rounded-2xl border border-[var(--theme-primary,#84C87F)]/30 bg-[#03080a]/90 p-8 sm:p-12 lg:p-16 shadow-[0_0_50px_rgba(132,200,127,0.1)]">
+          <div className="terminal-scanlines opacity-20 pointer-events-none" />
+          
+          <div className="relative z-10 max-w-3xl">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--theme-primary,#84C87F)]/40 bg-[var(--theme-primary,#84C87F)]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[var(--theme-primary,#84C87F)]">
+              <span className="w-2 h-2 rounded-full bg-[var(--theme-primary,#84C87F)] animate-ping" />
+              <span>About Department</span>
             </div>
 
-            <h1 className="mt-5 font-jersey text-4xl sm:text-5xl md:text-6xl tracking-wide text-white drop-shadow-[0_0_18px_rgba(255,255,255,0.4)]">
-              Information Science <span className="text-sky-400 drop-shadow-[0_0_16px_rgba(56,189,248,0.7)]">&amp; Engineering</span>
+            <h1 className="mt-6 font-clash font-bold text-4xl sm:text-5xl md:text-6xl text-[var(--theme-bg-hero,#c2e0a5)] leading-tight">
+              Information Science <br />
+              <span className="text-[var(--theme-primary,#84C87F)]">&amp; Engineering</span>
             </h1>
 
-            <p className="mt-4 text-base sm:text-lg text-sky-100/80 leading-relaxed">
-              A J Institute of Engineering &amp; Technology
-              <span className="block text-sm text-sky-100/60">
-                A Unit of Laxmi Memorial Educational Trust&reg; &middot; Kottara Chowki, Mangaluru
+            <p className="mt-4 text-base sm:text-lg text-[var(--theme-primary,#84C87F)]/80 leading-relaxed font-cabinet">
+              A J Institute of Engineering &amp; Technology (AJIET)
+              <span className="block text-xs sm:text-sm text-white/60 font-mono mt-1">
+                A Unit of Laxmi Memorial Educational Trust&reg; &middot; Kottara Chowki, Mangaluru, Karnataka
               </span>
             </p>
           </div>
         </section>
 
-        {/* ------------------------------------------------------------------ */}
-        {/* 2. EXPLORE, INNOVATE + PHOTO                                       */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center mb-14">
+        {/* 2. Department Narrative */}
+        <section className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center mb-16">
           <div>
-            <SectionTitle>
+            <h2 className="font-clash font-bold text-2xl sm:text-3xl text-white">
               Explore, Innovate, and Engineer the Future
-            </SectionTitle>
-            <p className="mt-5 text-sm sm:text-base leading-7 text-slate-300 max-w-2xl">
+            </h2>
+            <div className="h-0.5 w-16 bg-[var(--theme-primary,#84C87F)] my-4" />
+            <p className="text-sm sm:text-base leading-relaxed text-white/80 font-cabinet">
               The Department of Information Science and Engineering, established in 2016 as a founding
               branch of AJ Institute of Engineering and Technology in Mangaluru, has rapidly emerged as a
               leading academic unit. Offering an NBA-accredited Bachelor of Engineering program with an
               annual intake of 60 students, the department focuses on equipping students with both
               theoretical and practical skills for success in the rapidly evolving IT industry.
             </p>
-            <p className="mt-4 text-sm sm:text-base leading-7 text-slate-300 max-w-2xl">
+            <p className="mt-4 text-sm sm:text-base leading-relaxed text-white/80 font-cabinet">
               With state-of-the-art infrastructure, including advanced computing facilities and
               specialized laboratories, students gain hands-on experience through innovative projects,
               research initiatives, and engagement with our vibrant startup ecosystem. Our dedicated
-              faculty, with a strong background in both academia and industry, have published two
-              textbooks, two book chapters, and over 100 research papers.
-            </p>
-            <p className="mt-4 text-sm sm:text-base leading-7 text-slate-300 max-w-2xl">
-              Our curriculum, prescribed by Visvesvaraya Technological University (VTU), stays aligned
-              with industry trends. We emphasize holistic student development through workshops,
-              seminars, industry collaborations, and entrepreneurship opportunities, preparing graduates
-              with the technical, leadership, and problem-solving skills necessary for impactful
-              careers. The department remains committed to advancing the information technology sector
-              locally and globally through education, research, innovation, and a thriving startup
-              culture.
+              faculty have published textbooks, chapters, and over 100 research papers.
             </p>
           </div>
 
-          <div className="relative">
-            <div
-              aria-hidden="true"
-              className="absolute -inset-3 rounded-3xl bg-sky-500/10 blur-2xl"
-            />
-            <Photo
-              src="/faculty/lab-classroom.jpg"
-              alt="A faculty member teaching in the computer lab"
-              fallbackText="ISE"
-              className="relative aspect-[4/3] w-full rounded-3xl border border-sky-400/30 shadow-[0_0_30px_rgba(56,189,248,0.2)] text-5xl"
-            />
-          </div>
-        </section>
-
-        {/* Quick facts */}
-        <section aria-label="Department at a glance" className="mb-14">
-          <dl className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {/* Stats Grid */}
+          <div className="grid grid-cols-2 gap-4">
             {STATS.map((s) => (
               <div
                 key={s.label}
-                className="rounded-2xl border border-sky-500/20 bg-[#070b16]/80 px-5 py-5 text-center backdrop-blur-md"
+                className="rounded-xl border border-[var(--theme-primary,#84C87F)]/25 bg-[#03080a]/90 p-6 text-center shadow-lg"
               >
-                <dt className="sr-only">{s.label}</dt>
-                <dd className="font-jersey text-4xl text-sky-300 drop-shadow-[0_0_12px_rgba(56,189,248,0.5)]">
+                <div className="font-clash font-bold text-3xl sm:text-4xl text-[var(--theme-primary,#84C87F)]">
                   {s.value}
-                </dd>
-                <p className="mt-1 text-xs text-slate-400">{s.label}</p>
+                </div>
+                <div className="mt-2 text-xs uppercase tracking-wider text-white/70 font-mono">
+                  {s.label}
+                </div>
               </div>
             ))}
-          </dl>
+          </div>
         </section>
 
-        <Divider />
-
-        {/* ------------------------------------------------------------------ */}
-        {/* 3. VISION & MISSION                                                */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="grid gap-10 py-14 md:grid-cols-2">
-          <div>
-            <SectionTitle>Vision</SectionTitle>
-            <p className="mt-4 text-sm sm:text-base leading-7 text-slate-300 max-w-md">
-              To be a center of excellence in Information Science &amp; Engineering education, research
+        {/* 3. Vision & Mission */}
+        <section className="grid gap-8 md:grid-cols-2 mb-16">
+          <div className="rounded-2xl border border-[var(--theme-primary,#84C87F)]/20 bg-[#03080a]/80 p-8">
+            <h3 className="font-clash font-bold text-2xl text-[var(--theme-bg-hero,#c2e0a5)]">
+              Department Vision
+            </h3>
+            <div className="h-0.5 w-12 bg-[var(--theme-primary,#84C87F)] my-3" />
+            <p className="text-sm sm:text-base leading-relaxed text-white/80 font-cabinet">
+              To be a center of excellence in Information Science &amp; Engineering education, research,
               and training to meet the growing needs of the industry and society.
             </p>
           </div>
 
-          <div>
-            <SectionTitle>Mission</SectionTitle>
-            <ol className="mt-4 space-y-3">
+          <div className="rounded-2xl border border-[var(--theme-primary,#84C87F)]/20 bg-[#03080a]/80 p-8">
+            <h3 className="font-clash font-bold text-2xl text-[var(--theme-bg-hero,#c2e0a5)]">
+              Department Mission
+            </h3>
+            <div className="h-0.5 w-12 bg-[var(--theme-primary,#84C87F)] my-3" />
+            <ul className="space-y-3">
               {MISSIONS.map((m, i) => (
-                <li key={i} className="flex gap-3 text-sm sm:text-base leading-7 text-slate-300">
-                  <span className="mt-1 inline-flex h-6 w-9 shrink-0 items-center justify-center rounded-md border border-sky-400/40 bg-sky-500/15 text-[11px] font-bold text-sky-300">
-                    M{i + 1}
+                <li key={i} className="flex items-start gap-3 text-sm sm:text-base text-white/80 font-cabinet">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded border border-[var(--theme-primary,#84C87F)]/40 bg-[var(--theme-primary,#84C87F)]/10 text-xs font-mono font-bold text-[var(--theme-primary,#84C87F)]">
+                    {i + 1}
                   </span>
                   <span>{m}</span>
                 </li>
               ))}
-            </ol>
+            </ul>
           </div>
         </section>
 
-        <Divider />
-
-        {/* ------------------------------------------------------------------ */}
-        {/* 4. HOD DESK                                                        */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="py-14" aria-labelledby="hod-heading">
-          <div className="relative overflow-hidden rounded-3xl border border-sky-500/30 bg-gradient-to-br from-sky-950/30 via-[#0a0e1c] to-[#070b16] p-6 sm:p-10 shadow-[0_0_35px_rgba(56,189,248,0.12)]">
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-10 -top-10 h-64 w-64 rounded-full bg-sky-500/10 blur-[80px]"
-            />
+        {/* 4. HOD Desk */}
+        <section className="mb-16">
+          <div className="relative overflow-hidden rounded-2xl border border-[var(--theme-primary,#84C87F)]/30 bg-[#03080a] p-6 sm:p-10 shadow-[0_0_40px_rgba(132,200,127,0.1)]">
+            <div className="terminal-scanlines opacity-20 pointer-events-none" />
+            
             <div className="relative z-10 grid gap-8 md:grid-cols-[220px_1fr] md:items-start">
               <div className="flex flex-col items-center md:items-start">
-                <h2
-                  id="hod-heading"
-                  className="font-jersey text-3xl tracking-wide text-white mb-4 self-start"
-                >
-                  HOD Desk
-                </h2>
-                <Photo
-                  src={HOD.image}
-                  alt={HOD.name}
-                  fallbackText={initials(HOD.name)}
-                  className="h-52 w-44 rounded-2xl border border-sky-400/30 shadow-[0_0_20px_rgba(56,189,248,0.25)] text-4xl"
-                />
+                <span className="font-terminal text-xs uppercase tracking-[0.2em] text-[var(--theme-primary,#84C87F)] mb-3">
+                  LEADERSHIP · HOD DESK
+                </span>
+                <div className="w-48 h-56 rounded-xl overflow-hidden border border-[var(--theme-primary,#84C87F)]/40 bg-[#080f09]">
+                  <img
+                    src={HOD.image}
+                    alt={HOD.name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                    }}
+                  />
+                </div>
+                <h4 className="mt-3 font-clash font-bold text-lg text-white">{HOD.name}</h4>
+                <p className="text-xs font-mono text-[var(--theme-primary,#84C87F)]">{HOD.role}</p>
               </div>
 
-              <div className="md:pt-12">
-                <p className="text-sm sm:text-base leading-7 text-slate-300">
+              <div className="md:pt-6 space-y-4 text-sm sm:text-base leading-relaxed text-white/80 font-cabinet">
+                <p>
                   Welcome to the Department of Information Science and Engineering (ISE), which offers an
                   NBA-accredited undergraduate B.E. program dedicated to achieving excellence in technical
                   education. Our vision is to become a center of excellence, empowering students to meet
-                  the evolving needs of industry and society. Our department is committed to nurturing
-                  future innovators and leaders in information science by providing a comprehensive
-                  curriculum that seamlessly integrates theoretical knowledge with practical skills.
+                  the evolving needs of industry and society.
                 </p>
-                <p className="mt-4 text-sm sm:text-base leading-7 text-slate-300">
+                <p>
                   With a team of experienced faculty, state-of-the-art laboratories, and collaborative
                   industry partnerships, we prepare our students to thrive in the dynamic IT landscape.
-                  We have established strong Memorandums of Understanding (MOUs) with leading industries,
-                  enabling our students to gain invaluable real-world experience and stay abreast of the
-                  latest technological advancements. Furthermore, our robust alumni network offers
-                  valuable mentorship and career opportunities, fostering a community of continuous growth
-                  and success.
+                  We have established strong MOUs with leading industries and foster student-led clubs
+                  like Nexora to champion real-world coding, competitive development, and research.
                 </p>
-                <p className="mt-5 text-sm font-semibold text-white">{HOD.name}</p>
-                <p className="text-xs text-sky-300/80">{HOD.role}</p>
               </div>
             </div>
           </div>
         </section>
 
-        <Divider />
-
-        {/* ------------------------------------------------------------------ */}
-        {/* 5. FACULTY & STAFF                                                 */}
-        {/* ------------------------------------------------------------------ */}
-        <section className="pt-14" aria-labelledby="faculty-heading">
-          <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
-            <div>
-              <h2
-                id="faculty-heading"
-                className="font-jersey text-3xl sm:text-4xl tracking-wide text-white drop-shadow-[0_0_14px_rgba(255,255,255,0.3)]"
-              >
+        {/* 5. Faculty & Staff Grid */}
+        <section>
+          <div className="mb-8 flex flex-col gap-2">
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-[var(--theme-primary,#84C87F)]/20" />
+              <h2 className="font-clash font-bold text-2xl sm:text-3xl text-white uppercase tracking-wider text-center">
                 Faculty &amp; Staff
               </h2>
-              <p className="mt-1 text-sm text-sky-100/60">
-                {FACULTY.length} members across teaching, programming and lab instruction.
-              </p>
+              <div className="h-px flex-1 bg-[var(--theme-primary,#84C87F)]/20" />
             </div>
+            <p className="text-center font-mono text-xs uppercase tracking-widest text-[var(--theme-primary,#84C87F)]/70">
+              Department Mentors · Research Guides · Technical Instructors
+            </p>
           </div>
 
-          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-            {FACULTY.map((m) => (
-              <FacultyCard key={m.name} member={m} />
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            {FACULTY.map((member, i) => (
+              <FacultyCard key={member.name} member={member} index={i} />
             ))}
-          </ul>
+          </div>
         </section>
       </div>
 

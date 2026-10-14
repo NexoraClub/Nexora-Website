@@ -12,7 +12,6 @@ import {
   Calendar,
   MapPin,
   ArrowRight,
-  UserCheck,
   Sparkles,
 } from 'lucide-react';
 import { EventItem } from '@/lib/types';
@@ -36,15 +35,27 @@ export default function EventCard({ event, onViewDetails, onRegister }: EventCar
   const IconComponent = ICON_MAP[event.iconName] || Code;
 
   return (
-    <div className="group relative flex flex-col h-full overflow-hidden rounded-2xl border border-sky-500/25 bg-slate-950/70 backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:border-sky-400/70 hover:shadow-[0_0_30px_rgba(56,189,248,0.25)]">
-      {/* Top glowing edge line */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-sky-400/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-      />
+    <div
+      className="group relative flex flex-col h-full overflow-hidden rounded-xl border border-[var(--theme-primary,#84C87F)]/25 bg-[#03080a] isolate transition-all duration-300 hover:border-[var(--theme-primary,#84C87F)]/60 hover:-translate-y-1.5"
+      style={{
+        boxShadow:
+          '0 0 0 1px rgba(132,200,127,0.1), 0 24px 60px rgba(0,0,0,0.45), 0 0 40px rgba(132,200,127,0.08)',
+      }}
+    >
+      {/* Terminal window header */}
+      <div className="flex items-center justify-between px-3 py-2 bg-[#080f09] border-b border-[var(--theme-primary,#84C87F)]/10 select-none">
+        <div className="flex items-center gap-1.5">
+          <span className="w-[7px] h-[7px] rounded-full bg-[#FF5F56]/70" />
+          <span className="w-[7px] h-[7px] rounded-full bg-[#FFBD2E]/70" />
+          <span className="w-[7px] h-[7px] rounded-full bg-[#27C93F]/70" />
+        </div>
+        <span className="font-terminal text-[9px] uppercase tracking-[0.2em] text-[var(--theme-primary,#84C87F)]/60">
+          {event.category}
+        </span>
+      </div>
 
       {/* Event Cover Image Container */}
-      <div className="relative h-52 w-full overflow-hidden bg-slate-900">
+      <div className="relative h-48 w-full overflow-hidden bg-[#080f09]">
         <Image
           src={event.imageUrl}
           alt={`${event.title} cover image`}
@@ -53,73 +64,71 @@ export default function EventCard({ event, onViewDetails, onRegister }: EventCar
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
 
-        {/* Gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
-        <div className="absolute inset-0 bg-sky-950/20 mix-blend-overlay group-hover:bg-sky-950/0 transition-colors" />
+        <div aria-hidden className="terminal-scanlines opacity-30" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-[#03080a] via-transparent to-transparent" />
 
         {/* Top Badges */}
-        <div className="absolute left-3.5 top-3.5 right-3.5 flex items-center justify-between gap-2">
-          {/* Category Badge with Icon */}
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/40 bg-slate-950/80 px-3 py-1 text-xs font-semibold text-sky-300 backdrop-blur-md shadow-[0_0_12px_rgba(56,189,248,0.2)]">
-            <IconComponent className="h-3.5 w-3.5 text-sky-400" />
-            <span>{event.category}</span>
-          </span>
-
-          {/* Status Badge */}
-          <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/40 bg-emerald-950/80 px-2.5 py-1 text-[11px] font-medium text-emerald-300 backdrop-blur-md">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span>Upcoming</span>
-          </span>
+        <div className="absolute top-3 left-3 z-10 flex flex-wrap gap-2">
+          {event.registrationOpen ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-[var(--theme-primary,#84C87F)] px-2.5 py-0.5 text-[10px] font-clash font-bold uppercase tracking-wider text-[var(--theme-bg-main,#064928)] shadow-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--theme-bg-main,#064928)] animate-pulse" />
+              Open
+            </span>
+          ) : (
+            <span className="inline-flex items-center rounded-full bg-black/60 px-2.5 py-0.5 text-[10px] font-mono uppercase tracking-wider text-white/70 backdrop-blur-md">
+              Completed
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Card Content */}
-      <div className="flex flex-1 flex-col p-5 sm:p-6 justify-between">
+      {/* Content Area */}
+      <div className="flex flex-1 flex-col justify-between p-5">
         <div>
-          {/* Title */}
-          <h3 className="text-xl font-bold tracking-tight text-white group-hover:text-sky-300 transition-colors">
+          <div className="flex items-center gap-2 text-xs font-mono text-[var(--theme-primary,#84C87F)]/70">
+            <IconComponent className="h-3.5 w-3.5" />
+            <span>{event.organizer}</span>
+          </div>
+
+          <h3 className="mt-2 text-xl font-clash font-bold leading-tight text-[var(--theme-bg-hero,#c2e0a5)] group-hover:text-white transition-colors">
             {event.title}
           </h3>
 
-          {/* Description */}
-          <p className="mt-2.5 text-sm text-sky-100/70 leading-relaxed line-clamp-3">
+          <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-white/70 line-clamp-2 font-cabinet">
             {event.description}
           </p>
 
-          {/* Date & Venue meta */}
-          <div className="mt-5 space-y-2 border-t border-sky-500/15 pt-4 text-xs text-sky-200/60">
+          <div className="mt-4 flex flex-col gap-1.5 pt-3 border-t border-[var(--theme-primary,#84C87F)]/10 text-xs text-[var(--theme-primary,#84C87F)]/70 font-mono">
             <div className="flex items-center gap-2">
-              <Calendar className="h-3.5 w-3.5 shrink-0 text-sky-400" />
+              <Calendar className="h-3.5 w-3.5 shrink-0" />
               <span className="truncate">{event.dateDisplay}</span>
             </div>
             <div className="flex items-center gap-2">
-              <MapPin className="h-3.5 w-3.5 shrink-0 text-sky-400" />
+              <MapPin className="h-3.5 w-3.5 shrink-0" />
               <span className="truncate">{event.venueDisplay}</span>
             </div>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-6 pt-4 border-t border-sky-500/15 flex items-center gap-3">
-          {/* View Details */}
+        <div className="mt-5 flex items-center gap-3 pt-3 border-t border-[var(--theme-primary,#84C87F)]/10">
           <button
             type="button"
             onClick={() => onViewDetails(event)}
-            className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-sky-400/30 bg-sky-950/40 py-2.5 px-3 text-xs font-semibold text-sky-200 backdrop-blur-sm transition-all duration-200 hover:border-sky-400 hover:bg-sky-500/20 hover:text-white cursor-pointer active:scale-[0.98]"
+            data-cursor="Details"
+            className="flex-1 rounded-full border border-[var(--theme-primary,#84C87F)]/30 bg-[var(--theme-primary,#84C87F)]/10 py-2.5 text-xs font-clash font-bold uppercase tracking-wider text-[var(--theme-bg-hero,#c2e0a5)] transition-all hover:bg-[var(--theme-primary,#84C87F)] hover:text-[var(--theme-bg-main,#064928)] cursor-pointer"
           >
-            <span>View Details</span>
-            <ArrowRight className="h-3.5 w-3.5" />
+            Details
           </button>
 
-          {/* Register Now (if open) */}
           {event.registrationOpen && (
             <button
               type="button"
               onClick={() => onRegister(event)}
-              className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-xl border border-sky-300/50 bg-gradient-to-r from-sky-500 to-cyan-500 py-2.5 px-3 text-xs font-semibold text-slate-950 shadow-[0_0_15px_rgba(56,189,248,0.35)] transition-all duration-200 hover:from-sky-400 hover:to-cyan-400 hover:shadow-[0_0_22px_rgba(56,189,248,0.55)] cursor-pointer active:scale-[0.98]"
+              data-cursor="Register"
+              className="flex-1 rounded-full bg-[var(--theme-primary,#84C87F)] py-2.5 text-xs font-clash font-bold uppercase tracking-wider text-[var(--theme-bg-main,#064928)] shadow-md transition-all hover:bg-[var(--theme-bg-hero,#c2e0a5)] cursor-pointer"
             >
-              <UserCheck className="h-3.5 w-3.5 text-slate-950" />
-              <span>Register Now</span>
+              Register
             </button>
           )}
         </div>

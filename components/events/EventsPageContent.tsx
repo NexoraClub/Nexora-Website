@@ -95,14 +95,14 @@ export default function EventsPageContent({ initialEvents }: EventsPageContentPr
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
-              <p className="font-jersey text-xs tracking-[0.25em] uppercase text-sky-400">
+              <p className="font-terminal text-xs tracking-[0.25em] uppercase text-[var(--theme-primary,#84C87F)]">
                 ACTIVE TRACKS &amp; COMPETITIONS
               </p>
-              <h2 className="mt-1 text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
+              <h2 className="mt-1 text-2xl sm:text-3xl md:text-4xl font-clash font-bold tracking-tight text-[var(--theme-bg-hero,#c2e0a5)]">
                 Featured Department Events
               </h2>
             </div>
-            <p className="text-xs sm:text-sm text-sky-200/60 max-w-md">
+            <p className="text-xs sm:text-sm text-[var(--theme-primary,#84C87F)]/70 max-w-md font-cabinet">
               Choose your track, connect with mentors, and collaborate on cutting-edge engineering projects.
             </p>
           </div>
@@ -135,19 +135,19 @@ export default function EventsPageContent({ initialEvents }: EventsPageContentPr
           </div>
         ) : (
           /* Friendly Empty State */
-          <div className="rounded-3xl border border-sky-500/25 bg-slate-950/60 p-12 text-center backdrop-blur-md shadow-[0_0_30px_rgba(56,189,248,0.1)]">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-sky-400/30 bg-sky-500/10 text-sky-400 shadow-[0_0_20px_rgba(56,189,248,0.2)]">
+          <div className="rounded-2xl border border-[var(--theme-primary,#84C87F)]/25 bg-[#03080a] p-12 text-center shadow-[0_0_30px_rgba(132,200,127,0.1)]">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-[var(--theme-primary,#84C87F)]/40 bg-[var(--theme-primary,#84C87F)]/10 text-[var(--theme-primary,#84C87F)]">
               <SearchX className="h-7 w-7" />
             </div>
-            <h3 className="mt-4 text-xl font-bold text-white">No Matching Events Found</h3>
-            <p className="mt-2 max-w-md mx-auto text-sm text-sky-100/70 leading-relaxed">
+            <h3 className="mt-4 text-xl font-clash font-bold text-[var(--theme-bg-hero,#c2e0a5)]">No Matching Events Found</h3>
+            <p className="mt-2 max-w-md mx-auto text-sm text-[var(--theme-primary,#84C87F)]/70 leading-relaxed font-cabinet">
               We couldn&apos;t find any events matching your search keyword &quot;{searchQuery}&quot; in the &quot;{selectedCategory}&quot; category.
             </p>
             <div className="mt-6">
               <button
                 type="button"
                 onClick={handleResetFilters}
-                className="inline-flex items-center gap-2 rounded-xl border border-sky-400/40 bg-sky-500/20 px-5 py-2.5 text-xs font-semibold text-sky-300 hover:bg-sky-500/30 hover:text-white transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-full border border-[var(--theme-primary,#84C87F)]/40 bg-[var(--theme-primary,#84C87F)]/20 px-5 py-2.5 text-xs font-clash font-bold uppercase tracking-wider text-[var(--theme-primary,#84C87F)] hover:bg-[var(--theme-primary,#84C87F)] hover:text-[var(--theme-bg-main,#064928)] transition-all cursor-pointer"
               >
                 <RefreshCcw className="h-3.5 w-3.5" />
                 <span>Clear All Filters</span>

@@ -1,35 +1,159 @@
 @import "tailwindcss";
 
+/* =============================================================================
+ * NEXORA WEB PLATFORM — GLOBAL DESIGN TOKENS & COLOR THEME
+ * Adjust the values below to easily re-theme the entire website.
+ * ============================================================================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 1. Core Backgrounds */
+  --theme-bg-main: #064928;           /* Primary deep forest/cyber background */
+  --theme-bg-hero: #c2e0a5;           /* Top Hero retro-accent background */
+  --theme-bg-card: rgba(6, 73, 40, 0.85); /* Glassmorphic card surface */
+
+  /* 2. Brand Accents & Neon */
+  --theme-primary: #84C87F;           /* Neon lime-green primary accent */
+  --theme-secondary: #38bdf8;         /* Cyan secondary glow */
+  --theme-accent: #84C87F;            /* Interactive highlight */
+
+  /* 3. Typography Colors */
+  --theme-text-dark: #08414a;         /* High-contrast dark text (used on light hero) */
+  --theme-text-light: #f3f4f6;        /* High-contrast light text (used on dark body) */
+  --theme-text-muted: rgba(243, 244, 246, 0.7);
+
+  /* 4. Borders & Accents */
+  --theme-border: rgba(132, 200, 127, 0.28);
+  --theme-border-glow: rgba(132, 200, 127, 0.6);
+
+  /* 5. System mappings */
+  --background: var(--theme-bg-main);
+  --foreground: var(--theme-text-light);
+}
+
+@theme {
+  --font-clash: var(--font-clash-display), sans-serif;
+  --font-cabinet: var(--font-cabinet-grotesk), sans-serif;
+  --font-terminal: var(--font-ibm-plex-mono), "Courier New", monospace;
+  --font-jersey: var(--font-jersey10), sans-serif;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-jersey: var(--font-jersey10);
+  --color-background: var(--theme-bg-main);
+  --color-foreground: var(--theme-text-light);
+  --font-sans: var(--font-cabinet-grotesk), var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), var(--font-geist-mono), monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base Body & Reset */
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
   -webkit-tap-highlight-color: transparent;
+  background: var(--theme-bg-main);
+  color: var(--theme-text-light);
+  font-family: var(--font-cabinet-grotesk), sans-serif;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom Selection Highlight */
+::selection {
+  background-color: var(--theme-primary);
+  color: var(--theme-text-dark);
+}
+::-moz-selection {
+  background-color: var(--theme-primary);
+  color: var(--theme-text-dark);
+}
+
+/* Custom Cursor: hide default mouse when pointer is fine (desktop) */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+
+  body.native-cursor,
+  body.native-cursor * {
+    cursor: revert !important;
+  }
+}
+
+/* ─── Terminal-style mobile menu scanlines ─── */
+@keyframes terminal-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.terminal-cursor {
+  animation: terminal-blink 1s step-end infinite;
+}
+
+.terminal-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.25;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.5) 0.5px, transparent 0.6px);
+  background-size: 4px 4px;
+}
+
+/* Terminal scrollbar (used in mobile menu) */
+.terminal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(132, 200, 127, 0.4) transparent;
+}
+.terminal-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.terminal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(132, 200, 127, 0.35);
+  border-radius: 999px;
+}
+.terminal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(132, 200, 127, 0.55);
+}
+
+/* Cloud Animations for Hero */
+@keyframes hero-cloud-drift {
+  from { transform: translateX(-55vw); }
+  to { transform: translateX(132vw); }
+}
+
+@keyframes hero-cloud-bob {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: 1.4%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cloud {
+    animation: none !important;
+  }
+}
+
+/* Hero text min-height (matching reference responsive breakpoints) */
+.home-hero-text {
+  min-height: calc(60svh - 100vw * 0.474652 + 40px);
+}
+@media (min-width: 640px) {
+  .home-hero-text {
+    min-height: calc(60svh - 100vw * 0.474652 + 64px);
+  }
+}
+@media (min-width: 768px) {
+  .home-hero-text {
+    min-height: calc(100vh - 100vw * 0.474652 + 88px);
+  }
+}
+@media (min-width: 1024px) {
+  .home-hero-text {
+    min-height: calc(100vh - 100vw * 0.474652 + 112px);
+  }
 }
