@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAudio } from "@/components/AudioProvider";
 
 const navLinks = [
   { name: "HOME", href: "/" },
@@ -18,6 +19,7 @@ const navLinks = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { musicPlaying, audioInitialized, toggleMusic } = useAudio();
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -66,6 +68,28 @@ export default function Navbar() {
             );
           })}
         </div>
+
+        {/* Music Control Button */}
+        {audioInitialized && (
+          <button
+            onClick={toggleMusic}
+            aria-label={musicPlaying ? "Pause music" : "Play music"}
+            className="ml-2 flex h-9 w-9 items-center justify-center rounded-full
+              border border-sky-400/40 text-sky-400 transition-all duration-300
+              hover:bg-sky-400/10 hover:scale-105 active:scale-95 cursor-pointer"
+          >
+            {musicPlaying ? (
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
+            ) : (
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <path d="M5 3.868v16.264a1 1 0 001.574.832l12.198-8.132a1 1 0 000-1.664L6.574 3.036A1 1 0 005 3.868z" />
+              </svg>
+            )}
+          </button>
+        )}
 
         {/* Mobile Menu Button */}
         <button

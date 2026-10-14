@@ -10,4 +10,5 @@ export * from './prisma'
 export * from './supabase'
 export * from './admin-auth'
 export * from './events-data'
+export * from './env'
 
