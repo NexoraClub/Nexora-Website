@@ -19,7 +19,7 @@ export default function AdminPage() {
   const [submitting, setSubmitting] = useState(false)
 
   // Login form state (email and password only)
-  const [email, setEmail] = useState('nexora.ise@ajiet.edu.in')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [rememberEmail, setRememberEmail] = useState(true)
