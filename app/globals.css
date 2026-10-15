@@ -47,7 +47,7 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-tap-highlight-color: transparent;
   background: var(--theme-bg-main);
   color: var(--theme-text-light);
@@ -142,6 +142,74 @@ body::-webkit-scrollbar {
 .home-hero-text {
   min-height: calc(60svh - 100vw * 0.474652 + 40px);
 }
+
+@property --cursor-x {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: -300px;
+}
+
+@property --cursor-y {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: -300px;
+}
+
+.hero-title {
+  color: #071426;
+  background-image: linear-gradient(110deg, #071426 8%, #123e62 55%, #075b76 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 0 rgb(255 255 255 / 0.3))
+    drop-shadow(0 8px 18px rgb(7 20 38 / 0.14));
+}
+
+.hero-color-reveal {
+  background: linear-gradient(180deg, #68bdff 0%, #8ed2ff 58%, #bfe7fb 100%);
+  transition: --cursor-x 90ms ease-out, --cursor-y 90ms ease-out;
+  -webkit-mask-image: radial-gradient(
+    circle 190px at var(--cursor-x, -300px) var(--cursor-y, -300px),
+    #000 0%,
+    rgb(0 0 0 / 0.92) 48%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle 190px at var(--cursor-x, -300px) var(--cursor-y, -300px),
+    #000 0%,
+    rgb(0 0 0 / 0.92) 48%,
+    transparent 100%
+  );
+}
+
+.hero-color-reveal .hero-cloud svg {
+  filter: drop-shadow(0 3px 8px rgb(255 255 255 / 0.35));
+}
+
+.hero-landscape-reveal {
+  overflow: hidden;
+  transition: --cursor-x 90ms ease-out, --cursor-y 90ms ease-out;
+  -webkit-mask-image: radial-gradient(
+    circle 190px at var(--cursor-x, -300px) var(--cursor-y, -300px),
+    #000 0%,
+    rgb(0 0 0 / 0.92) 48%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle 190px at var(--cursor-x, -300px) var(--cursor-y, -300px),
+    #000 0%,
+    rgb(0 0 0 / 0.92) 48%,
+    transparent 100%
+  );
+}
+
+.hero-landscape-reveal img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  filter: url(#hero-landscape-palette) drop-shadow(0 1px 0 rgb(23 58 43 / 0.7));
+}
+
 @media (min-width: 640px) {
   .home-hero-text {
     min-height: calc(60svh - 100vw * 0.474652 + 64px);

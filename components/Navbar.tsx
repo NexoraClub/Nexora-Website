@@ -104,7 +104,9 @@ const Navbar = () => {
   const linkRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const menuPanelRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const pathname = usePathname();
+  const isHomePage = pathname === '/';
   const lenis = useLenis();
   const { musicPlaying, audioInitialized, toggleMusic } = useAudio();
 
@@ -153,7 +155,6 @@ const Navbar = () => {
     );
     observer.observe(nav);
     return () => observer.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* ─── Escape key closes menu ─── */
@@ -161,7 +162,6 @@ const Navbar = () => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* ─── Background color per pathname ─── */
@@ -191,43 +191,49 @@ const Navbar = () => {
     if (!bar) return;
     gsap.killTweensOf(bar);
     gsap.to(bar, { scaleX: 0, transformOrigin: 'right center', duration: 0.25, ease: 'power2.in' });
-    gsap.to(link, { color: '#ffffff', duration: 0.2, ease: 'power1.in' });
+    gsap.to(link, { color: isHomePage ? '#12304a' : '#ffffff', duration: 0.2, ease: 'power1.in' });
   };
 
   return (
     <>
       <nav
         ref={navRef}
-        className="relative z-50 mx-auto mt-3 sm:mt-5 w-[calc(100%-24px)]
-          xl:w-[88%] xl:max-w-[1320px]
-          flex items-center justify-between bg-[var(--theme-bg-main,#060913)] text-white shadow-xl
-          py-3 md:py-5 px-4 xl:px-8 rounded-xl xl:rounded-2xl"
+        className={`relative z-50 mx-auto mt-3 sm:mt-5 w-[calc(100%-24px)]
+          xl:max-w-[1320px] flex items-center justify-between py-2 md:py-3 px-4 xl:px-8
+          transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300
+          ${isHomePage
+            ? 'rounded-full border border-[#233556]/45 bg-white/10 text-[#12304a] shadow-[0_0_18px_rgba(35,53,86,0.28),0_8px_24px_rgba(17,56,82,0.08),inset_0_1px_0_rgba(255,255,255,0.55)] ring-1 ring-[#233556]/15 backdrop-blur-md'
+            : 'rounded-xl bg-[var(--theme-bg-main,#060913)] text-white shadow-xl xl:rounded-2xl'}
+          xl:w-[88%]`}
       >
         {/* ── Brand ── */}
-        <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+        <div className="flex items-center">
           <Link
             href="/"
             onClick={() => menuOpen && closeMenu()}
+            aria-label="Nexora home"
             data-cursor="Home"
-            className="flex items-center gap-2.5 shrink-0 select-none group"
+            className="flex shrink-0 select-none items-center transition-transform duration-200 hover:scale-[1.03]"
           >
-            <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-[var(--theme-primary,#00f0ff)] text-[var(--theme-bg-main,#060913)] shadow-[0_0_15px_var(--theme-primary,#00f0ff)] group-hover:scale-105 transition-transform duration-200">
-              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                <path d="M12 2 L13.8 9.5 L21 12 L13.8 14.5 L12 22 L10.2 14.5 L3 12 L10.2 9.5 Z" />
-              </svg>
-            </div>
-            <span className="font-clash font-bold whitespace-nowrap text-white group-hover:text-[var(--theme-primary,#00f0ff)] transition-colors duration-200
-              text-base sm:text-lg md:text-xl lg:text-2xl tracking-wide">
-              Nexora
-            </span>
+            <span
+              aria-hidden="true"
+              className="block h-8 w-32 sm:h-9 sm:w-36"
+              style={{
+                background: isHomePage
+                  ? 'linear-gradient(110deg, #071426 8%, #123e62 55%, #075b76 100%)'
+                  : '#f8fafc',
+                maskImage: 'url("/logo-navbar.png")',
+                maskMode: 'alpha',
+                maskPosition: 'center',
+                maskRepeat: 'no-repeat',
+                maskSize: '100% 100%',
+                WebkitMaskImage: 'url("/logo-navbar.png")',
+                WebkitMaskPosition: 'center',
+                WebkitMaskRepeat: 'no-repeat',
+                WebkitMaskSize: '100% 100%',
+              }}
+            />
           </Link>
-          <span
-            aria-hidden
-            className="shrink-0 w-[3px] h-4 sm:h-5 rounded-full bg-gradient-to-b from-white/80 via-[var(--theme-bg-hero,#dce6ef)] to-[var(--theme-primary,#00f0ff)] hidden sm:block"
-          />
-          <span className="text-[9px] font-mono tracking-wider text-[var(--theme-primary,#00f0ff)]/70 hidden sm:inline uppercase">
-            ISE · AJIET
-          </span>
         </div>
 
         {/* ── Desktop Links ── */}
@@ -238,12 +244,27 @@ const Navbar = () => {
               href={link.href}
               ref={(el) => { linkRefs.current[i] = el; }}
               onMouseEnter={() => handleMouseEnter(i)}
-              onMouseLeave={() => handleMouseLeave(i)}
+              onMouseLeave={() => {
+                handleMouseLeave(i);
+                setHoveredLink(null);
+              }}
+              onFocus={() => setHoveredLink(link.href)}
               data-cursor={link.label}
-              className="relative text-white font-semibold uppercase cursor-pointer
-                text-sm tracking-wide lg:text-base lg:tracking-wider"
+              onBlur={() => setHoveredLink(null)}
+              onPointerEnter={() => setHoveredLink(link.href)}
+              className={`relative font-semibold uppercase cursor-pointer
+                ${isHomePage ? 'text-[#12304a]' : 'text-white'}
+                isolate rounded-full px-3 py-2 text-sm tracking-wide lg:text-base lg:tracking-wider`}
               style={{ textDecoration: 'none' }}
             >
+              {hoveredLink === link.href && (
+                <motion.span
+                  layoutId="navbar-link-highlight"
+                  aria-hidden
+                  className="absolute inset-0 -z-10 rounded-full border border-sky-200/15 bg-sky-300/15 shadow-[inset_0_1px_rgba(255,255,255,0.12)]"
+                  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                />
+              )}
               {link.label}
               <span
                 className="nav-bar absolute left-0 -bottom-1 w-full h-[2px] bg-[var(--theme-primary,#00f0ff)]"

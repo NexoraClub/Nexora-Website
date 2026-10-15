@@ -5,35 +5,35 @@ import Hero from "@/components/Hero";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Preloader from "@/components/Preloader";
-import EnterModal from "@/components/EnterModal";
 import { useAudio } from "@/components/AudioProvider";
 
 export default function HomePage() {
   const [preloaderFinished, setPreloaderFinished] = useState<boolean | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const { audioInitialized, initializeAudio } = useAudio();
+  const [introStarted, setIntroStarted] = useState(false);
+  const { initializeAudio } = useAudio();
 
   useEffect(() => {
     // Check sessionStorage on mount to determine whether preloader should show
     const hasSeenPreloader =
       typeof window !== "undefined" &&
       sessionStorage.getItem("preloaderShown") === "true";
-    setPreloaderFinished(hasSeenPreloader);
-  }, []);
+
+    queueMicrotask(() => {
+      setPreloaderFinished(hasSeenPreloader);
+      if (hasSeenPreloader) {
+        initializeAudio(true);
+        setIntroStarted(true);
+      }
+    });
+  }, [initializeAudio]);
 
   const handlePreloaderFinish = () => {
     setPreloaderFinished(true);
     if (typeof window !== "undefined") {
       sessionStorage.setItem("preloaderShown", "true");
     }
-    if (!audioInitialized) {
-      setShowModal(true);
-    }
-  };
-
-  const handleMusicChoice = (withMusic: boolean) => {
-    setShowModal(false);
-    initializeAudio(withMusic);
+    initializeAudio(true);
+    setIntroStarted(true);
   };
 
   // Show dark background while checking sessionStorage to prevent layout flash
@@ -48,12 +48,9 @@ export default function HomePage() {
         <Preloader onFinish={handlePreloaderFinish} />
       )}
 
-      {/* Music Choice Modal */}
-      <EnterModal isOpen={showModal} onChoice={handleMusicChoice} />
-
       <main className="relative min-h-screen w-full bg-[var(--theme-bg-hero,#dce6ef)] text-white">
         <Navbar />
-        <Hero />
+        <Hero introStarted={introStarted} />
         <Footer />
       </main>
     </div>
