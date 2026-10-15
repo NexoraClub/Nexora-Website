@@ -10,6 +10,7 @@ import NoticeCard, {
   AttachmentIcon,
 } from "@/components/NoticeCard";
 import NoticeModal from "@/components/NoticeModal";
+import ContourBackdrop from "@/components/ContourBackdrop";
 
 type CategoryFilter = "All" | NoticeCategory;
 
@@ -125,16 +126,8 @@ export default function NoticesPage() {
   }, [heroNotice, selectedCategory, searchQuery]);
 
   return (
-    <main className="relative min-h-screen w-full bg-[#050610] text-white selection:bg-sky-500 selection:text-white">
-      {/* Background ambient neon glow matching Nexora theme */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0 overflow-hidden"
-      >
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[600px] sm:w-[900px] rounded-full bg-sky-500/10 blur-[140px]" />
-        <div className="absolute top-[40%] -right-40 h-[400px] w-[500px] rounded-full bg-blue-600/5 blur-[150px]" />
-        <div className="absolute -bottom-20 left-10 h-[350px] w-[450px] rounded-full bg-cyan-500/5 blur-[120px]" />
-      </div>
+    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
+      <ContourBackdrop />
 
       {/* Global Navbar */}
       <Navbar />
@@ -148,25 +141,25 @@ export default function NoticesPage() {
         <section className="text-center mb-10 sm:mb-14">
           
           {/* Department Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1.5 text-xs font-semibold text-sky-300 backdrop-blur-md shadow-[0_0_12px_rgba(56,189,248,0.25)] mb-4">
-            <span className="h-2 w-2 rounded-full bg-sky-400 animate-pulse shadow-[0_0_8px_#38bdf8]" />
-            <span className="tracking-wider uppercase">ISE Department Bulletin</span>
+          <div className="inline-flex items-center gap-2 rounded-full border border-[var(--theme-primary,#00f0ff)]/40 bg-[var(--theme-primary,#00f0ff)]/10 px-4 py-1.5 text-xs font-bold text-[var(--theme-primary,#00f0ff)] backdrop-blur-md shadow-[0_0_12px_rgba(0, 240, 255,0.2)] mb-4 uppercase tracking-[0.2em] font-terminal">
+            <span className="h-2 w-2 rounded-full bg-[var(--theme-primary,#00f0ff)] animate-pulse shadow-[0_0_8px_var(--theme-primary,#00f0ff)]" />
+            <span>ISE Department Bulletin</span>
           </div>
 
           {/* Main Title */}
-          <h1 className="font-jersey text-4xl sm:text-5xl md:text-6xl tracking-wide text-white drop-shadow-[0_0_18px_rgba(255,255,255,0.4)]">
-            NEXORA <span className="text-sky-400 drop-shadow-[0_0_16px_rgba(56,189,248,0.7)]">NOTICEBOARD</span>
+          <h1 className="font-clash font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight text-[var(--theme-bg-hero,#dce6ef)]">
+            NEXORA <span className="text-[var(--theme-primary,#00f0ff)]">NOTICEBOARD</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="mt-3 sm:mt-4 text-base sm:text-lg text-sky-100/70 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-3 sm:mt-4 text-base sm:text-lg text-[var(--theme-primary,#00f0ff)]/80 max-w-2xl mx-auto leading-relaxed font-cabinet">
             Official announcements, team updates, and urgent alerts.
           </p>
 
           {/* Decorative Divider */}
           <div
             aria-hidden="true"
-            className="mt-6 mx-auto h-[1px] w-32 sm:w-48 bg-gradient-to-r from-transparent via-sky-400 to-transparent shadow-[0_0_12px_rgba(56,189,248,0.8)]"
+            className="mt-6 mx-auto h-[1px] w-32 sm:w-48 bg-gradient-to-r from-transparent via-[var(--theme-primary,#00f0ff)] to-transparent"
           />
         </section>
 

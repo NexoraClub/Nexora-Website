@@ -1,35 +1,227 @@
 @import "tailwindcss";
 
+/* =============================================================================
+ * NEXORA WEB PLATFORM — GLOBAL DESIGN TOKENS & COLOR THEME
+ * Adjust the values below to easily re-theme the entire website.
+ * ============================================================================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* 1. Core Backgrounds */
+  --theme-bg-main: #060913;           /* Primary deep cyber obsidian / void */
+  --theme-bg-hero: #dce6ef;           /* Top Hero Lunar Silver / Platinum Frost */
+  --theme-bg-card: rgba(10, 16, 28, 0.85); /* Glassmorphic card surface */
+
+  /* 2. Brand Accents & Neon */
+  --theme-primary: #00f0ff;           /* Electric Cyber Cyan primary accent */
+  --theme-secondary: #818cf8;         /* Luminous violet secondary glow */
+  --theme-accent: #00f0ff;            /* Interactive highlight */
+
+  /* 3. Typography Colors */
+  --theme-text-dark: #060a14;         /* High-contrast dark text (used on light hero) */
+  --theme-text-light: #f8fafc;        /* High-contrast light text (used on dark body) */
+  --theme-text-muted: rgba(226, 232, 240, 0.72);
+
+  /* 4. Borders & Accents */
+  --theme-border: rgba(0, 240, 255, 0.22);
+  --theme-border-glow: rgba(0, 240, 255, 0.6);
+
+  /* 5. System mappings */
+  --background: var(--theme-bg-main);
+  --foreground: var(--theme-text-light);
+}
+
+@theme {
+  --font-clash: var(--font-clash-display), sans-serif;
+  --font-cabinet: var(--font-cabinet-grotesk), sans-serif;
+  --font-terminal: var(--font-ibm-plex-mono), "Courier New", monospace;
+  --font-jersey: var(--font-jersey10), sans-serif;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-jersey: var(--font-jersey10);
+  --color-background: var(--theme-bg-main);
+  --color-foreground: var(--theme-text-light);
+  --font-sans: var(--font-cabinet-grotesk), var(--font-geist-sans), sans-serif;
+  --font-mono: var(--font-ibm-plex-mono), var(--font-geist-mono), monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base Body & Reset */
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  overflow-x: clip;
   -webkit-tap-highlight-color: transparent;
+  background: var(--theme-bg-main);
+  color: var(--theme-text-light);
+  font-family: var(--font-cabinet-grotesk), sans-serif;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Custom Selection Highlight */
+::selection {
+  background-color: var(--theme-primary);
+  color: var(--theme-text-dark);
+}
+::-moz-selection {
+  background-color: var(--theme-primary);
+  color: var(--theme-text-dark);
+}
+
+/* Custom Cursor: hide default mouse when pointer is fine (desktop) */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+
+  body.native-cursor,
+  body.native-cursor * {
+    cursor: revert !important;
+  }
+}
+
+/* ─── Terminal-style mobile menu scanlines ─── */
+@keyframes terminal-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+.terminal-cursor {
+  animation: terminal-blink 1s step-end infinite;
+}
+
+.terminal-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.25;
+  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.5) 0.5px, transparent 0.6px);
+  background-size: 4px 4px;
+}
+
+/* Terminal scrollbar (used in mobile menu) */
+.terminal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 240, 255, 0.4) transparent;
+}
+.terminal-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.terminal-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: rgba(0, 240, 255, 0.35);
+  border-radius: 999px;
+}
+.terminal-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 240, 255, 0.55);
+}
+
+/* Cloud Animations for Hero */
+@keyframes hero-cloud-drift {
+  from { transform: translateX(-55vw); }
+  to { transform: translateX(132vw); }
+}
+
+@keyframes hero-cloud-bob {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: 1.4%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-cloud {
+    animation: none !important;
+  }
+}
+
+/* Hero text min-height (matching reference responsive breakpoints) */
+.home-hero-text {
+  min-height: calc(60svh - 100vw * 0.474652 + 40px);
+}
+
+@property --cursor-x {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: -300px;
+}
+
+@property --cursor-y {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: -300px;
+}
+
+.hero-title {
+  color: #071426;
+  background-image: linear-gradient(110deg, #071426 8%, #123e62 55%, #075b76 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 0 rgb(255 255 255 / 0.3))
+    drop-shadow(0 8px 18px rgb(7 20 38 / 0.14));
+}
+
+.hero-color-reveal {
+  background: linear-gradient(180deg, #68bdff 0%, #8ed2ff 58%, #bfe7fb 100%);
+  transition: --cursor-x 90ms ease-out, --cursor-y 90ms ease-out;
+  -webkit-mask-image: radial-gradient(
+    circle 190px at var(--cursor-x, -300px) var(--cursor-y, -300px),
+    #000 0%,
+    rgb(0 0 0 / 0.92) 48%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle 190px at var(--cursor-x, -300px) var(--cursor-y, -300px),
+    #000 0%,
+    rgb(0 0 0 / 0.92) 48%,
+    transparent 100%
+  );
+}
+
+.hero-color-reveal .hero-cloud svg {
+  filter: drop-shadow(0 3px 8px rgb(255 255 255 / 0.35));
+}
+
+.hero-landscape-reveal {
+  overflow: hidden;
+  transition: --cursor-x 90ms ease-out, --cursor-y 90ms ease-out;
+  -webkit-mask-image: radial-gradient(
+    circle 190px at var(--cursor-x, -300px) var(--cursor-y, -300px),
+    #000 0%,
+    rgb(0 0 0 / 0.92) 48%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle 190px at var(--cursor-x, -300px) var(--cursor-y, -300px),
+    #000 0%,
+    rgb(0 0 0 / 0.92) 48%,
+    transparent 100%
+  );
+}
+
+.hero-landscape-reveal img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  filter: url(#hero-landscape-palette) drop-shadow(0 1px 0 rgb(23 58 43 / 0.7));
+}
+
+@media (min-width: 640px) {
+  .home-hero-text {
+    min-height: calc(60svh - 100vw * 0.474652 + 64px);
+  }
+}
+@media (min-width: 768px) {
+  .home-hero-text {
+    min-height: calc(100vh - 100vw * 0.474652 + 88px);
+  }
+}
+@media (min-width: 1024px) {
+  .home-hero-text {
+    min-height: calc(100vh - 100vw * 0.474652 + 112px);
+  }
 }

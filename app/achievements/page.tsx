@@ -2,18 +2,25 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import AchievementGallery from "@/components/AchievementGallery";
+import ContourBackdrop from "@/components/ContourBackdrop";
 import "./achievements.css";
 
 export const metadata: Metadata = {
-  title: "Achievements | Nexora ISE Club",
-  description: "Celebrating innovation, excellence, and milestones at Nexora.",
+  title: "Achievements & Awards | Nexora ISE Club",
+  description: "Celebrating innovation, excellence, and milestones at Nexora ISE Club.",
 };
 
 export default function AchievementsPage() {
   return (
-    <main className="relative min-h-screen w-full bg-[#050610] text-white">
+    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
+      <ContourBackdrop />
+
       <Navbar />
-      <AchievementGallery />
+
+      <div className="relative z-10 pt-28 pb-16">
+        <AchievementGallery />
+      </div>
+
       <Footer />
     </main>
   );

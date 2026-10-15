@@ -114,21 +114,21 @@ export default function AchievementGallery({ initialAchievements }: AchievementG
       className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 pt-36 sm:px-8 sm:pb-24 sm:pt-40 lg:px-12"
     >
       <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
-        <p className="mb-4 text-xs font-semibold uppercase tracking-[0.35em] text-sky-300">
-          Nexora · ISE
+        <p className="mb-4 text-xs font-bold uppercase tracking-[0.35em] text-[var(--theme-primary,#00f0ff)] font-terminal">
+          Nexora · ISE Department
         </p>
         <h1
           id="achievements-title"
-          className="font-jersey text-5xl tracking-wide text-white drop-shadow-[0_0_18px_rgba(56,189,248,0.24)] sm:text-6xl md:text-7xl"
+          className="font-clash font-bold text-4xl sm:text-5xl md:text-6xl tracking-tight text-[var(--theme-bg-hero,#dce6ef)]"
         >
           Our Achievements
         </h1>
-        <p className="mt-5 text-base leading-relaxed text-sky-100/70 sm:text-lg">
-          Celebrating innovation, excellence, and milestones.
+        <p className="mt-4 text-base leading-relaxed text-[var(--theme-primary,#00f0ff)]/80 sm:text-lg font-cabinet">
+          Celebrating innovation, competitive coding victories, and engineering milestones.
         </p>
         <div
           aria-hidden="true"
-          className="mx-auto mt-8 h-px w-36 bg-gradient-to-r from-transparent via-sky-400 to-transparent shadow-[0_0_12px_rgba(56,189,248,0.65)]"
+          className="mx-auto mt-6 h-px w-36 bg-gradient-to-r from-transparent via-[var(--theme-primary,#00f0ff)] to-transparent"
         />
       </div>
 
@@ -136,15 +136,13 @@ export default function AchievementGallery({ initialAchievements }: AchievementG
         {items.map((achievement, index) => (
           <article
             key={achievement.id || `${achievement.title}-${index}`}
-            className="achievement-reveal group relative flex min-h-72 flex-col overflow-hidden rounded-2xl border border-sky-300/15 bg-[#090d1a]/85 p-6 shadow-[0_12px_38px_rgba(0,0,0,0.2)] transition duration-300 hover:-translate-y-1 hover:border-sky-300/50 hover:shadow-[0_16px_44px_rgba(14,165,233,0.12)] sm:p-7"
+            className="achievement-reveal group relative flex min-h-72 flex-col overflow-hidden rounded-xl border border-[var(--theme-primary,#00f0ff)]/20 bg-[#03080a] p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:border-[var(--theme-primary,#00f0ff)]/60 sm:p-7"
             style={{ transitionDelay: `${(index % 3) * 100}ms` }}
           >
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute -right-12 -top-16 h-36 w-36 rounded-full bg-sky-400/10 blur-3xl transition duration-500 group-hover:bg-sky-400/20"
-            />
+            <div aria-hidden className="terminal-scanlines opacity-20 pointer-events-none" />
+
             {achievement.image ? (
-              <div className="relative mb-6 h-40 overflow-hidden rounded-xl border border-white/10">
+              <div className="relative mb-6 h-40 overflow-hidden rounded-xl border border-[var(--theme-primary,#00f0ff)]/20">
                 <Image
                   src={achievement.image}
                   alt={achievement.title}
@@ -155,22 +153,22 @@ export default function AchievementGallery({ initialAchievements }: AchievementG
               </div>
             ) : null}
             <div className="relative flex items-center justify-between gap-3">
-              <span className="rounded-full border border-sky-300/25 bg-sky-300/[0.07] px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-sky-200">
+              <span className="rounded-full border border-[var(--theme-primary,#00f0ff)]/30 bg-[var(--theme-primary,#00f0ff)]/10 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--theme-primary,#00f0ff)] font-mono">
                 {achievement.category}
               </span>
-              <span className="shrink-0 text-[0.6rem] font-semibold uppercase tracking-[0.18em] text-emerald-300/80">
+              <span className="shrink-0 text-[0.65rem] font-bold uppercase tracking-[0.18em] text-[var(--theme-primary,#00f0ff)] font-mono">
                 Verified
               </span>
             </div>
-            <h2 className="relative mt-6 text-xl font-semibold leading-snug text-white sm:text-2xl">
+            <h2 className="relative mt-5 text-xl font-clash font-bold leading-snug text-[var(--theme-bg-hero,#dce6ef)] group-hover:text-white transition-colors">
               {achievement.title}
             </h2>
-            <p className="relative mt-3 text-sm leading-relaxed text-slate-300/75">
+            <p className="relative mt-2.5 text-xs sm:text-sm leading-relaxed text-white/70 font-cabinet">
               {achievement.description}
             </p>
-            <div className="relative mt-auto flex flex-col gap-2 border-t border-white/10 pt-5 text-xs text-slate-300/70 sm:flex-row sm:items-center sm:justify-between">
+            <div className="relative mt-auto flex flex-col gap-2 border-t border-[var(--theme-primary,#00f0ff)]/15 pt-4 text-xs text-[var(--theme-primary,#00f0ff)]/70 font-mono sm:flex-row sm:items-center sm:justify-between">
               <span>{achievement.event}</span>
-              <span className="text-sky-200/80">{achievement.date}</span>
+              <span className="text-[var(--theme-bg-hero,#dce6ef)]">{achievement.date}</span>
             </div>
           </article>
         ))}
