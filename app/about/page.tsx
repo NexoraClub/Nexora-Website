@@ -60,11 +60,11 @@ function FacultyCard({ member, index }: { member: Member; index: number }) {
   return (
     <div
       className="member-card group relative flex flex-col overflow-hidden rounded-lg
-        border border-[var(--theme-primary,#00f0ff)]/20 bg-[#03080a] isolate transition-all duration-300 hover:border-[var(--theme-primary,#00f0ff)]/50"
+        border border-[var(--theme-primary,#00f0ff)]/20 bg-[#060913]/60 backdrop-blur-md isolate transition-all duration-300 hover:border-[var(--theme-primary,#00f0ff)]/50 hover:bg-[#060913]/80"
       style={{ boxShadow: "0 0 0 1px rgba(0, 240, 255,0.08), 0 20px 50px rgba(0,0,0,0.35)" }}
     >
       {/* Terminal window header */}
-      <div className="flex items-center justify-between px-3 py-2 bg-[#080f09] border-b border-[var(--theme-primary,#00f0ff)]/10 select-none">
+      <div className="flex items-center justify-between px-3 py-2 bg-[#080f09]/60 border-b border-[var(--theme-primary,#00f0ff)]/15 select-none">
         <div className="flex items-center gap-1.5">
           <span className="w-[7px] h-[7px] rounded-full bg-[#FF5F56]/70" />
           <span className="w-[7px] h-[7px] rounded-full bg-[#FFBD2E]/70" />
@@ -76,7 +76,7 @@ function FacultyCard({ member, index }: { member: Member; index: number }) {
       </div>
 
       {/* Photo with scanline effect */}
-      <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#080f09]">
+      <div className="relative w-full aspect-[4/5] overflow-hidden bg-[#080f09]/40">
         {!imgFailed ? (
           <img
             src={member.image}
@@ -86,7 +86,7 @@ function FacultyCard({ member, index }: { member: Member; index: number }) {
             className="absolute inset-0 w-full h-full object-cover contrast-105 group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-[#080f09]">
+          <div className="absolute inset-0 flex items-center justify-center bg-[#080f09]/40">
             <span className="font-clash font-bold text-[var(--theme-primary,#00f0ff)]/20 text-5xl">
               {initials(member.name)}
             </span>
@@ -97,7 +97,7 @@ function FacultyCard({ member, index }: { member: Member; index: number }) {
       </div>
 
       {/* Member Details */}
-      <div className="flex flex-col gap-1 px-4 py-3 bg-[#03080a]">
+      <div className="flex flex-col gap-1 px-4 py-3 bg-[#060913]/60">
         <h3 className="font-clash font-bold text-[var(--theme-bg-hero,#dce6ef)] text-base leading-tight group-hover:text-white transition-colors">
           {member.name}
         </h3>
@@ -111,14 +111,14 @@ function FacultyCard({ member, index }: { member: Member; index: number }) {
 
 export default function AboutPage() {
   return (
-    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
+    <main className="relative min-h-screen w-full isolate bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
       <ContourBackdrop />
 
       <Navbar />
 
       <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 sm:pt-36 lg:px-8">
         {/* 1. Header Hero Banner */}
-        <section className="relative mb-16 overflow-hidden rounded-2xl border border-[var(--theme-primary,#00f0ff)]/30 bg-[#03080a]/90 p-8 sm:p-12 lg:p-16 shadow-[0_0_50px_rgba(0, 240, 255,0.1)]">
+        <section className="relative mb-16 overflow-hidden rounded-2xl border border-[var(--theme-primary,#00f0ff)]/30 bg-[#060913]/50 backdrop-blur-md p-8 sm:p-12 lg:p-16 shadow-[0_0_50px_rgba(0,240,255,0.08)]">
           <div className="terminal-scanlines opacity-20 pointer-events-none" />
           
           <div className="relative z-10 max-w-3xl">
@@ -168,7 +168,7 @@ export default function AboutPage() {
             {STATS.map((s) => (
               <div
                 key={s.label}
-                className="rounded-xl border border-[var(--theme-primary,#00f0ff)]/25 bg-[#03080a]/90 p-6 text-center shadow-lg"
+                className="rounded-xl border border-[var(--theme-primary,#00f0ff)]/25 bg-[#060913]/50 backdrop-blur-md p-6 text-center shadow-lg transition-transform hover:-translate-y-1"
               >
                 <div className="font-clash font-bold text-3xl sm:text-4xl text-[var(--theme-primary,#00f0ff)]">
                   {s.value}
@@ -183,7 +183,7 @@ export default function AboutPage() {
 
         {/* 3. Vision & Mission */}
         <section className="grid gap-8 md:grid-cols-2 mb-16">
-          <div className="rounded-2xl border border-[var(--theme-primary,#00f0ff)]/20 bg-[#03080a]/80 p-8">
+          <div className="rounded-2xl border border-[var(--theme-primary,#00f0ff)]/20 bg-[#060913]/50 backdrop-blur-md p-8">
             <h3 className="font-clash font-bold text-2xl text-[var(--theme-bg-hero,#dce6ef)]">
               Department Vision
             </h3>
@@ -194,7 +194,7 @@ export default function AboutPage() {
             </p>
           </div>
 
-          <div className="rounded-2xl border border-[var(--theme-primary,#00f0ff)]/20 bg-[#03080a]/80 p-8">
+          <div className="rounded-2xl border border-[var(--theme-primary,#00f0ff)]/20 bg-[#060913]/50 backdrop-blur-md p-8">
             <h3 className="font-clash font-bold text-2xl text-[var(--theme-bg-hero,#dce6ef)]">
               Department Mission
             </h3>
@@ -214,7 +214,7 @@ export default function AboutPage() {
 
         {/* 4. HOD Desk */}
         <section className="mb-16">
-          <div className="relative overflow-hidden rounded-2xl border border-[var(--theme-primary,#00f0ff)]/30 bg-[#03080a] p-6 sm:p-10 shadow-[0_0_40px_rgba(0, 240, 255,0.1)]">
+          <div className="relative overflow-hidden rounded-2xl border border-[var(--theme-primary,#00f0ff)]/30 bg-[#060913]/60 backdrop-blur-md p-6 sm:p-10 shadow-[0_0_40px_rgba(0,240,255,0.08)]">
             <div className="terminal-scanlines opacity-20 pointer-events-none" />
             
             <div className="relative z-10 grid gap-8 md:grid-cols-[220px_1fr] md:items-start">
