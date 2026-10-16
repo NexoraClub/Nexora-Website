@@ -66,6 +66,7 @@ export const env = {
     true
   ),
   CONNECT_LOOKUP_HMAC_SECRET: getEnvVar('CONNECT_LOOKUP_HMAC_SECRET', '', true),
+  CONNECT_APP_URL: getEnvVar('CONNECT_APP_URL'),
 } as const;
 
 export default env;

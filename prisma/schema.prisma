@@ -259,14 +259,14 @@ model UsnRosterEntry {
   @@map("connect_usn_roster")
 }
 
-model ConnectUsnLookupRateLimit {
+model ConnectAuthRateLimit {
   ipHash          String   @id @map("ip_hash") @db.Char(64)
   windowStartedAt DateTime @map("window_started_at") @db.Timestamptz
   attempts        Int      @default(1)
   updatedAt       DateTime @updatedAt @map("updated_at") @db.Timestamptz
 
   @@index([updatedAt])
-  @@map("connect_usn_lookup_rate_limits")
+  @@map("connect_auth_rate_limits")
 }
 
 model MemberProfile {

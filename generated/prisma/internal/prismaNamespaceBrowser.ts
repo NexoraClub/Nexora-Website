@@ -61,7 +61,7 @@ export const ModelName = {
   ActiveSession: 'ActiveSession',
   UsnClaim: 'UsnClaim',
   UsnRosterEntry: 'UsnRosterEntry',
-  ConnectUsnLookupRateLimit: 'ConnectUsnLookupRateLimit',
+  ConnectAuthRateLimit: 'ConnectAuthRateLimit',
   MemberProfile: 'MemberProfile',
   MemberSocialLink: 'MemberSocialLink',
   MemberProject: 'MemberProject',
@@ -258,14 +258,14 @@ export const UsnRosterEntryScalarFieldEnum = {
 export type UsnRosterEntryScalarFieldEnum = (typeof UsnRosterEntryScalarFieldEnum)[keyof typeof UsnRosterEntryScalarFieldEnum]
 
 
-export const ConnectUsnLookupRateLimitScalarFieldEnum = {
+export const ConnectAuthRateLimitScalarFieldEnum = {
   ipHash: 'ipHash',
   windowStartedAt: 'windowStartedAt',
   attempts: 'attempts',
   updatedAt: 'updatedAt'
 } as const
 
-export type ConnectUsnLookupRateLimitScalarFieldEnum = (typeof ConnectUsnLookupRateLimitScalarFieldEnum)[keyof typeof ConnectUsnLookupRateLimitScalarFieldEnum]
+export type ConnectAuthRateLimitScalarFieldEnum = (typeof ConnectAuthRateLimitScalarFieldEnum)[keyof typeof ConnectAuthRateLimitScalarFieldEnum]
 
 
 export const MemberProfileScalarFieldEnum = {

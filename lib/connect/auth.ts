@@ -4,6 +4,7 @@ import crypto from 'node:crypto'
 import { prisma } from '@/lib/prisma'
 import { verifyAdminToken, type AdminUser } from '@/lib/admin-auth'
 import type { User } from '@supabase/supabase-js'
+import { env } from '@/lib/env'
 
 function getSupabaseConfig() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -92,12 +93,44 @@ export async function getAuthenticatedConnectAdmin(req: Request): Promise<AdminU
   }
 }
 
+export function getConnectAppUrl(req: Request): URL {
+  const configuredUrl = env.CONNECT_APP_URL.trim()
+  if (!configuredUrl) {
+    if (env.IS_PRODUCTION) {
+      throw new Error('CONNECT_APP_URL must be configured for Connect authentication.')
+    }
+    return new URL(new URL(req.url).origin)
+  }
+
+  let appUrl: URL
+  try {
+    appUrl = new URL(configuredUrl)
+  } catch {
+    throw new Error('CONNECT_APP_URL must be an absolute HTTP(S) origin.')
+  }
+
+  if (
+    (appUrl.protocol !== 'https:' && appUrl.protocol !== 'http:') ||
+    appUrl.username ||
+    appUrl.password ||
+    appUrl.pathname !== '/' ||
+    appUrl.search ||
+    appUrl.hash ||
+    (env.IS_PRODUCTION && appUrl.protocol !== 'https:')
+  ) {
+    throw new Error('CONNECT_APP_URL must be a secure HTTPS origin without credentials or a path.')
+  }
+
+  return new URL(appUrl.origin)
+}
+
 export function isSameOriginRequest(req: Request): boolean {
   const origin = req.headers.get('origin')
   if (!origin) return false
+  const appOrigin = getConnectAppUrl(req).origin
 
   try {
-    return new URL(origin).origin === new URL(req.url).origin
+    return new URL(origin).origin === appOrigin
   } catch {
     return false
   }

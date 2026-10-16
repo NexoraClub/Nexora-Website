@@ -407,7 +407,7 @@ export const ModelName = {
   ActiveSession: 'ActiveSession',
   UsnClaim: 'UsnClaim',
   UsnRosterEntry: 'UsnRosterEntry',
-  ConnectUsnLookupRateLimit: 'ConnectUsnLookupRateLimit',
+  ConnectAuthRateLimit: 'ConnectAuthRateLimit',
   MemberProfile: 'MemberProfile',
   MemberSocialLink: 'MemberSocialLink',
   MemberProject: 'MemberProject',
@@ -431,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "event" | "notice" | "achievement" | "learningResource" | "contentCategory" | "auditLog" | "activeSession" | "usnClaim" | "usnRosterEntry" | "connectUsnLookupRateLimit" | "memberProfile" | "memberSocialLink" | "memberProject" | "memberExperience" | "memberAchievement" | "memberKnowledgePage" | "connectReport" | "usnDispute"
+    modelProps: "admin" | "event" | "notice" | "achievement" | "learningResource" | "contentCategory" | "auditLog" | "activeSession" | "usnClaim" | "usnRosterEntry" | "connectAuthRateLimit" | "memberProfile" | "memberSocialLink" | "memberProject" | "memberExperience" | "memberAchievement" | "memberKnowledgePage" | "connectReport" | "usnDispute"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1175,77 +1175,77 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    ConnectUsnLookupRateLimit: {
-      payload: Prisma.$ConnectUsnLookupRateLimitPayload<ExtArgs>
-      fields: Prisma.ConnectUsnLookupRateLimitFieldRefs
+    ConnectAuthRateLimit: {
+      payload: Prisma.$ConnectAuthRateLimitPayload<ExtArgs>
+      fields: Prisma.ConnectAuthRateLimitFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.ConnectUsnLookupRateLimitFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload> | null
+          args: Prisma.ConnectAuthRateLimitFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.ConnectUsnLookupRateLimitFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+          args: Prisma.ConnectAuthRateLimitFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload>
         }
         findFirst: {
-          args: Prisma.ConnectUsnLookupRateLimitFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload> | null
+          args: Prisma.ConnectAuthRateLimitFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.ConnectUsnLookupRateLimitFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+          args: Prisma.ConnectAuthRateLimitFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload>
         }
         findMany: {
-          args: Prisma.ConnectUsnLookupRateLimitFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>[]
+          args: Prisma.ConnectAuthRateLimitFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload>[]
         }
         create: {
-          args: Prisma.ConnectUsnLookupRateLimitCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+          args: Prisma.ConnectAuthRateLimitCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload>
         }
         createMany: {
-          args: Prisma.ConnectUsnLookupRateLimitCreateManyArgs<ExtArgs>
+          args: Prisma.ConnectAuthRateLimitCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.ConnectUsnLookupRateLimitCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>[]
+          args: Prisma.ConnectAuthRateLimitCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload>[]
         }
         delete: {
-          args: Prisma.ConnectUsnLookupRateLimitDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+          args: Prisma.ConnectAuthRateLimitDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload>
         }
         update: {
-          args: Prisma.ConnectUsnLookupRateLimitUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+          args: Prisma.ConnectAuthRateLimitUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload>
         }
         deleteMany: {
-          args: Prisma.ConnectUsnLookupRateLimitDeleteManyArgs<ExtArgs>
+          args: Prisma.ConnectAuthRateLimitDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.ConnectUsnLookupRateLimitUpdateManyArgs<ExtArgs>
+          args: Prisma.ConnectAuthRateLimitUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.ConnectUsnLookupRateLimitUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>[]
+          args: Prisma.ConnectAuthRateLimitUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload>[]
         }
         upsert: {
-          args: Prisma.ConnectUsnLookupRateLimitUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+          args: Prisma.ConnectAuthRateLimitUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectAuthRateLimitPayload>
         }
         aggregate: {
-          args: Prisma.ConnectUsnLookupRateLimitAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateConnectUsnLookupRateLimit>
+          args: Prisma.ConnectAuthRateLimitAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateConnectAuthRateLimit>
         }
         groupBy: {
-          args: Prisma.ConnectUsnLookupRateLimitGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ConnectUsnLookupRateLimitGroupByOutputType>[]
+          args: Prisma.ConnectAuthRateLimitGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConnectAuthRateLimitGroupByOutputType>[]
         }
         count: {
-          args: Prisma.ConnectUsnLookupRateLimitCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.ConnectUsnLookupRateLimitCountAggregateOutputType> | number
+          args: Prisma.ConnectAuthRateLimitCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConnectAuthRateLimitCountAggregateOutputType> | number
         }
       }
     }
@@ -2050,14 +2050,14 @@ export const UsnRosterEntryScalarFieldEnum = {
 export type UsnRosterEntryScalarFieldEnum = (typeof UsnRosterEntryScalarFieldEnum)[keyof typeof UsnRosterEntryScalarFieldEnum]
 
 
-export const ConnectUsnLookupRateLimitScalarFieldEnum = {
+export const ConnectAuthRateLimitScalarFieldEnum = {
   ipHash: 'ipHash',
   windowStartedAt: 'windowStartedAt',
   attempts: 'attempts',
   updatedAt: 'updatedAt'
 } as const
 
-export type ConnectUsnLookupRateLimitScalarFieldEnum = (typeof ConnectUsnLookupRateLimitScalarFieldEnum)[keyof typeof ConnectUsnLookupRateLimitScalarFieldEnum]
+export type ConnectAuthRateLimitScalarFieldEnum = (typeof ConnectAuthRateLimitScalarFieldEnum)[keyof typeof ConnectAuthRateLimitScalarFieldEnum]
 
 
 export const MemberProfileScalarFieldEnum = {
@@ -2615,7 +2615,7 @@ export type GlobalOmitConfig = {
   activeSession?: Prisma.ActiveSessionOmit
   usnClaim?: Prisma.UsnClaimOmit
   usnRosterEntry?: Prisma.UsnRosterEntryOmit
-  connectUsnLookupRateLimit?: Prisma.ConnectUsnLookupRateLimitOmit
+  connectAuthRateLimit?: Prisma.ConnectAuthRateLimitOmit
   memberProfile?: Prisma.MemberProfileOmit
   memberSocialLink?: Prisma.MemberSocialLinkOmit
   memberProject?: Prisma.MemberProjectOmit

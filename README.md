@@ -76,7 +76,7 @@ The project features a **public community portal** for students and visitors, al
 - Admin-managed USN/name roster with create, read, update, deactivate, and full-roster replacement.
 - Signup lookup returns the official roster name for an available USN; member profile creation uses that server-side name.
 - Invalid, inactive, or already-claimed USNs are rejected with the Connect support contact.
-- Verified Supabase member sessions, pending profile approval, self-service portfolio and knowledge-page APIs.
+- Supabase member signup, sign-in, email confirmation, session, sign-out, password reset/update, pending profile approval, and self-service portfolio and knowledge-page APIs.
 - Public directory responses include only approved, public profiles and respect contact visibility settings.
 - Admin APIs support profile review, report/dispute triage, and audited roster changes.
 
@@ -206,8 +206,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 # Admin Security Secret
 ADMIN_JWT_SECRET="super-secure-random-secret-key-for-nexora-admin"
 
-# Separate server-only key for USN lookup rate limiting
+# Separate server-only key for Connect authentication rate limiting
 CONNECT_LOOKUP_HMAC_SECRET="generate-a-separate-random-secret-with-at-least-32-characters"
+
+# Canonical origin used for Connect auth callbacks (HTTPS in production)
+CONNECT_APP_URL="http://localhost:3000"
 ```
 
 ### 4. Sync Database Schema
@@ -262,6 +265,13 @@ The relational PostgreSQL schema in `prisma/schema.prisma` models all core entit
 
 | Endpoint | Method | Description |
 | :--- | :--- | :--- |
+| `/api/connect/auth/sign-up` | `POST` | Validates USN and starts email-confirmed Supabase signup |
+| `/api/connect/auth/sign-in` | `POST` | Signs in a confirmed member |
+| `/api/connect/auth/sign-out` | `POST` | Ends the member session |
+| `/api/connect/auth/session` | `GET` | Returns safe session and profile approval status |
+| `/api/connect/auth/password-reset` | `POST` | Sends a non-enumerating password-reset email |
+| `/api/connect/auth/password` | `PATCH` | Changes the confirmed member's password |
+| `/api/connect/auth/callback` | `GET` | Completes email confirmation and password recovery |
 | `/api/connect/verify-usn` | `GET` | Rate-limited signup lookup; returns the official name for an available USN |
 | `/api/connect/me` | `GET`, `POST`, `PATCH` | Read/create/update the authenticated member profile and portfolio |
 | `/api/connect/me/knowledge` | `GET`, `PUT` | Manage a private draft and published knowledge page |
@@ -274,10 +284,10 @@ The relational PostgreSQL schema in `prisma/schema.prisma` models all core entit
 | `/api/admin/connect/reports` | `GET`, `PATCH` | Triage reports and record resolutions |
 | `/api/admin/connect/disputes` | `GET`, `PATCH` | Triage USN disputes and record resolutions |
 
-`GET /api/connect/verify-usn?usn=...` responds with `{ "valid": true, "fullName": "..." }` for an active, unclaimed USN. Invalid or claimed entries include `nexora.ise@ajiet.edu.in` in the error. Lookups are limited to 10 per client IP per 15 minutes; only an HMAC of the IP is stored. Configure a unique server-only `CONNECT_LOOKUP_HMAC_SECRET` of at least 32 characters and ensure the hosting proxy supplies a trusted client-IP header.
+`GET /api/connect/verify-usn?usn=...` responds with `{ "valid": true, "fullName": "..." }` for an active, unclaimed USN. Invalid or claimed entries include `nexora.ise@ajiet.edu.in` in the error. USN lookups, sign-in, and password-reset requests are each limited to 10 per client IP per 15 minutes; only a scoped HMAC of the IP is stored. Configure a unique server-only `CONNECT_LOOKUP_HMAC_SECRET` of at least 32 characters, set the canonical `CONNECT_APP_URL` (HTTPS in production), and ensure the hosting proxy sets a trusted `x-real-ip` header.
 
 Roster bulk imports use `{ "entries": [{ "usn": "...", "fullName": "..." }], "replace": false }`. Use `replace: true` only with the complete authoritative roster; omitted USNs are deactivated and associated profiles suspended.
-Connect signup/sign-in should use `createConnectSupabaseBrowserClient()` from `lib/connect/supabase-browser.ts` so the server APIs can validate the Supabase session cookies.
+Configure Supabase Auth to require email confirmation and allow `${CONNECT_APP_URL}/api/connect/auth/callback` in its redirect URL allowlist. Connect signup/sign-in should use `createConnectSupabaseBrowserClient()` from `lib/connect/supabase-browser.ts` so the server APIs can validate the Supabase session cookies.
 
 ### Administrative API Routes (Protected)
 

@@ -92,10 +92,10 @@ export type UsnClaim = Prisma.UsnClaimModel
  */
 export type UsnRosterEntry = Prisma.UsnRosterEntryModel
 /**
- * Model ConnectUsnLookupRateLimit
+ * Model ConnectAuthRateLimit
  * 
  */
-export type ConnectUsnLookupRateLimit = Prisma.ConnectUsnLookupRateLimitModel
+export type ConnectAuthRateLimit = Prisma.ConnectAuthRateLimitModel
 /**
  * Model MemberProfile
  * 
