@@ -65,6 +65,7 @@ export const env = {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'nexora-admin-development-secret-2026',
     true
   ),
+  CONNECT_LOOKUP_HMAC_SECRET: getEnvVar('CONNECT_LOOKUP_HMAC_SECRET', '', true),
 } as const;
 
 export default env;

@@ -63,6 +63,16 @@ export type ActiveSession = Prisma.ActiveSessionModel
  */
 export type UsnClaim = Prisma.UsnClaimModel
 /**
+ * Model UsnRosterEntry
+ * 
+ */
+export type UsnRosterEntry = Prisma.UsnRosterEntryModel
+/**
+ * Model ConnectUsnLookupRateLimit
+ * 
+ */
+export type ConnectUsnLookupRateLimit = Prisma.ConnectUsnLookupRateLimitModel
+/**
  * Model MemberProfile
  * 
  */

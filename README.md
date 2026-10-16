@@ -71,6 +71,15 @@ The project features a **public community portal** for students and visitors, al
   - Custom canvas-based `<FuzzyText />` component featuring dynamic pixel displacement.
   - Interactive mouse hover intensity shifts, click-burst effects, and periodic glitch spikes.
 
+### 🤝 Nexora Connect (Backend API)
+
+- Admin-managed USN/name roster with create, read, update, deactivate, and full-roster replacement.
+- Signup lookup returns the official roster name for an available USN; member profile creation uses that server-side name.
+- Invalid, inactive, or already-claimed USNs are rejected with the Connect support contact.
+- Verified Supabase member sessions, pending profile approval, self-service portfolio and knowledge-page APIs.
+- Public directory responses include only approved, public profiles and respect contact visibility settings.
+- Admin APIs support profile review, report/dispute triage, and audited roster changes.
+
 ---
 
 ### 🛡️ Enterprise Admin Dashboard (`/admin`)
@@ -102,7 +111,7 @@ The project features a **public community portal** for students and visitors, al
 | **Styling & Design** | [Tailwind CSS v4](https://tailwindcss.com/) | Cyberpunk dark theme & enterprise light dashboard |
 | **Database & ORM** | [Prisma 7.10](https://www.prisma.io/) & [PostgreSQL](https://www.postgresql.org/) | Type-safe queries via `@prisma/adapter-pg` driver |
 | **Cloud Database** | [Supabase](https://supabase.com/) | Hosted PostgreSQL, pooling, and asset storage |
-| **Authentication** | [Bcrypt.js](https://github.com/dcodeIO/bcrypt.js) + JWT | Secure salted password hashing and token verification |
+| **Authentication** | Supabase Auth for Connect members; bcrypt + JWT for administrators | Verified member sessions and administrator credentials |
 | **Smooth Scrolling** | [Lenis 1.3](https://lenis.darkroom.engineering/) | Hardware-accelerated inertial smooth scroll |
 | **Visuals & Icons** | [Lucide React](https://lucide.dev/), HTML5 Canvas, Three.js | Scalable SVG icons and generative canvas animations |
 | **Runtime & Tooling** | [Bun](https://bun.sh/) / [Node.js](https://nodejs.org/) (v20+) | Fast package execution and build lifecycle |
@@ -120,6 +129,7 @@ Nexora-Website/
 │   ├── api/                          # Serverless API routes
 │   │   ├── achievements/             # Public & admin achievements endpoints
 │   │   ├── admin/                    # Auth, audit logs, sessions, users, CMS
+│   │   ├── connect/                   # Member, roster lookup, directory, reports, disputes
 │   │   ├── events/                   # Events retrieval & submission endpoints
 │   │   ├── notices/                  # Department noticeboard endpoints
 │   │   └── resources/                # Academic resources & materials
@@ -195,15 +205,18 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 
 # Admin Security Secret
 ADMIN_JWT_SECRET="super-secure-random-secret-key-for-nexora-admin"
+
+# Separate server-only key for USN lookup rate limiting
+CONNECT_LOOKUP_HMAC_SECRET="generate-a-separate-random-secret-with-at-least-32-characters"
 ```
 
 ### 4. Sync Database Schema
 
-Generate the Prisma Client and push the schema to your Supabase PostgreSQL instance:
+Generate the Prisma Client and apply checked-in migrations to your PostgreSQL instance:
 
 ```bash
 bunx prisma generate
-bunx prisma db push
+bunx prisma migrate deploy
 ```
 
 ### 5. Start the Development Server
@@ -230,6 +243,7 @@ The relational PostgreSQL schema in `prisma/schema.prisma` models all core entit
 - **`Category` (`categories`):** Taxonomies across events and academic resources.
 - **`AuditLog` (`audit_logs`):** Immutable log entries recording administrative updates, creations, and deletions.
 - **`AdminSession` (`admin_sessions`):** Active user sessions with IP and user-agent tracking.
+- **Nexora Connect:** Official USN roster, claims, moderated profiles, portfolio content, knowledge pages, reports, and disputes.
 
 ---
 
@@ -243,6 +257,27 @@ The relational PostgreSQL schema in `prisma/schema.prisma` models all core entit
 | `/api/notices` | `GET` | Fetches active department notices and urgent bulletins |
 | `/api/achievements` | `GET` | Retrieves verified student achievements and awards |
 | `/api/resources` | `GET` | Retrieves study notes, exam papers, and learning links |
+
+### Nexora Connect API Routes
+
+| Endpoint | Method | Description |
+| :--- | :--- | :--- |
+| `/api/connect/verify-usn` | `GET` | Rate-limited signup lookup; returns the official name for an available USN |
+| `/api/connect/me` | `GET`, `POST`, `PATCH` | Read/create/update the authenticated member profile and portfolio |
+| `/api/connect/me/knowledge` | `GET`, `PUT` | Manage a private draft and published knowledge page |
+| `/api/connect/members` | `GET` | Search and paginate approved, public profiles |
+| `/api/connect/members/[slug]` | `GET` | Fetch one public profile without identity or private contact fields |
+| `/api/connect/reports` | `GET`, `POST` | Submit and track profile or knowledge-page reports |
+| `/api/connect/disputes` | `GET`, `POST` | Submit and track USN claim disputes |
+| `/api/admin/connect/roster` | `GET`, `POST`, `PUT`, `DELETE` | Super-admin CRUD for USN/name entries; `DELETE` deactivates an entry |
+| `/api/admin/connect/profiles` | `GET`, `PATCH` | Review, approve, reject, or suspend member profiles |
+| `/api/admin/connect/reports` | `GET`, `PATCH` | Triage reports and record resolutions |
+| `/api/admin/connect/disputes` | `GET`, `PATCH` | Triage USN disputes and record resolutions |
+
+`GET /api/connect/verify-usn?usn=...` responds with `{ "valid": true, "fullName": "..." }` for an active, unclaimed USN. Invalid or claimed entries include `nexora.ise@ajiet.edu.in` in the error. Lookups are limited to 10 per client IP per 15 minutes; only an HMAC of the IP is stored. Configure a unique server-only `CONNECT_LOOKUP_HMAC_SECRET` of at least 32 characters and ensure the hosting proxy supplies a trusted client-IP header.
+
+Roster bulk imports use `{ "entries": [{ "usn": "...", "fullName": "..." }], "replace": false }`. Use `replace: true` only with the complete authoritative roster; omitted USNs are deactivated and associated profiles suspended.
+Connect signup/sign-in should use `createConnectSupabaseBrowserClient()` from `lib/connect/supabase-browser.ts` so the server APIs can validate the Supabase session cookies.
 
 ### Administrative API Routes (Protected)
 

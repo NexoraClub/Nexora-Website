@@ -60,6 +60,8 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   ActiveSession: 'ActiveSession',
   UsnClaim: 'UsnClaim',
+  UsnRosterEntry: 'UsnRosterEntry',
+  ConnectUsnLookupRateLimit: 'ConnectUsnLookupRateLimit',
   MemberProfile: 'MemberProfile',
   MemberSocialLink: 'MemberSocialLink',
   MemberProject: 'MemberProject',
@@ -244,6 +246,26 @@ export const UsnClaimScalarFieldEnum = {
 } as const
 
 export type UsnClaimScalarFieldEnum = (typeof UsnClaimScalarFieldEnum)[keyof typeof UsnClaimScalarFieldEnum]
+
+
+export const UsnRosterEntryScalarFieldEnum = {
+  usn: 'usn',
+  fullName: 'fullName',
+  isActive: 'isActive',
+  importedAt: 'importedAt'
+} as const
+
+export type UsnRosterEntryScalarFieldEnum = (typeof UsnRosterEntryScalarFieldEnum)[keyof typeof UsnRosterEntryScalarFieldEnum]
+
+
+export const ConnectUsnLookupRateLimitScalarFieldEnum = {
+  ipHash: 'ipHash',
+  windowStartedAt: 'windowStartedAt',
+  attempts: 'attempts',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConnectUsnLookupRateLimitScalarFieldEnum = (typeof ConnectUsnLookupRateLimitScalarFieldEnum)[keyof typeof ConnectUsnLookupRateLimitScalarFieldEnum]
 
 
 export const MemberProfileScalarFieldEnum = {

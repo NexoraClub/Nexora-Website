@@ -406,6 +406,8 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   ActiveSession: 'ActiveSession',
   UsnClaim: 'UsnClaim',
+  UsnRosterEntry: 'UsnRosterEntry',
+  ConnectUsnLookupRateLimit: 'ConnectUsnLookupRateLimit',
   MemberProfile: 'MemberProfile',
   MemberSocialLink: 'MemberSocialLink',
   MemberProject: 'MemberProject',
@@ -429,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "event" | "notice" | "achievement" | "learningResource" | "contentCategory" | "auditLog" | "activeSession" | "usnClaim" | "memberProfile" | "memberSocialLink" | "memberProject" | "memberExperience" | "memberAchievement" | "memberKnowledgePage" | "connectReport" | "usnDispute"
+    modelProps: "admin" | "event" | "notice" | "achievement" | "learningResource" | "contentCategory" | "auditLog" | "activeSession" | "usnClaim" | "usnRosterEntry" | "connectUsnLookupRateLimit" | "memberProfile" | "memberSocialLink" | "memberProject" | "memberExperience" | "memberAchievement" | "memberKnowledgePage" | "connectReport" | "usnDispute"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1096,6 +1098,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UsnClaimCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UsnClaimCountAggregateOutputType> | number
+        }
+      }
+    }
+    UsnRosterEntry: {
+      payload: Prisma.$UsnRosterEntryPayload<ExtArgs>
+      fields: Prisma.UsnRosterEntryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.UsnRosterEntryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.UsnRosterEntryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload>
+        }
+        findFirst: {
+          args: Prisma.UsnRosterEntryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.UsnRosterEntryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload>
+        }
+        findMany: {
+          args: Prisma.UsnRosterEntryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload>[]
+        }
+        create: {
+          args: Prisma.UsnRosterEntryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload>
+        }
+        createMany: {
+          args: Prisma.UsnRosterEntryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.UsnRosterEntryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload>[]
+        }
+        delete: {
+          args: Prisma.UsnRosterEntryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload>
+        }
+        update: {
+          args: Prisma.UsnRosterEntryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload>
+        }
+        deleteMany: {
+          args: Prisma.UsnRosterEntryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.UsnRosterEntryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.UsnRosterEntryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload>[]
+        }
+        upsert: {
+          args: Prisma.UsnRosterEntryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$UsnRosterEntryPayload>
+        }
+        aggregate: {
+          args: Prisma.UsnRosterEntryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUsnRosterEntry>
+        }
+        groupBy: {
+          args: Prisma.UsnRosterEntryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UsnRosterEntryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.UsnRosterEntryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.UsnRosterEntryCountAggregateOutputType> | number
+        }
+      }
+    }
+    ConnectUsnLookupRateLimit: {
+      payload: Prisma.$ConnectUsnLookupRateLimitPayload<ExtArgs>
+      fields: Prisma.ConnectUsnLookupRateLimitFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ConnectUsnLookupRateLimitFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ConnectUsnLookupRateLimitFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+        }
+        findFirst: {
+          args: Prisma.ConnectUsnLookupRateLimitFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ConnectUsnLookupRateLimitFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+        }
+        findMany: {
+          args: Prisma.ConnectUsnLookupRateLimitFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>[]
+        }
+        create: {
+          args: Prisma.ConnectUsnLookupRateLimitCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+        }
+        createMany: {
+          args: Prisma.ConnectUsnLookupRateLimitCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ConnectUsnLookupRateLimitCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>[]
+        }
+        delete: {
+          args: Prisma.ConnectUsnLookupRateLimitDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+        }
+        update: {
+          args: Prisma.ConnectUsnLookupRateLimitUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+        }
+        deleteMany: {
+          args: Prisma.ConnectUsnLookupRateLimitDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ConnectUsnLookupRateLimitUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ConnectUsnLookupRateLimitUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>[]
+        }
+        upsert: {
+          args: Prisma.ConnectUsnLookupRateLimitUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectUsnLookupRateLimitPayload>
+        }
+        aggregate: {
+          args: Prisma.ConnectUsnLookupRateLimitAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateConnectUsnLookupRateLimit>
+        }
+        groupBy: {
+          args: Prisma.ConnectUsnLookupRateLimitGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConnectUsnLookupRateLimitGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ConnectUsnLookupRateLimitCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConnectUsnLookupRateLimitCountAggregateOutputType> | number
         }
       }
     }
@@ -1890,6 +2040,26 @@ export const UsnClaimScalarFieldEnum = {
 export type UsnClaimScalarFieldEnum = (typeof UsnClaimScalarFieldEnum)[keyof typeof UsnClaimScalarFieldEnum]
 
 
+export const UsnRosterEntryScalarFieldEnum = {
+  usn: 'usn',
+  fullName: 'fullName',
+  isActive: 'isActive',
+  importedAt: 'importedAt'
+} as const
+
+export type UsnRosterEntryScalarFieldEnum = (typeof UsnRosterEntryScalarFieldEnum)[keyof typeof UsnRosterEntryScalarFieldEnum]
+
+
+export const ConnectUsnLookupRateLimitScalarFieldEnum = {
+  ipHash: 'ipHash',
+  windowStartedAt: 'windowStartedAt',
+  attempts: 'attempts',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConnectUsnLookupRateLimitScalarFieldEnum = (typeof ConnectUsnLookupRateLimitScalarFieldEnum)[keyof typeof ConnectUsnLookupRateLimitScalarFieldEnum]
+
+
 export const MemberProfileScalarFieldEnum = {
   authUserId: 'authUserId',
   slug: 'slug',
@@ -2444,6 +2614,8 @@ export type GlobalOmitConfig = {
   auditLog?: Prisma.AuditLogOmit
   activeSession?: Prisma.ActiveSessionOmit
   usnClaim?: Prisma.UsnClaimOmit
+  usnRosterEntry?: Prisma.UsnRosterEntryOmit
+  connectUsnLookupRateLimit?: Prisma.ConnectUsnLookupRateLimitOmit
   memberProfile?: Prisma.MemberProfileOmit
   memberSocialLink?: Prisma.MemberSocialLinkOmit
   memberProject?: Prisma.MemberProjectOmit
