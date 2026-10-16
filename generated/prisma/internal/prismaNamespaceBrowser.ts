@@ -60,6 +60,7 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   ActiveSession: 'ActiveSession',
   UsnClaim: 'UsnClaim',
+  ConnectRegistration: 'ConnectRegistration',
   UsnRosterEntry: 'UsnRosterEntry',
   ConnectAuthRateLimit: 'ConnectAuthRateLimit',
   MemberProfile: 'MemberProfile',
@@ -246,6 +247,20 @@ export const UsnClaimScalarFieldEnum = {
 } as const
 
 export type UsnClaimScalarFieldEnum = (typeof UsnClaimScalarFieldEnum)[keyof typeof UsnClaimScalarFieldEnum]
+
+
+export const ConnectRegistrationScalarFieldEnum = {
+  id: 'id',
+  authUserId: 'authUserId',
+  email: 'email',
+  usn: 'usn',
+  fullName: 'fullName',
+  emailConfirmedAt: 'emailConfirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConnectRegistrationScalarFieldEnum = (typeof ConnectRegistrationScalarFieldEnum)[keyof typeof ConnectRegistrationScalarFieldEnum]
 
 
 export const UsnRosterEntryScalarFieldEnum = {

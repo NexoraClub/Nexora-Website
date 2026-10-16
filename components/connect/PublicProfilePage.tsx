@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { ArrowLeft, ArrowUpRight, BriefcaseBusiness, CalendarDays, ExternalLink, Flag, Handshake, MapPin, ShieldCheck, Sparkles } from 'lucide-react'
 import { ConnectShell } from './ConnectShell'
+import { ConnectMarkdown } from './ConnectMarkdown'
 import { Panel } from './ConnectUI'
 
 type PublicProfile = {
@@ -179,7 +180,7 @@ export default function PublicProfilePage() {
               <Panel className="p-5 sm:p-7">
                 <p className="connect-eyebrow">Notes from the field</p><h2 className="mt-1 font-clash text-2xl text-white">Knowledge page</h2>
                 {profile.knowledgePage.publishedAt && <p className="mt-2 text-[10px] text-[#82919e]">Published {new Date(profile.knowledgePage.publishedAt).toLocaleDateString()}</p>}
-                <pre className="connect-markdown-preview mt-4 whitespace-pre-wrap">{profile.knowledgePage.publishedMarkdown}</pre>
+                <div className="connect-markdown-preview mt-4"><ConnectMarkdown markdown={profile.knowledgePage.publishedMarkdown} /></div>
               </Panel>
             )}
           </div>

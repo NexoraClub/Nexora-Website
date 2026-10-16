@@ -76,9 +76,41 @@ export async function POST(req: Request) {
         { status: 401 }
       )
     }
+    if (!user.email || !user.email_confirmed_at) {
+      return NextResponse.json(
+        { error: 'Continue with a verified Google account or confirm your email before creating a profile.' },
+        { status: 401 }
+      )
+    }
+    const verifiedEmail = user.email.toLowerCase()
+    const emailConfirmedAt = new Date(user.email_confirmed_at)
 
     const body = await readJsonObject(req)
     const usn = normalizeSignupUsn(body.usn)
+    const registration = await prisma.connectRegistration.findUnique({
+      where: { authUserId: user.id },
+      select: { id: true, usn: true, authUserId: true },
+    }) ?? (user.email
+      ? await prisma.connectRegistration.findUnique({
+          where: { email: user.email.toLowerCase() },
+          select: { id: true, usn: true, authUserId: true },
+        }).then((record) => record?.authUserId ? null : record)
+      : null)
+    if (registration && !registration.authUserId) {
+      await prisma.connectRegistration.update({
+        where: { id: registration.id },
+        data: { authUserId: user.id, emailConfirmedAt: user.email_confirmed_at ? new Date(user.email_confirmed_at) : null },
+      })
+    }
+    const legacySignupUsn = user.user_metadata?.connect_usn
+    const registeredUsn = registration?.usn
+      ?? (typeof legacySignupUsn === 'string' ? normalizeSignupUsn(legacySignupUsn) : null)
+    if (registeredUsn && registeredUsn !== usn) {
+      return NextResponse.json(
+        { error: `Use the USN you verified when creating your account. Contact ${CONNECT_SUPPORT_EMAIL} if you need help.` },
+        { status: 422 }
+      )
+    }
     const submittedName =
       body.fullName === undefined ? null : requiredString(body.fullName, 'fullName', 120)
     const graduationYear = integerValue(body.graduationYear, 'graduationYear', 1980, new Date().getFullYear() + 8)
@@ -142,6 +174,17 @@ export async function POST(req: Request) {
         create: { usn },
         update: {},
       })
+      if (!registration) {
+        await tx.connectRegistration.create({
+          data: {
+            authUserId: user.id,
+            email: verifiedEmail,
+            usn,
+            fullName,
+            emailConfirmedAt,
+          },
+        })
+      }
       return tx.memberProfile.create({
         data: {
           ...userFields,

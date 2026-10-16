@@ -6,7 +6,7 @@ import { CONNECT_SUPPORT_EMAIL, normalizeSignupUsn } from '@/lib/connect/validat
 
 const authAttemptLimit = 10
 const windowDurationMs = 15 * 60 * 1000
-type RateLimitScope = 'usn' | 'signin' | 'password-reset'
+type RateLimitScope = 'usn' | 'signin' | 'password-reset' | 'signup-resend'
 
 export type UsnVerification =
   | { valid: true; usn: string; fullName: string }
@@ -74,7 +74,10 @@ export async function consumeConnectAuthAttempt(
   }
 }
 
-export async function verifySignupUsn(usnInput: unknown): Promise<UsnVerification> {
+export async function verifySignupUsn(
+  usnInput: unknown,
+  authUserId?: string
+): Promise<UsnVerification> {
   const usn = normalizeSignupUsn(usnInput)
   const existingProfile = await prisma.memberProfile.findUnique({
     where: { usn },
@@ -85,6 +88,18 @@ export async function verifySignupUsn(usnInput: unknown): Promise<UsnVerificatio
       valid: false,
       status: 409,
       error: `This USN is already linked to a Connect profile. Contact ${CONNECT_SUPPORT_EMAIL} if you think this is a mistake.`,
+    }
+  }
+
+  const existingRegistration = await prisma.connectRegistration.findUnique({
+    where: { usn },
+    select: { authUserId: true },
+  })
+  if (existingRegistration && existingRegistration.authUserId !== authUserId) {
+    return {
+      valid: false,
+      status: 409,
+      error: `This USN is already being used for a Connect account. Contact ${CONNECT_SUPPORT_EMAIL} if you need help.`,
     }
   }
 

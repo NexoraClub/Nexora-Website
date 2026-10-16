@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUp, Globe, Mail } from "lucide-react";
 import ContourBackdrop from "./ContourBackdrop";
 
@@ -34,14 +35,15 @@ export default function Footer() {
           {/* Brand Info */}
           <div className="md:col-span-2 space-y-4 max-w-md">
             <div className="flex items-center gap-2.5">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--theme-primary,#00f0ff)] text-[var(--theme-bg-main,#060913)] shadow-[0_0_15px_var(--theme-primary,#00f0ff)]">
-                <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current">
-                  <path d="M12 2 L13.8 9.5 L21 12 L13.8 14.5 L12 22 L10.2 14.5 L3 12 L10.2 9.5 Z" />
-                </svg>
-              </div>
-              <span className="font-clash font-black text-2xl uppercase tracking-wider text-white">
-                NEXORA
-              </span>
+              <Link href="/" aria-label="Nexora home" className="inline-flex">
+                <Image
+                  src="/logo-navbar.png"
+                  alt="Nexora"
+                  width={188}
+                  height={40}
+                  className="h-10 w-[188px] object-contain object-left"
+                />
+              </Link>
             </div>
 
             <p className="text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-[var(--theme-primary,#00f0ff)]">

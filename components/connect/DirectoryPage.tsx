@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
-import { ArrowDownRight, ArrowRight, ArrowUpRight, Search, SlidersHorizontal, UsersRound } from 'lucide-react'
 import { ConnectShell } from './ConnectShell'
 import { Button, PageHeading, Panel } from './ConnectUI'
 
@@ -19,6 +18,7 @@ type ProfileCard = {
   company: string | null
   openToCollaborate: boolean
   mentoringAvailable: boolean
+  searchMatches?: Array<{ section: string; excerpt: string }>
 }
 
 type DirectoryResponse = {
@@ -28,6 +28,27 @@ type DirectoryResponse = {
 
 function initials(name: string) {
   return name.split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase()
+}
+
+function ProfileAvatar({ name, src }: { name: string; src: string | null }) {
+  const [imageFailed, setImageFailed] = useState(false)
+
+  return (
+    <div className="connect-avatar connect-directory-avatar">
+      <span aria-hidden="true">{initials(name)}</span>
+      {src && !imageFailed && (
+        <Image
+          src={src}
+          alt=""
+          width={64}
+          height={64}
+          unoptimized
+          className="connect-directory-avatar-image"
+          onError={() => setImageFailed(true)}
+        />
+      )}
+    </div>
+  )
 }
 
 export default function DirectoryPage() {
@@ -74,47 +95,48 @@ export default function DirectoryPage() {
   return (
     <ConnectShell>
       <div className="mx-auto max-w-[1440px] px-5 pb-20 pt-12 sm:px-8 sm:pt-16 lg:px-12 lg:pt-20">
+        <p className="connect-directory-kicker">Nexora Connect <span>/</span> ISE at AJIET</p>
         <PageHeading
-          eyebrow="The people behind the work"
-          title={<>Good work grows<br className="hidden sm:block" /> through <span className="connect-title-accent">good people.</span></>}
-          description="Meet students and alumni from ISE, discover what they’re working on, and find people to build with."
+          eyebrow="The community"
+          title={<>People, projects<br className="hidden sm:block" /> and ideas from <span className="connect-title-accent">ISE.</span></>}
+          description="Explore what people are building, what they care about, and ways to connect."
           actions={
             <Link className="connect-button connect-button-primary shrink-0" href="/connect/sign-up">
-              Join the network <ArrowUpRight size={16} />
+              Create your profile
             </Link>
           }
         />
 
-        <Panel className="mb-8 p-3 sm:p-4">
+        <Panel className="connect-directory-search mb-8 p-3 sm:p-4">
           <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_220px_auto]">
             <label className="relative block">
-              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#82919e]" />
               <input
                 value={query}
                 onChange={(event) => { setQuery(event.target.value); setPage(1) }}
-                placeholder="Search people, roles or companies"
-                aria-label="Search members"
-                className="connect-input h-12 pl-11"
+                placeholder="Search profiles, projects, skills, or knowledge pages"
+                aria-label="Search all public profile content"
+                className="connect-input h-12"
               />
             </label>
             <label className="relative block">
-              <SlidersHorizontal className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#82919e]" />
               <select
                 value={memberType}
                 onChange={(event) => { setMemberType(event.target.value); setPage(1) }}
                 aria-label="Filter by community role"
-                className="connect-input h-12 appearance-none pl-11"
+                className="connect-input h-12"
               >
                 <option value="">Everyone</option>
                 <option value="STUDENT">Students</option>
                 <option value="ALUMNUS">Alumni</option>
               </select>
             </label>
-            <div className="flex items-center justify-center rounded-xl border border-white/[0.07] px-4 text-xs text-[#aab6c2] md:min-w-[150px]">
-              <UsersRound size={15} className="mr-2 text-[#72d5f0]" />
-              {loading ? 'Finding people…' : `${result?.pagination.total ?? 0} members`}
+            <div className="flex items-center justify-center px-4 text-xs text-[#aab6c2] md:min-w-[150px]">
+              {loading ? 'Searching…' : `${result?.pagination.total ?? 0} ${query.trim() ? 'matches' : 'members'}`}
             </div>
           </div>
+          <p className="px-1 pt-3 text-[11px] leading-5 text-[#82919e]">
+            Searches public profile details, skills, projects, experience, achievements, and published knowledge pages.
+          </p>
         </Panel>
 
         {error && <div className="connect-feedback connect-feedback-error mb-6" role="alert">{error}</div>}
@@ -122,67 +144,82 @@ export default function DirectoryPage() {
         {!loading && !error && profiles.length === 0 && (
           <Panel className="overflow-hidden p-8 sm:p-12">
             <div className="mx-auto max-w-lg text-center">
-              <span className="connect-empty-icon"><UsersRound size={24} /></span>
-              <p className="connect-eyebrow mt-6">A little quiet here</p>
+              <p className="connect-eyebrow">{query.trim() ? 'Search results' : 'Nothing to show just yet'}</p>
               <h2 className="mt-3 font-clash text-3xl font-medium tracking-tight text-white">
-                The community is just getting started.
+                {query.trim() ? 'No profiles match that search.' : 'The community is just getting started.'}
               </h2>
               <p className="mt-3 text-sm leading-6 text-[#aab6c2]">
-                No one has shared a profile yet. If you&apos;re part of ISE at AJIET, you could be the first.
+                {query.trim()
+                  ? 'Try another name, skill, project, or phrase from a published knowledge page.'
+                  : 'No one has shared a profile yet. If you&apos;re part of ISE at AJIET, you could be the first.'}
               </p>
-              <Link href="/connect/sign-up" className="connect-button connect-button-primary mt-6">
-                Create your profile <ArrowRight size={16} />
-              </Link>
-              <p className="mt-5 text-[11px] text-[#82919e]">We check each student’s details before their profile is shared.</p>
+              {query.trim()
+                ? <button type="button" className="connect-button connect-button-secondary mt-6" onClick={() => setQuery('')}>Clear search</button>
+                : <>
+                    <Link href="/connect/sign-up" className="connect-button connect-button-primary mt-6">Create your profile</Link>
+                    <p className="mt-5 text-[11px] text-[#82919e]">We check each student’s details before their profile is shared.</p>
+                  </>}
             </div>
           </Panel>
         )}
 
         {(loading || profiles.length > 0) && (
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="connect-directory-grid grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {loading && profiles.length === 0
               ? Array.from({ length: 6 }, (_, index) => <div key={index} className="connect-skeleton h-[240px]" />)
               : profiles.map((profile, index) => (
                 <Link
                   key={profile.slug}
                   href={`/connect/members/${encodeURIComponent(profile.slug)}`}
-                  className="connect-member-card group"
+                  className="connect-member-card connect-directory-card group"
                   style={{ animationDelay: `${Math.min(index, 8) * 45}ms` }}
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex min-w-0 items-center gap-3.5">
-                      <div className="connect-avatar h-14 w-14">
-                        {profile.avatarUrl
-                          ? <Image src={profile.avatarUrl} alt="" width={56} height={56} unoptimized className="h-full w-full rounded-2xl object-cover" />
-                          : initials(profile.fullName)}
-                      </div>
-                      <div className="min-w-0">
-                        <h2 className="truncate font-clash text-xl font-medium tracking-tight text-white group-hover:text-[#83def5]">{profile.fullName}</h2>
-                        <p className="mt-1 truncate text-xs text-[#97a8b5]">
-                          {profile.currentRole || (profile.memberType === 'ALUMNUS' ? 'ISE alum' : 'ISE student')}
-                          {profile.company ? ` · ${profile.company}` : ''}
-                        </p>
-                      </div>
+                  <div className="connect-directory-card-heading">
+                    <ProfileAvatar name={profile.fullName} src={profile.avatarUrl} />
+                    <div className="connect-directory-person">
+                      <p className="connect-directory-meta">
+                        {profile.memberType === 'ALUMNUS' ? 'Alumni' : 'Student'}
+                        <span aria-hidden="true">/</span>
+                        Class of {profile.graduationYear}
+                      </p>
+                      <h2 className="font-clash text-xl font-semibold tracking-tight text-white group-hover:text-[#c7eff7]">
+                        {profile.fullName}
+                      </h2>
+                      <p className="connect-directory-role">
+                        {profile.currentRole || (profile.memberType === 'ALUMNUS' ? 'ISE graduate' : 'ISE student')}
+                        {profile.company && <><span aria-hidden="true"> · </span>{profile.company}</>}
+                      </p>
                     </div>
-                    <span className="connect-card-arrow"><ArrowUpRight size={16} /></span>
                   </div>
-                  <p className="mt-5 line-clamp-2 min-h-10 text-[13px] leading-5 text-[#b2bec8]">
-                    {profile.bio || 'A member of the ISE community at AJIET.'}
+                  <p className="connect-directory-bio line-clamp-2">
+                    {profile.bio || 'No introduction added.'}
                   </p>
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {profile.skills.slice(0, 4).map((skill) => <span key={skill} className="connect-chip">{skill}</span>)}
-                    {profile.skills.length > 4 && <span className="connect-chip">+{profile.skills.length - 4}</span>}
-                  </div>
-                  <div className="mt-5 flex items-center justify-between border-t border-white/[0.07] pt-4">
-                    <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-[#82919e]">
-                      <span>{profile.memberType === 'ALUMNUS' ? 'Alumni' : 'Student'}</span>
-                      <span className="h-1 w-1 rounded-full bg-[#607382]" />
-                      <span>Class of {profile.graduationYear}</span>
+                  {query.trim() && profile.searchMatches && profile.searchMatches.length > 0 && (
+                    <div className="connect-search-matches">
+                      {profile.searchMatches.map((match) => (
+                        <p key={match.section} className="connect-search-match">
+                          <span>{match.section}</span>
+                          <span>{match.excerpt}</span>
+                        </p>
+                      ))}
                     </div>
-                    <div className="flex gap-2">
-                      {profile.openToCollaborate && <span className="connect-card-indicator" title="Open to collaborate"><ArrowDownRight size={12} /></span>}
-                      {profile.mentoringAvailable && <span className="connect-card-indicator" title="Available to mentor">M</span>}
+                  )}
+                  {profile.skills.length > 0 && (
+                    <div className="connect-directory-skills">
+                      <span className="connect-directory-label">Skills</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {profile.skills.slice(0, 3).map((skill) => <span key={skill} className="connect-chip">{skill}</span>)}
+                        {profile.skills.length > 3 && <span className="connect-chip">+{profile.skills.length - 3}</span>}
+                      </div>
                     </div>
+                  )}
+                  <div className="connect-directory-card-footer">
+                    <div className="flex flex-wrap gap-x-3 gap-y-1">
+                      {profile.openToCollaborate && <span>Open to collaborate</span>}
+                      {profile.mentoringAvailable && <span>Available to mentor</span>}
+                      {!profile.openToCollaborate && !profile.mentoringAvailable && <span>ISE member</span>}
+                    </div>
+                    <span className="connect-directory-link">View profile</span>
                   </div>
                 </Link>
               ))}

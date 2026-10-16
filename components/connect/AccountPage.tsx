@@ -1,10 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState, type FormEvent } from 'react'
+import Image from 'next/image'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowRight, Check, ChevronRight, Eye, FolderKanban, LockKeyhole, Plus, Save, UserRound, X } from 'lucide-react'
+import { ArrowRight, Check, ChevronRight, Eye, FolderKanban, LockKeyhole, Plus, Save, Upload, UserRound, X } from 'lucide-react'
 import { ConnectShell } from './ConnectShell'
+import { KnowledgeEditor } from './KnowledgeEditor'
 import { Button, Feedback, Field, PageHeading, Panel, StatusPill, TextField } from './ConnectUI'
 
 type Project = {
@@ -144,10 +146,15 @@ export default function AccountPage() {
   const [emailVerified, setEmailVerified] = useState(false)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [draft, setDraft] = useState<Draft>(emptyDraft)
+  const [usnVerified, setUsnVerified] = useState(false)
+  const [officialName, setOfficialName] = useState('')
   const [projects, setProjects] = useState<Project[]>([])
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([])
   const [feedback, setFeedback] = useState<{ message: string; kind: 'error' | 'success' | 'info' } | null>(null)
   const [busy, setBusy] = useState(false)
+  const [avatarUploading, setAvatarUploading] = useState(false)
+  const [avatarFeedback, setAvatarFeedback] = useState<string | null>(null)
+  const avatarInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     let active = true
@@ -179,7 +186,7 @@ export default function AccountPage() {
         } else {
           setDraft((current) => ({
             ...current,
-            usn: window.sessionStorage.getItem('connect-usn') ?? '',
+            usn: session.user?.connectUsn ?? '',
             contactEmail: session.user?.email ?? '',
           }))
         }
@@ -196,12 +203,79 @@ export default function AccountPage() {
     setDraft((current) => ({ ...current, [key]: value }))
   }
 
+  async function verifyUsn() {
+    setBusy(true)
+    setFeedback(null)
+    setUsnVerified(false)
+    setOfficialName('')
+    try {
+      const response = await fetch(`/api/connect/verify-usn?usn=${encodeURIComponent(draft.usn)}`, {
+        cache: 'no-store',
+      })
+      const data = await response.json()
+      if (!response.ok || !data.valid) {
+        throw new Error(data.error || 'We could not find this student number in the department list.')
+      }
+      setOfficialName(data.fullName)
+      setUsnVerified(true)
+      setFeedback({
+        message: 'Student number confirmed. Your department-record name is shown below.',
+        kind: 'success',
+      })
+    } catch (error) {
+      setFeedback({
+        message: error instanceof Error ? error.message : 'Unable to verify your student number right now.',
+        kind: 'error',
+      })
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function uploadAvatar(file: File | undefined) {
+    if (!file) return
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      setAvatarFeedback('Choose a JPG, PNG, or WebP image.')
+      return
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setAvatarFeedback('Choose an image smaller than 5 MB.')
+      return
+    }
+
+    setAvatarUploading(true)
+    setAvatarFeedback(null)
+    try {
+      const formData = new FormData()
+      formData.set('file', file)
+      const response = await fetch('/api/connect/avatar-upload', {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: formData,
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'We could not upload that photo. Please try again.')
+      update('avatarUrl', data.url)
+      setAvatarFeedback('Photo uploaded. Save your profile to apply it.')
+    } catch (error) {
+      setAvatarFeedback(error instanceof Error ? error.message : 'We could not upload that photo. Please try again.')
+    } finally {
+      setAvatarUploading(false)
+      if (avatarInputRef.current) avatarInputRef.current.value = ''
+    }
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    if (!profile && (!usnVerified || !officialName)) {
+      setFeedback({ message: 'Verify your student number before creating your profile.', kind: 'error' })
+      return
+    }
     setBusy(true)
     setFeedback(null)
     const body: Record<string, unknown> = {
       ...draft,
+      ...(!profile ? { fullName: officialName } : {}),
       graduationYear: Number(draft.graduationYear),
       skills: parseList(draft.skills),
       interests: parseList(draft.interests),
@@ -235,6 +309,7 @@ export default function AccountPage() {
       if (!response.ok) throw new Error(data.error || 'Unable to save your profile.')
       if (!profile) {
         setProfile(data.profile as Profile)
+        delete body.fullName
         response = await fetch('/api/connect/me', {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
@@ -324,14 +399,20 @@ export default function AccountPage() {
       <div className="mx-auto max-w-[1440px] px-5 pb-20 pt-12 sm:px-8 sm:pt-16 lg:px-12 lg:pt-20">
         <PageHeading
           eyebrow={profile ? 'Your Connect space' : 'The first step'}
-          title={profile ? <>Make it <span className="connect-title-accent">yours.</span></> : <>Start with<br className="hidden sm:block" /> <span className="connect-title-accent">your story.</span></>}
+          title={profile
+            ? <>Make it <span className="connect-title-accent">yours.</span></>
+            : usnVerified
+              ? <>Start with<br className="hidden sm:block" /> <span className="connect-title-accent">your story.</span></>
+              : <>Confirm your<br className="hidden sm:block" /> <span className="connect-title-accent">student number.</span></>}
           description={profile
             ? 'Your profile is the beginning of your presence in the ISE community. Keep it current and make it yours.'
-            : 'Your account is ready. Add a few details so your classmates can get to know you.'}
+            : usnVerified
+              ? 'Your official name is confirmed. Add a few details so your classmates can get to know you.'
+              : 'Enter your official student number. We’ll check it against the department list before you continue.'}
           actions={
             <div className="flex flex-wrap gap-2">
-              <Link href="/connect/knowledge" className="connect-button connect-button-secondary"><FolderKanban size={15} /> Share what you’ve learned</Link>
-              <Link href="/connect/activity" className="connect-button connect-button-secondary">Activity</Link>
+              {profile && <Link href="/connect/dashboard#knowledge-page" className="connect-button connect-button-secondary"><FolderKanban size={15} /> Your personal page</Link>}
+              {profile && <Link href="/connect/activity" className="connect-button connect-button-secondary">Activity</Link>}
               <Button variant="quiet" onClick={signOut} disabled={busy}>Sign out</Button>
             </div>
           }
@@ -353,6 +434,41 @@ export default function AccountPage() {
           </div>
         )}
 
+        {!profile && !usnVerified ? (
+          <Panel className="mx-auto max-w-xl p-5 sm:p-8">
+            <div className="mb-5">
+              <h2 className="font-clash text-2xl text-white">Find your name on the list</h2>
+              <p className="mt-2 text-sm leading-6 text-[#9aaab6]">Enter your student number exactly as it appears in your department records. We’ll fetch your official name if it matches.</p>
+            </div>
+            <Field
+              label="Official student number (USN)"
+              value={draft.usn}
+              onChange={(event) => {
+                update('usn', event.target.value.toUpperCase())
+                setUsnVerified(false)
+                setOfficialName('')
+                setFeedback(null)
+              }}
+              required
+              autoComplete="off"
+              placeholder="e.g. 4AL22IS001"
+            />
+            {feedback && <Feedback message={feedback.message} kind={feedback.kind} />}
+            <Button
+              type="button"
+              variant="secondary"
+              className="mt-4 w-full"
+              loading={busy}
+              disabled={draft.usn.trim().length < 3}
+              onClick={() => void verifyUsn()}
+            >
+              Check my student number
+            </Button>
+            <p className="mt-4 text-center text-[11px] leading-5 text-[#81919e]">
+              Can’t find your name or see a mistake? Email <a className="text-[#83d9f0] hover:underline" href="mailto:nexora.ise@ajiet.edu.in">nexora.ise@ajiet.edu.in</a>.
+            </p>
+          </Panel>
+        ) : (
         <form onSubmit={handleSubmit} className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_330px]">
           <div className="space-y-5">
             <Panel className="p-5 sm:p-7">
@@ -361,8 +477,8 @@ export default function AccountPage() {
                 <div><h2 className="font-clash text-xl text-white">The essentials</h2><p className="mt-1 text-xs text-[#82919e]">Your name is checked with the department.</p></div>
               </div>
               <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="Student number (USN)" value={draft.usn} onChange={(event) => update('usn', event.target.value.toUpperCase())} required disabled={Boolean(profile)} placeholder="Your official student number" />
-                <Field label="Name on department records" value={profile?.fullName ?? 'Confirmed after email verification'} readOnly disabled />
+                <Field label="Student number (USN)" value={draft.usn} readOnly disabled />
+                <Field label="Name on department records" value={profile?.fullName ?? officialName} readOnly disabled />
                 <Field label="Graduation year" type="number" min="1980" max={new Date().getFullYear() + 8} value={draft.graduationYear} onChange={(event) => update('graduationYear', event.target.value)} required />
                 <label className="block">
                   <span className="mb-2 block text-[12px] font-medium text-[#d8e2e9]">I am a</span>
@@ -372,7 +488,33 @@ export default function AccountPage() {
                   </select>
                 </label>
                 <TextField label="A short introduction" className="sm:col-span-2" value={draft.bio} onChange={(event) => update('bio', event.target.value)} maxLength={600} placeholder="A couple of lines about what you care about…" />
-                <Field label="Photo link" type="url" value={draft.avatarUrl} onChange={(event) => update('avatarUrl', event.target.value)} placeholder="https://…" />
+                <div className="sm:col-span-2">
+                  <span className="mb-2 block text-[12px] font-medium text-[#d8e2e9]">Profile photo</span>
+                  <div className="flex flex-wrap items-center gap-4 rounded-xl border border-white/[0.08] bg-black/10 p-3">
+                    <div className="connect-avatar h-16 w-16 rounded-xl">
+                      {draft.avatarUrl
+                        ? <Image src={draft.avatarUrl} alt="Profile photo preview" width={64} height={64} unoptimized className="h-full w-full object-cover" />
+                        : <UserRound size={22} />}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs text-[#c1cdd5]">Upload a JPG, PNG, or WebP photo (up to 5 MB).</p>
+                      <p className="mt-1 text-[10px] leading-5 text-[#81919e]">Stored securely in Nexora’s Cloudinary media folder. It appears on your public profile only when you choose to share your profile.</p>
+                      {avatarFeedback && <p role="status" className={`mt-1 text-[11px] ${avatarFeedback.startsWith('Photo uploaded') ? 'text-[#82d8ef]' : 'text-[#f0a6a6]'}`}>{avatarFeedback}</p>}
+                    </div>
+                    <input
+                      ref={avatarInputRef}
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      className="sr-only"
+                      aria-label="Choose a profile photo"
+                      disabled={avatarUploading || busy}
+                      onChange={(event) => void uploadAvatar(event.target.files?.[0])}
+                    />
+                    <Button type="button" variant="secondary" loading={avatarUploading} disabled={busy} onClick={() => avatarInputRef.current?.click()}>
+                      <Upload size={15} /> {draft.avatarUrl ? 'Change photo' : 'Upload photo'}
+                    </Button>
+                  </div>
+                </div>
                 <Field label="Location" value={draft.location} onChange={(event) => update('location', event.target.value)} placeholder="Mangaluru, India" />
               </div>
             </Panel>
@@ -486,11 +628,13 @@ export default function AccountPage() {
             </Panel>
             <div>
               {feedback && <Feedback message={feedback.message} kind={feedback.kind} />}
-              <Button type="submit" loading={busy} className="mt-3 w-full"><Save size={16} /> {profile ? 'Save changes' : 'Create profile'}</Button>
+              <Button type="submit" loading={busy} disabled={avatarUploading} className="mt-3 w-full"><Save size={16} /> {profile ? 'Save changes' : 'Create profile'}</Button>
               {profile && <p className="mt-2 text-center text-[10px] text-[#788995]">Only your profile is changed when you save.</p>}
             </div>
           </aside>
         </form>
+        )}
+        {profile && <KnowledgeEditor profileApprovalStatus={profile.approvalStatus} embedded />}
       </div>
     </ConnectShell>
   )

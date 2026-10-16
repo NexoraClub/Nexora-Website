@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createConnectSupabaseServerClient, getVerifiedMember, isSameOriginRequest } from '@/lib/connect/auth'
+import { CONNECT_MAX_PASSWORD_LENGTH, CONNECT_MIN_PASSWORD_LENGTH } from '@/lib/connect/constants'
 import {
   ConnectRequestError,
   readJsonObject,
@@ -16,8 +17,14 @@ export async function PATCH(req: Request) {
     const user = await getVerifiedMember()
     if (!user) return NextResponse.json({ error: 'Unauthorized.' }, { status: 401 })
     const body = await readJsonObject(req)
-    if (typeof body.password !== 'string' || body.password.length < 12 || body.password.length > 128) {
-      throw new ConnectRequestError('password must be between 12 and 128 characters.')
+    if (
+      typeof body.password !== 'string' ||
+      body.password.length < CONNECT_MIN_PASSWORD_LENGTH ||
+      body.password.length > CONNECT_MAX_PASSWORD_LENGTH
+    ) {
+      throw new ConnectRequestError(
+        `Password must be between ${CONNECT_MIN_PASSWORD_LENGTH} and ${CONNECT_MAX_PASSWORD_LENGTH} characters.`
+      )
     }
 
     const supabase = await createConnectSupabaseServerClient()

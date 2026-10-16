@@ -153,7 +153,7 @@ export default function ConnectRosterView() {
 
   if (authorized === false) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] px-5 py-20 text-[#111827]">
+      <div className="px-5 py-20 text-[#111827]">
         <section className="mx-auto max-w-lg rounded-3xl border border-[#e2e8f0] bg-white p-8 text-center shadow-sm">
           <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-amber-50 text-amber-700"><ShieldAlert size={22} /></span>
           <p className="mt-5 text-[10px] font-semibold uppercase tracking-[.18em] text-amber-700">Page unavailable</p>
@@ -166,10 +166,9 @@ export default function ConnectRosterView() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f8fafc] px-4 py-7 text-[#111827] sm:px-8 sm:py-10">
-      <div className="mx-auto max-w-7xl">
-        <Link href="/admin" className="inline-flex items-center gap-2 text-xs text-slate-500 transition hover:text-slate-900"><ArrowLeft size={14} /> Admin dashboard</Link>
-        <header className="mt-6 flex flex-col gap-5 border-b border-slate-200 pb-7 md:flex-row md:items-end md:justify-between">
+    <div className="text-[#111827]">
+      <div>
+        <header className="flex flex-col gap-5 border-b border-slate-200 pb-7 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#0784a5]"><span className="h-1.5 w-1.5 rounded-full bg-[#08a6c8]" /> Nexora Connect · Administration</p>
             <h1 className="mt-2 font-clash text-4xl font-semibold tracking-tight sm:text-5xl">ISE student list</h1>
@@ -269,6 +268,6 @@ export default function ConnectRosterView() {
           </aside>
         </div>
       </div>
-    </main>
+    </div>
   )
 }

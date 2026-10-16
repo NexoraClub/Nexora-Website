@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import AdminSidebar, { AdminTab } from './AdminSidebar'
 import AdminHeader from './AdminHeader'
 import DashboardView from './views/DashboardView'
@@ -14,6 +15,8 @@ import RolesView from './views/RolesView'
 import AuditLogsView from './views/AuditLogsView'
 import SessionsView from './views/SessionsView'
 import SettingsView from './views/SettingsView'
+import ConnectModerationView from './ConnectModerationView'
+import ConnectRosterView from './ConnectRosterView'
 
 interface AdminUser {
   id: string
@@ -28,7 +31,13 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) {
-  const [currentTab, setCurrentTab] = useState<AdminTab>('dashboard')
+  const searchParams = useSearchParams()
+  const [currentTab, setCurrentTab] = useState<AdminTab>(() => {
+    const requestedTab = searchParams.get('tab')
+    return requestedTab === 'connect-moderation' || requestedTab === 'connect-roster'
+      ? requestedTab
+      : 'dashboard'
+  })
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [openModalSignal, setOpenModalSignal] = useState(0)
 
@@ -120,6 +129,12 @@ export default function AdminDashboard({ user, onLogout }: AdminDashboardProps) 
                 onLogout={onLogout}
               />
             )}
+
+            {currentTab === 'connect-moderation' && (
+              <ConnectModerationView onNavigateToRoster={() => setCurrentTab('connect-roster')} />
+            )}
+
+            {currentTab === 'connect-roster' && <ConnectRosterView />}
           </div>
         </main>
       </div>

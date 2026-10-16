@@ -406,6 +406,7 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   ActiveSession: 'ActiveSession',
   UsnClaim: 'UsnClaim',
+  ConnectRegistration: 'ConnectRegistration',
   UsnRosterEntry: 'UsnRosterEntry',
   ConnectAuthRateLimit: 'ConnectAuthRateLimit',
   MemberProfile: 'MemberProfile',
@@ -431,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "admin" | "event" | "notice" | "achievement" | "learningResource" | "contentCategory" | "auditLog" | "activeSession" | "usnClaim" | "usnRosterEntry" | "connectAuthRateLimit" | "memberProfile" | "memberSocialLink" | "memberProject" | "memberExperience" | "memberAchievement" | "memberKnowledgePage" | "connectReport" | "usnDispute"
+    modelProps: "admin" | "event" | "notice" | "achievement" | "learningResource" | "contentCategory" | "auditLog" | "activeSession" | "usnClaim" | "connectRegistration" | "usnRosterEntry" | "connectAuthRateLimit" | "memberProfile" | "memberSocialLink" | "memberProject" | "memberExperience" | "memberAchievement" | "memberKnowledgePage" | "connectReport" | "usnDispute"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1098,6 +1099,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.UsnClaimCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.UsnClaimCountAggregateOutputType> | number
+        }
+      }
+    }
+    ConnectRegistration: {
+      payload: Prisma.$ConnectRegistrationPayload<ExtArgs>
+      fields: Prisma.ConnectRegistrationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ConnectRegistrationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ConnectRegistrationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload>
+        }
+        findFirst: {
+          args: Prisma.ConnectRegistrationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ConnectRegistrationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload>
+        }
+        findMany: {
+          args: Prisma.ConnectRegistrationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload>[]
+        }
+        create: {
+          args: Prisma.ConnectRegistrationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload>
+        }
+        createMany: {
+          args: Prisma.ConnectRegistrationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ConnectRegistrationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload>[]
+        }
+        delete: {
+          args: Prisma.ConnectRegistrationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload>
+        }
+        update: {
+          args: Prisma.ConnectRegistrationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload>
+        }
+        deleteMany: {
+          args: Prisma.ConnectRegistrationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ConnectRegistrationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ConnectRegistrationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload>[]
+        }
+        upsert: {
+          args: Prisma.ConnectRegistrationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ConnectRegistrationPayload>
+        }
+        aggregate: {
+          args: Prisma.ConnectRegistrationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateConnectRegistration>
+        }
+        groupBy: {
+          args: Prisma.ConnectRegistrationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConnectRegistrationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ConnectRegistrationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ConnectRegistrationCountAggregateOutputType> | number
         }
       }
     }
@@ -2040,6 +2115,20 @@ export const UsnClaimScalarFieldEnum = {
 export type UsnClaimScalarFieldEnum = (typeof UsnClaimScalarFieldEnum)[keyof typeof UsnClaimScalarFieldEnum]
 
 
+export const ConnectRegistrationScalarFieldEnum = {
+  id: 'id',
+  authUserId: 'authUserId',
+  email: 'email',
+  usn: 'usn',
+  fullName: 'fullName',
+  emailConfirmedAt: 'emailConfirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConnectRegistrationScalarFieldEnum = (typeof ConnectRegistrationScalarFieldEnum)[keyof typeof ConnectRegistrationScalarFieldEnum]
+
+
 export const UsnRosterEntryScalarFieldEnum = {
   usn: 'usn',
   fullName: 'fullName',
@@ -2614,6 +2703,7 @@ export type GlobalOmitConfig = {
   auditLog?: Prisma.AuditLogOmit
   activeSession?: Prisma.ActiveSessionOmit
   usnClaim?: Prisma.UsnClaimOmit
+  connectRegistration?: Prisma.ConnectRegistrationOmit
   usnRosterEntry?: Prisma.UsnRosterEntryOmit
   connectAuthRateLimit?: Prisma.ConnectAuthRateLimitOmit
   memberProfile?: Prisma.MemberProfileOmit

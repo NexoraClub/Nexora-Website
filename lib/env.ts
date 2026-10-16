@@ -58,6 +58,7 @@ export const env = {
     'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
   ),
+  SUPABASE_SERVICE_ROLE_KEY: getEnvVar('SUPABASE_SERVICE_ROLE_KEY'),
 
   // Security & Authentication
   ADMIN_JWT_SECRET: getEnvVar(

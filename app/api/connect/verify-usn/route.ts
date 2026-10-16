@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server'
+import { getAuthenticatedMember } from '@/lib/connect/auth'
 import { consumeConnectAuthAttempt, verifySignupUsn } from '@/lib/connect/usn'
+import { prisma } from '@/lib/prisma'
 import { rethrowNextControlFlow, requestErrorResponse } from '@/lib/connect/validation'
 
 export async function GET(req: Request) {
@@ -15,7 +17,14 @@ export async function GET(req: Request) {
       )
     }
 
-    const result = await verifySignupUsn(new URL(req.url).searchParams.get('usn'))
+    const user = await getAuthenticatedMember()
+    if (user?.email && user.email_confirmed_at) {
+      await prisma.connectRegistration.updateMany({
+        where: { email: user.email.toLowerCase(), authUserId: null },
+        data: { authUserId: user.id, emailConfirmedAt: new Date(user.email_confirmed_at) },
+      })
+    }
+    const result = await verifySignupUsn(new URL(req.url).searchParams.get('usn'), user?.id)
     if (!result.valid) {
       return NextResponse.json(
         { valid: false, error: result.error },

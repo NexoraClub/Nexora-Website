@@ -123,13 +123,17 @@ const Navbar = () => {
   };
 
   const closeMenu = () => {
-    gsap.set(menuPanelRef.current, { pointerEvents: 'none' });
-    gsap.to(menuPanelRef.current, {
-      opacity: 0,
-      duration: 0.22,
-      ease: 'power2.in',
-      onComplete: () => setMenuOpen(false),
-    });
+    const menuPanel = menuPanelRef.current;
+    if (menuPanel) {
+      gsap.killTweensOf(menuPanel);
+      gsap.set(menuPanel, { pointerEvents: 'none' });
+      gsap.to(menuPanel, {
+        opacity: 0,
+        duration: 0.22,
+        ease: 'power2.in',
+      });
+    }
+    setMenuOpen(false);
   };
 
   /* ─── Lock scroll when menu is open ─── */

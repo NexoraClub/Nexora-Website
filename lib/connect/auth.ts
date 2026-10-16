@@ -49,6 +49,7 @@ export async function getAuthenticatedMember(): Promise<User | null> {
     throw new Error('Unable to verify the member session.', { cause: error })
   }
 
+  if (data.user.app_metadata?.connect_disabled === true) return null
   return data.user
 }
 

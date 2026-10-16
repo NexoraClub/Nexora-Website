@@ -9,13 +9,15 @@ import {
   ChevronRight,
   CircleAlert,
   ClipboardCheck,
+  CircleCheck,
   Flag,
   MessageSquareWarning,
   ShieldAlert,
+  UserRound,
   UsersRound,
 } from 'lucide-react'
 
-type Tab = 'profiles' | 'reports' | 'disputes'
+type Tab = 'profiles' | 'reports' | 'disputes' | 'accounts'
 type ProfileStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED'
 type ReviewStatus = 'OPEN' | 'IN_REVIEW' | 'RESOLVED' | 'DISMISSED'
 type Profile = {
@@ -32,6 +34,7 @@ type Profile = {
   reviewNote: string | null
   createdAt: string
 }
+
 type Report = {
   id: string
   target: 'PROFILE' | 'KNOWLEDGE_PAGE'
@@ -51,17 +54,28 @@ type Dispute = {
   createdAt: string
   claim: { profile: { fullName: string; slug: string; approvalStatus: ProfileStatus } }
 }
+type ConnectAccount = {
+  id: string
+  email: string
+  usn: string | null
+  createdAt: string
+  emailConfirmedAt: string | null
+  disabled: boolean
+  profile: { fullName: string; slug: string; approvalStatus: ProfileStatus } | null
+}
 type Pagination = { page: number; limit: number; total: number; totalPages: number }
 
 const tabs: Array<{ id: Tab; label: string; icon: typeof UsersRound }> = [
   { id: 'profiles', label: 'Profiles', icon: UsersRound },
   { id: 'reports', label: 'Reports', icon: Flag },
   { id: 'disputes', label: 'Student number help', icon: MessageSquareWarning },
+  { id: 'accounts', label: 'Registered members', icon: UserRound },
 ]
 const statusOptions: Record<Tab, string[]> = {
   profiles: ['PENDING', 'APPROVED', 'REJECTED', 'SUSPENDED', 'ALL'],
   reports: ['OPEN', 'IN_REVIEW', 'RESOLVED', 'DISMISSED', 'ALL'],
   disputes: ['OPEN', 'IN_REVIEW', 'RESOLVED', 'DISMISSED', 'ALL'],
+  accounts: ['ALL', 'ACTIVE', 'UNCONFIRMED', 'DISABLED'],
 }
 
 function dateLabel(value: string) {
@@ -79,14 +93,17 @@ function statusLabel(status: string) {
     RESOLVED: 'Resolved',
     DISMISSED: 'Closed',
     ALL: 'All',
+    ACTIVE: 'Active',
+    DISABLED: 'Disabled',
+    UNCONFIRMED: 'Email not confirmed',
   }
   return labels[status] ?? status.replaceAll('_', ' ')
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const tone = status === 'APPROVED' || status === 'RESOLVED'
+  const tone = status === 'APPROVED' || status === 'RESOLVED' || status === 'ACTIVE'
     ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
-    : status === 'REJECTED' || status === 'SUSPENDED' || status === 'DISMISSED'
+    : status === 'REJECTED' || status === 'SUSPENDED' || status === 'DISMISSED' || status === 'DISABLED'
       ? 'border-rose-200 bg-rose-50 text-rose-700'
       : 'border-amber-200 bg-amber-50 text-amber-800'
   return <span className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-semibold tracking-wide ${tone}`}>{statusLabel(status)}</span>
@@ -145,17 +162,25 @@ function ReviewForm({
   )
 }
 
-export default function ConnectModerationView() {
+export default function ConnectModerationView({
+  onNavigateToRoster,
+}: {
+  onNavigateToRoster: () => void
+}) {
   const [tab, setTab] = useState<Tab>('profiles')
   const [filters, setFilters] = useState<Record<Tab, string>>({
     profiles: 'PENDING',
     reports: 'OPEN',
     disputes: 'OPEN',
+    accounts: 'ALL',
   })
   const [page, setPage] = useState(1)
+  const [accountQuery, setAccountQuery] = useState('')
   const [profiles, setProfiles] = useState<Profile[]>([])
   const [reports, setReports] = useState<Report[]>([])
   const [disputes, setDisputes] = useState<Dispute[]>([])
+  const [accounts, setAccounts] = useState<ConnectAccount[]>([])
+  const [canManageAccounts, setCanManageAccounts] = useState(false)
   const [pagination, setPagination] = useState<Pagination | null>(null)
   const [loading, setLoading] = useState(true)
   const [authorized, setAuthorized] = useState<boolean | null>(null)
@@ -168,6 +193,7 @@ export default function ConnectModerationView() {
     setError('')
     const endpoint = tab === 'profiles' ? 'profiles' : tab
     const params = new URLSearchParams({ status: filters[tab], page: String(page), limit: '20' })
+    if (tab === 'accounts' && accountQuery.trim()) params.set('q', accountQuery.trim())
     try {
       const response = await fetch(`/api/admin/connect/${endpoint}?${params}`, { cache: 'no-store', signal })
       const data = await response.json()
@@ -180,6 +206,10 @@ export default function ConnectModerationView() {
       if (tab === 'profiles') setProfiles(data.profiles)
       if (tab === 'reports') setReports(data.reports)
       if (tab === 'disputes') setDisputes(data.disputes)
+      if (tab === 'accounts') {
+        setAccounts(data.accounts)
+        setCanManageAccounts(Boolean(data.canManageAccounts))
+      }
       setPagination(data.pagination)
     } catch (cause) {
       if (cause instanceof DOMException && cause.name === 'AbortError') return
@@ -187,16 +217,16 @@ export default function ConnectModerationView() {
     } finally {
       if (!signal?.aborted) setLoading(false)
     }
-  }, [filters, page, tab])
+  }, [accountQuery, filters, page, tab])
 
   useEffect(() => {
     const controller = new AbortController()
-    const timer = window.setTimeout(() => void load(controller.signal), 0)
+    const timer = window.setTimeout(() => void load(controller.signal), tab === 'accounts' ? 250 : 0)
     return () => {
       window.clearTimeout(timer)
       controller.abort()
     }
-  }, [load])
+  }, [load, tab])
 
   async function review(endpoint: Tab, id: string, status: string, note: string) {
     setBusyId(id)
@@ -222,6 +252,35 @@ export default function ConnectModerationView() {
     }
   }
 
+  async function setAccountStatus(account: ConnectAccount, status: 'ACTIVE' | 'DISABLED') {
+    if (
+      status === 'DISABLED' &&
+      !window.confirm(`Disable Connect access for ${account.email}? Their account and profile data will be kept and can be restored later.`)
+    ) return
+
+    setBusyId(account.id)
+    setError('')
+    setSuccess('')
+    try {
+      const response = await fetch('/api/admin/connect/accounts', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({ userId: account.id, status }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'Could not update this account.')
+      setSuccess(status === 'DISABLED'
+        ? 'Account access disabled. The profile and member information have been kept.'
+        : 'Account access restored.')
+      await load()
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'Could not update this account.')
+    } finally {
+      setBusyId('')
+    }
+  }
+
   function changeTab(next: Tab) {
     setTab(next)
     setPage(1)
@@ -234,7 +293,7 @@ export default function ConnectModerationView() {
 
   if (authorized === false) {
     return (
-      <div className="min-h-screen bg-[#f8fafc] px-5 py-20 text-[#111827]">
+      <div className="px-5 py-20 text-[#111827]">
         <section className="mx-auto max-w-lg rounded-3xl border border-[#e2e8f0] bg-white p-8 text-center shadow-sm">
           <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-amber-50 text-amber-700"><ShieldAlert size={22} /></span>
           <p className="mt-5 text-[10px] font-semibold uppercase tracking-[.18em] text-amber-700">Page unavailable</p>
@@ -247,16 +306,15 @@ export default function ConnectModerationView() {
   }
 
   return (
-    <main className="min-h-screen bg-[#f8fafc] px-4 py-7 text-[#111827] sm:px-8 sm:py-10">
-      <div className="mx-auto max-w-7xl">
-        <Link href="/admin" className="inline-flex items-center gap-2 text-xs text-slate-500 transition hover:text-slate-900"><ArrowLeft size={14} /> Admin dashboard</Link>
-        <header className="mt-6 flex flex-col gap-5 border-b border-slate-200 pb-7 md:flex-row md:items-end md:justify-between">
+    <div className="text-[#111827]">
+      <div>
+        <header className="flex flex-col gap-5 border-b border-slate-200 pb-7 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#0784a5]"><span className="h-1.5 w-1.5 rounded-full bg-[#08a6c8]" /> Nexora Connect · Community review</p>
             <h1 className="mt-2 font-clash text-4xl font-semibold tracking-tight sm:text-5xl">Community review</h1>
-            <p className="mt-2 max-w-2xl text-sm text-slate-500">Check student profiles, respond to reports, and help with student number issues.</p>
+            <p className="mt-2 max-w-2xl text-sm text-slate-500">Review member profiles and accounts, respond to reports, and help with student number issues.</p>
           </div>
-          <Link href="/admin/connect/roster" className="inline-flex h-10 items-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-4 text-xs font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 md:self-auto"><UsersRound size={14} /> Manage student list</Link>
+          <button type="button" onClick={onNavigateToRoster} className="inline-flex h-10 items-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-4 text-xs font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 md:self-auto"><UsersRound size={14} /> Manage student list</button>
         </header>
 
         <div className="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Connect review sections">
@@ -287,19 +345,33 @@ export default function ConnectModerationView() {
               <h2 className="font-semibold">{tabs.find((item) => item.id === tab)?.label}</h2>
               <p className="mt-1 text-[11px] text-slate-500">{count} {count === 1 ? 'item' : 'items'} · Your decisions are saved in the admin history.</p>
             </div>
-            <label className="flex items-center gap-2 text-[11px] font-medium text-slate-500">
-              Show
-              <select
-                value={filters[tab]}
-                onChange={(event) => {
-                  setFilters((current) => ({ ...current, [tab]: event.target.value }))
-                  setPage(1)
-                }}
-                className="h-9 rounded-lg border border-slate-200 bg-white px-2.5 text-xs text-slate-700 outline-none focus:border-cyan-500"
-              >
-                {statusOptions[tab].map((status) => <option key={status} value={status}>{statusLabel(status)}</option>)}
-              </select>
-            </label>
+            <div className="flex flex-wrap items-center gap-3">
+              {tab === 'accounts' && (
+                <input
+                  aria-label="Search registered members"
+                  value={accountQuery}
+                  onChange={(event) => {
+                    setAccountQuery(event.target.value)
+                    setPage(1)
+                  }}
+                  placeholder="Search name, email or USN"
+                  className="h-9 w-full rounded-lg border border-slate-200 bg-white px-3 text-xs text-slate-700 outline-none placeholder:text-slate-400 focus:border-cyan-500 sm:w-56"
+                />
+              )}
+              <label className="flex items-center gap-2 text-[11px] font-medium text-slate-500">
+                Show
+                <select
+                  value={filters[tab]}
+                  onChange={(event) => {
+                    setFilters((current) => ({ ...current, [tab]: event.target.value }))
+                    setPage(1)
+                  }}
+                  className="h-9 rounded-lg border border-slate-200 bg-white px-2.5 text-xs text-slate-700 outline-none focus:border-cyan-500"
+                >
+                  {statusOptions[tab].map((status) => <option key={status} value={status}>{statusLabel(status)}</option>)}
+                </select>
+              </label>
+            </div>
           </div>
 
           <div className="divide-y divide-slate-100">
@@ -307,6 +379,52 @@ export default function ConnectModerationView() {
             {!loading && tab === 'profiles' && profiles.length === 0 && <EmptyQueue text="No profiles match this status." />}
             {!loading && tab === 'reports' && reports.length === 0 && <EmptyQueue text="No reports match this status." />}
             {!loading && tab === 'disputes' && disputes.length === 0 && <EmptyQueue text="No student number requests to show here." />}
+            {!loading && tab === 'accounts' && accounts.length === 0 && <EmptyQueue text="No registered members match this filter." />}
+
+            {!loading && tab === 'accounts' && accounts.map((account) => (
+              <article key={account.id} className="flex flex-col gap-4 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="font-semibold">{account.profile?.fullName ?? account.email}</h3>
+                    <StatusBadge status={account.disabled ? 'DISABLED' : account.emailConfirmedAt ? 'ACTIVE' : 'UNCONFIRMED'} />
+                    {account.profile && <StatusBadge status={account.profile.approvalStatus} />}
+                  </div>
+                  <p className="mt-1 break-all text-xs text-slate-500">{account.email}</p>
+                  <p className="mt-1 text-[11px] text-slate-500">
+                    {account.usn ? `USN ${account.usn} · ` : ''}
+                    {account.emailConfirmedAt
+                      ? `Email confirmed ${dateLabel(account.emailConfirmedAt)}`
+                      : 'Email confirmation pending'}
+                    {` · Registered ${dateLabel(account.createdAt)}`}
+                  </p>
+                  {account.profile && (
+                    <Link
+                      href={`/connect/members/${encodeURIComponent(account.profile.slug)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-cyan-800 hover:text-cyan-950"
+                    >
+                      View member profile <ChevronRight size={13} />
+                    </Link>
+                  )}
+                </div>
+                {canManageAccounts && (
+                  <button
+                    type="button"
+                    onClick={() => void setAccountStatus(account, account.disabled ? 'ACTIVE' : 'DISABLED')}
+                    disabled={busyId === account.id}
+                    className={`inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl border px-4 text-xs font-medium transition disabled:opacity-50 ${
+                      account.disabled
+                        ? 'border-emerald-200 bg-emerald-50 text-emerald-800 hover:bg-emerald-100'
+                        : 'border-rose-200 bg-rose-50 text-rose-800 hover:bg-rose-100'
+                    }`}
+                  >
+                    {account.disabled ? <CircleCheck size={14} /> : <ShieldAlert size={14} />}
+                    {busyId === account.id ? 'Saving…' : account.disabled ? 'Restore access' : 'Disable access'}
+                  </button>
+                )}
+              </article>
+            ))}
 
             {!loading && tab === 'profiles' && profiles.map((profile) => (
               <article key={profile.authUserId} className="p-4 sm:p-5">
@@ -363,7 +481,7 @@ export default function ConnectModerationView() {
         </section>
         <p className="mt-4 flex items-center gap-2 text-[10px] leading-5 text-slate-400"><ClipboardCheck size={13} /> Add a note when asking for changes or closing a request so the member understands the decision.</p>
       </div>
-    </main>
+    </div>
   )
 }
 

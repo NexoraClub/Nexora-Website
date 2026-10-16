@@ -25,6 +25,7 @@
     "@supabase/supabase-js": "^2.117.3",
     "@types/bcryptjs": "^3.0.0",
     "bcryptjs": "^3.0.3",
+    "cloudinary": "^2.11.0",
     "dotenv": "^18.0.7",
     "face-api.js": "^0.22.2",
     "gsap": "^3.15.0",
@@ -37,6 +38,8 @@
     "postprocessing": "^6.39.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
     "three": "^0.186.1"
   },
   "devDependencies": {

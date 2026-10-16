@@ -8,6 +8,13 @@ import {
   rethrowNextControlFlow,
 } from '@/lib/connect/validation'
 
+type DirectoryProfile = Prisma.MemberProfileGetPayload<{
+  select: typeof publicMemberProfileSelect
+}>
+type DirectoryProfileWithMatches = DirectoryProfile & {
+  searchMatches?: Array<{ section: string; excerpt: string }>
+}
+
 function parseBoundedInteger(value: string | null, name: string, min: number, max: number, fallback: number) {
   if (value === null) return fallback
   if (!/^\d+$/.test(value)) {
@@ -18,6 +25,55 @@ function parseBoundedInteger(value: string | null, name: string, min: number, ma
     throw new ConnectRequestError(`${name} must be between ${min} and ${max}.`)
   }
   return number
+}
+
+function searchableText(value: string) {
+  return value
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/<https?:\/\/[^>]+>/g, ' ')
+    .replace(/https?:\/\/\S+/g, ' ')
+    .replace(/[`*_~>#|]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function searchMatches(profile: DirectoryProfile, terms: string[]) {
+  const sources: Array<{ section: string; text: string }> = [
+    { section: 'Name', text: profile.fullName },
+    { section: 'About', text: profile.bio ?? '' },
+    { section: 'Role', text: [profile.currentRole, profile.company].filter(Boolean).join(' ') },
+    { section: 'Experience', text: profile.professionalJourney ?? '' },
+    { section: 'Location', text: profile.location ?? '' },
+    { section: 'Skills', text: profile.skills.join(' ') },
+    { section: 'Interests', text: profile.interests.join(' ') },
+    { section: 'Learning', text: profile.skillsInDevelopment.join(' ') },
+    { section: 'Can help with', text: profile.helpAreas.join(' ') },
+    { section: 'Projects', text: profile.projects.map((item) => [item.title, item.description, ...item.technologies, item.repositoryUrl, item.demoUrl].filter(Boolean).join(' ')).join(' ') },
+    { section: 'Experience', text: profile.experiences.map((item) => [item.role, item.organization, item.description].filter(Boolean).join(' ')).join(' ') },
+    { section: 'Achievements', text: profile.achievements.map((item) => [item.title, item.description, item.url].filter(Boolean).join(' ')).join(' ') },
+    { section: 'Links', text: profile.socialLinks.map((item) => [item.label, item.url].join(' ')).join(' ') },
+    { section: 'Knowledge page', text: searchableText(profile.knowledgePage?.publishedMarkdown ?? '') },
+    { section: 'Class year', text: String(profile.graduationYear) },
+    { section: 'Community role', text: profile.memberType === 'ALUMNUS' ? 'Alumni graduate' : 'Student' },
+    { section: 'Availability', text: [profile.openToCollaborate && 'Open to collaborate', profile.mentoringAvailable && 'Available to mentor', profile.referralAvailable && 'Open to referrals'].filter(Boolean).join(' ') },
+  ]
+
+  const matches = new Map<string, string>()
+  for (const source of sources) {
+    const normalized = source.text.toLocaleLowerCase()
+    const matchingTerm = terms.find((term) => normalized.includes(term.toLocaleLowerCase()))
+    if (!matchingTerm) continue
+
+    const index = normalized.indexOf(matchingTerm.toLocaleLowerCase())
+    const start = Math.max(0, index - 55)
+    const end = Math.min(source.text.length, index + matchingTerm.length + 95)
+    const excerpt = `${start > 0 ? '…' : ''}${source.text.slice(start, end)}${end < source.text.length ? '…' : ''}`
+    matches.set(source.section, excerpt)
+    if (matches.size === 3) break
+  }
+  return [...matches].map(([section, excerpt]) => ({ section, excerpt }))
 }
 
 export async function GET(req: Request) {
@@ -50,32 +106,98 @@ export async function GET(req: Request) {
       ...(memberTypeFilter ? { memberType: memberTypeFilter } : {}),
       ...(graduationYear !== undefined ? { graduationYear } : {}),
       ...(skill ? { skills: { has: skill } } : {}),
-      ...(search
-        ? {
-            OR: [
-              { fullName: { contains: search, mode: 'insensitive' as const } },
-              { currentRole: { contains: search, mode: 'insensitive' as const } },
-              { company: { contains: search, mode: 'insensitive' as const } },
-              { bio: { contains: search, mode: 'insensitive' as const } },
-            ],
-          }
-        : {}),
     }
 
-    const [profiles, total] = await Promise.all([
-      prisma.memberProfile.findMany({
-        where,
-        select: publicMemberProfileSelect,
-        orderBy: [{ fullName: 'asc' }, { authUserId: 'asc' }],
-        skip: (page - 1) * limit,
-        take: limit,
-      }),
-      prisma.memberProfile.count({ where }),
-    ])
+    let profiles: DirectoryProfileWithMatches[]
+    let total: number
+
+    if (search) {
+      const terms = search.split(/\s+/).filter(Boolean)
+      const textFields = [
+        Prisma.sql`p.full_name`,
+        Prisma.sql`p.bio`,
+        Prisma.sql`p.current_role`,
+        Prisma.sql`p.company`,
+        Prisma.sql`p.professional_journey`,
+        Prisma.sql`p.location`,
+        Prisma.sql`array_to_string(p.skills, ' ')`,
+        Prisma.sql`array_to_string(p.interests, ' ')`,
+        Prisma.sql`array_to_string(p.skills_in_development, ' ')`,
+        Prisma.sql`array_to_string(p.help_areas, ' ')`,
+        Prisma.sql`CASE WHEN p.open_to_collaborate THEN 'open to collaborate' ELSE '' END`,
+        Prisma.sql`CASE WHEN p.mentoring_available THEN 'available to mentor mentoring' ELSE '' END`,
+        Prisma.sql`CASE WHEN p.referral_available THEN 'open to referrals referral' ELSE '' END`,
+      ]
+      const termConditions = terms.map((term) => {
+        const fieldConditions = textFields.map((field) => Prisma.sql`strpos(lower(coalesce(${field}, '')), lower(${term})) > 0`)
+        fieldConditions.push(
+          Prisma.sql`strpos(lower(CASE WHEN p.member_type = 'ALUMNUS' THEN 'alumni graduate alumnus' ELSE 'student' END), lower(${term})) > 0`,
+          Prisma.sql`strpos(p.graduation_year::text, ${term}) > 0`,
+          Prisma.sql`EXISTS (SELECT 1 FROM connect_member_projects x WHERE x.profile_id = p.auth_user_id AND strpos(lower(concat_ws(' ', x.title, x.description, x.repository_url, x.demo_url, array_to_string(x.technologies, ' '), array_to_string(x.preferred_teammate_skills, ' '))), lower(${term})) > 0)`,
+          Prisma.sql`EXISTS (SELECT 1 FROM connect_member_experiences x WHERE x.profile_id = p.auth_user_id AND strpos(lower(concat_ws(' ', x.role, x.organization, x.description)), lower(${term})) > 0)`,
+          Prisma.sql`EXISTS (SELECT 1 FROM connect_member_achievements x WHERE x.profile_id = p.auth_user_id AND strpos(lower(concat_ws(' ', x.title, x.description, x.url)), lower(${term})) > 0)`,
+          Prisma.sql`EXISTS (SELECT 1 FROM connect_member_social_links x WHERE x.profile_id = p.auth_user_id AND strpos(lower(concat_ws(' ', x.label, x.url)), lower(${term})) > 0)`,
+          Prisma.sql`EXISTS (SELECT 1 FROM connect_member_knowledge_pages x WHERE x.profile_id = p.auth_user_id AND x.published_markdown IS NOT NULL AND strpos(lower(x.published_markdown), lower(${term})) > 0)`
+        )
+        return Prisma.sql`(${Prisma.join(fieldConditions, ' OR ')})`
+      })
+      const filters: Prisma.Sql[] = [
+        Prisma.sql`p.approval_status = 'APPROVED'`,
+        Prisma.sql`p.visibility = 'PUBLIC'`,
+        ...termConditions,
+      ]
+      if (memberTypeFilter) filters.push(Prisma.sql`p.member_type = ${memberTypeFilter}::"MemberType"`)
+      if (graduationYear !== undefined) filters.push(Prisma.sql`p.graduation_year = ${graduationYear}`)
+      if (skill) filters.push(Prisma.sql`${skill} = ANY(p.skills)`)
+      const filterSql = Prisma.join(filters, ' AND ')
+
+      const [rows, countRows] = await Promise.all([
+        prisma.$queryRaw<Array<{ slug: string }>>(Prisma.sql`
+          SELECT p.slug
+          FROM connect_member_profiles p
+          WHERE ${filterSql}
+          ORDER BY p.full_name ASC, p.auth_user_id ASC
+          LIMIT ${limit} OFFSET ${(page - 1) * limit}
+        `),
+        prisma.$queryRaw<Array<{ total: number }>>(Prisma.sql`
+          SELECT count(*)::int AS total
+          FROM connect_member_profiles p
+          WHERE ${filterSql}
+        `),
+      ])
+      total = countRows[0]?.total ?? 0
+      const pageProfiles = rows.length
+        ? await prisma.memberProfile.findMany({
+            where: { slug: { in: rows.map((row) => row.slug) } },
+            select: publicMemberProfileSelect,
+          })
+        : []
+      const profilesBySlug = new Map(pageProfiles.map((profile) => [profile.slug, profile]))
+      profiles = rows.flatMap((row) => {
+        const profile = profilesBySlug.get(row.slug)
+        return profile ? [{ ...profile, searchMatches: searchMatches(profile, terms) }] : []
+      })
+    } else {
+      const [pageProfiles, count] = await Promise.all([
+        prisma.memberProfile.findMany({
+          where,
+          select: publicMemberProfileSelect,
+          orderBy: [{ fullName: 'asc' }, { authUserId: 'asc' }],
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+        prisma.memberProfile.count({ where }),
+      ])
+      total = count
+      profiles = pageProfiles
+    }
 
     return NextResponse.json(
       {
-        profiles: profiles.map(toPublicMemberProfile),
+        profiles: profiles.map((profile) => ({
+          ...toPublicMemberProfile(profile),
+          ...('searchMatches' in profile ? { searchMatches: profile.searchMatches } : {}),
+        })),
         pagination: {
           page,
           limit,

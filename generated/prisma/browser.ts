@@ -63,6 +63,11 @@ export type ActiveSession = Prisma.ActiveSessionModel
  */
 export type UsnClaim = Prisma.UsnClaimModel
 /**
+ * Model ConnectRegistration
+ * 
+ */
+export type ConnectRegistration = Prisma.ConnectRegistrationModel
+/**
  * Model UsnRosterEntry
  * 
  */

@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import Link from 'next/link'
 import {
   LayoutDashboard,
   Calendar,
@@ -18,6 +17,7 @@ import {
   X,
   ExternalLink,
   ClipboardCheck,
+  UserRound,
 } from 'lucide-react'
 
 export type AdminTab =
@@ -32,6 +32,8 @@ export type AdminTab =
   | 'audit-logs'
   | 'sessions'
   | 'settings'
+  | 'connect-moderation'
+  | 'connect-roster'
 
 interface AdminSidebarProps {
   currentTab: AdminTab
@@ -81,6 +83,17 @@ export default function AdminSidebar({
         { id: 'settings' as AdminTab, label: 'Settings', icon: Settings },
       ],
     },
+    ...((userRole === 'ADMIN' || userRole === 'SUPER_ADMIN')
+      ? [{
+          title: 'Connect',
+          items: [
+            { id: 'connect-moderation' as AdminTab, label: 'Community review', icon: ClipboardCheck },
+            ...(userRole === 'SUPER_ADMIN'
+              ? [{ id: 'connect-roster' as AdminTab, label: 'Student list', icon: UserRound }]
+              : []),
+          ],
+        }]
+      : []),
   ]
 
   const sidebarContent = (
@@ -163,24 +176,6 @@ export default function AdminSidebar({
             <ExternalLink className="h-3.5 w-3.5 text-[#94A3B8]" />
           </a>
         </div>
-        {(userRole === 'ADMIN' || userRole === 'SUPER_ADMIN') && (
-          <Link
-            href="/admin/connect/moderation"
-            className="flex items-center justify-between rounded-xl border border-cyan-100 bg-cyan-50/70 px-3.5 py-3 text-xs font-medium text-cyan-900 transition-colors hover:bg-cyan-100"
-          >
-            <span>Connect reviews</span>
-            <ClipboardCheck className="h-3.5 w-3.5 text-cyan-700" />
-          </Link>
-        )}
-        {userRole === 'SUPER_ADMIN' && (
-          <Link
-            href="/admin/connect/roster"
-            className="flex items-center justify-between rounded-xl border border-cyan-100 bg-cyan-50/70 px-3.5 py-3 text-xs font-medium text-cyan-900 transition-colors hover:bg-cyan-100"
-          >
-            <span>Connect student list</span>
-            <Users className="h-3.5 w-3.5 text-cyan-700" />
-          </Link>
-        )}
       </div>
 
       {/* Current Admin User Profile Footer */}

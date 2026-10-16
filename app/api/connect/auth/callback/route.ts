@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { prisma } from '@/lib/prisma'
 import { createConnectSupabaseServerClient, getConnectAppUrl } from '@/lib/connect/auth'
 
 export async function GET(req: Request) {
@@ -28,8 +29,14 @@ export async function GET(req: Request) {
   }
 
   if (!code) {
-    const failure = new URL(next, appUrl.origin)
-    failure.searchParams.set('authError', 'confirmation_failed')
+    const failurePath = next.startsWith('/connect/reset-password')
+      ? '/connect/reset-password'
+      : '/connect/sign-in'
+    const failure = new URL(failurePath, appUrl.origin)
+    failure.searchParams.set(
+      'authError',
+      requestUrl.searchParams.has('error') ? 'google_auth_failed' : 'confirmation_failed'
+    )
     return NextResponse.redirect(failure)
   }
 
@@ -38,12 +45,44 @@ export async function GET(req: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     const destination = new URL(next, appUrl.origin)
     if (error) {
-      destination.searchParams.set('authError', 'confirmation_failed')
+      const failurePath = next.startsWith('/connect/reset-password')
+        ? '/connect/reset-password'
+        : '/connect/sign-in'
+      const failure = new URL(failurePath, appUrl.origin)
+      failure.searchParams.set('authError', 'confirmation_failed')
+      return NextResponse.redirect(failure)
+    }
+    const { data: userData, error: userError } = await supabase.auth.getUser()
+    if (userError) throw userError
+    if (userData.user?.email && userData.user.email_confirmed_at) {
+      try {
+        const confirmedAt = new Date(userData.user.email_confirmed_at)
+        const linkedRegistration = await prisma.connectRegistration.findUnique({
+          where: { authUserId: userData.user.id },
+          select: { id: true },
+        })
+        if (linkedRegistration) {
+          await prisma.connectRegistration.update({
+            where: { id: linkedRegistration.id },
+            data: { emailConfirmedAt: confirmedAt },
+          })
+        } else {
+          await prisma.connectRegistration.updateMany({
+            where: { email: userData.user.email.toLowerCase(), authUserId: null },
+            data: { authUserId: userData.user.id, emailConfirmedAt: confirmedAt },
+          })
+        }
+      } catch (registrationError) {
+        console.error('Connect registration confirmation sync failed:', registrationError)
+      }
     }
     return NextResponse.redirect(destination)
   } catch (error) {
     console.error('Connect auth callback failed:', error)
-    const destination = new URL(next, appUrl.origin)
+    const failurePath = next.startsWith('/connect/reset-password')
+      ? '/connect/reset-password'
+      : '/connect/sign-in'
+    const destination = new URL(failurePath, appUrl.origin)
     destination.searchParams.set('authError', 'confirmation_failed')
     return NextResponse.redirect(destination)
   }

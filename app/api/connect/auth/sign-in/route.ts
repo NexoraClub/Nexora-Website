@@ -60,6 +60,14 @@ export async function POST(req: Request) {
       )
     }
 
+    if (data.user.app_metadata?.connect_disabled === true) {
+      await supabase.auth.signOut()
+      return NextResponse.json(
+        { error: 'This Connect account has been disabled. Contact the Connect team for help.' },
+        { status: 403, headers: { 'Cache-Control': 'no-store' } }
+      )
+    }
+
     return NextResponse.json(
       {
         success: true,

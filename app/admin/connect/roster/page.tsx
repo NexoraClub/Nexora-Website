@@ -1,8 +1,5 @@
-import type { Metadata } from 'next'
-import ConnectRosterView from '@/components/admin/ConnectRosterView'
-
-export const metadata: Metadata = { title: 'Connect student list | Nexora Admin' }
+import { redirect } from 'next/navigation'
 
 export default function ConnectRosterPage() {
-  return <ConnectRosterView />
+  redirect('/admin?tab=connect-roster')
 }

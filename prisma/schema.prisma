@@ -248,6 +248,20 @@ model UsnClaim {
   @@map("connect_usn_claims")
 }
 
+model ConnectRegistration {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  authUserId       String?   @unique @map("auth_user_id") @db.Uuid
+  email            String    @unique @db.VarChar(320)
+  usn              String    @unique @db.VarChar(20)
+  fullName         String    @map("full_name") @db.VarChar(120)
+  emailConfirmedAt DateTime? @map("email_confirmed_at") @db.Timestamptz
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime  @updatedAt @map("updated_at") @db.Timestamptz
+
+  @@index([emailConfirmedAt])
+  @@map("connect_registrations")
+}
+
 model UsnRosterEntry {
   usn        String   @id @db.VarChar(20)
   fullName   String   @map("full_name") @db.VarChar(120)
