@@ -94,7 +94,7 @@ export default function DirectoryPage() {
 
   return (
     <ConnectShell>
-      <div className="mx-auto max-w-7xl px-5 pb-20 pt-28 sm:px-8 sm:pt-32 lg:px-12">
+      <div className="mx-auto max-w-7xl px-5 pb-20 pt-28 sm:px-8 lg:px-12">
         <section className="mb-10 max-w-4xl sm:mb-12">
           <p className="connect-directory-kicker">Department of ISE · Nexora Connect</p>
           <h1 className="mt-4 max-w-4xl font-clash text-[clamp(2.8rem,6.5vw,5.5rem)] font-bold leading-[0.95] tracking-tight text-[var(--theme-bg-hero,#dce6ef)]">

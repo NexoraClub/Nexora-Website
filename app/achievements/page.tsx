@@ -17,7 +17,7 @@ export default function AchievementsPage() {
 
       <Navbar />
 
-      <div className="relative z-10 pt-28 pb-16">
+      <div className="relative z-10 pb-16">
         <AchievementGallery />
       </div>
 

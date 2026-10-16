@@ -146,7 +146,7 @@ export default function MembersPage() {
       {/* Global Navigation Bar */}
       <Navbar />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-24 sm:px-6 sm:pt-36 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-24 sm:px-6 lg:px-8">
         {/* ─────────────────────────────────────────────────────────────
             1. HERO TITLE HEADER (One line with blue Members)
            ───────────────────────────────────────────────────────────── */}
