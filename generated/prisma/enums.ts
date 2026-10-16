@@ -34,3 +34,68 @@ export const NoticePriority = {
 } as const
 
 export type NoticePriority = (typeof NoticePriority)[keyof typeof NoticePriority]
+
+
+export const MemberType = {
+  STUDENT: 'STUDENT',
+  ALUMNUS: 'ALUMNUS'
+} as const
+
+export type MemberType = (typeof MemberType)[keyof typeof MemberType]
+
+
+export const MemberApprovalStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  SUSPENDED: 'SUSPENDED'
+} as const
+
+export type MemberApprovalStatus = (typeof MemberApprovalStatus)[keyof typeof MemberApprovalStatus]
+
+
+export const ProfileVisibility = {
+  PUBLIC: 'PUBLIC',
+  PRIVATE: 'PRIVATE'
+} as const
+
+export type ProfileVisibility = (typeof ProfileVisibility)[keyof typeof ProfileVisibility]
+
+
+export const MemberExperienceType = {
+  EMPLOYMENT: 'EMPLOYMENT',
+  INTERNSHIP: 'INTERNSHIP',
+  HIGHER_STUDIES: 'HIGHER_STUDIES',
+  FREELANCE: 'FREELANCE',
+  OTHER: 'OTHER'
+} as const
+
+export type MemberExperienceType = (typeof MemberExperienceType)[keyof typeof MemberExperienceType]
+
+
+export const ConnectReportTarget = {
+  PROFILE: 'PROFILE',
+  KNOWLEDGE_PAGE: 'KNOWLEDGE_PAGE'
+} as const
+
+export type ConnectReportTarget = (typeof ConnectReportTarget)[keyof typeof ConnectReportTarget]
+
+
+export const ConnectReportStatus = {
+  OPEN: 'OPEN',
+  IN_REVIEW: 'IN_REVIEW',
+  RESOLVED: 'RESOLVED',
+  DISMISSED: 'DISMISSED'
+} as const
+
+export type ConnectReportStatus = (typeof ConnectReportStatus)[keyof typeof ConnectReportStatus]
+
+
+export const UsnDisputeStatus = {
+  OPEN: 'OPEN',
+  IN_REVIEW: 'IN_REVIEW',
+  RESOLVED: 'RESOLVED',
+  DISMISSED: 'DISMISSED'
+} as const
+
+export type UsnDisputeStatus = (typeof UsnDisputeStatus)[keyof typeof UsnDisputeStatus]
