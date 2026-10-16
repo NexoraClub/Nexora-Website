@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useCallback, useEffect, useState } from 'react'
 import { ConnectShell } from './ConnectShell'
-import { Button, PageHeading, Panel } from './ConnectUI'
+import { Button, Panel } from './ConnectUI'
 
 type ProfileCard = {
   slug: string
@@ -94,18 +94,19 @@ export default function DirectoryPage() {
 
   return (
     <ConnectShell>
-      <div className="mx-auto max-w-[1440px] px-5 pb-20 pt-12 sm:px-8 sm:pt-16 lg:px-12 lg:pt-20">
-        <p className="connect-directory-kicker">Nexora Connect <span>/</span> ISE at AJIET</p>
-        <PageHeading
-          eyebrow="The community"
-          title={<>People, projects<br className="hidden sm:block" /> and ideas from <span className="connect-title-accent">ISE.</span></>}
-          description="Explore what people are building, what they care about, and ways to connect."
-          actions={
-            <Link className="connect-button connect-button-primary shrink-0" href="/connect/sign-up">
-              Create your profile
-            </Link>
-          }
-        />
+      <div className="mx-auto max-w-7xl px-5 pb-20 pt-28 sm:px-8 sm:pt-32 lg:px-12">
+        <section className="mb-10 max-w-4xl sm:mb-12">
+          <p className="connect-directory-kicker">Department of ISE · Nexora Connect</p>
+          <h1 className="mt-4 max-w-4xl font-clash text-[clamp(2.8rem,6.5vw,5.5rem)] font-bold leading-[0.95] tracking-tight text-[var(--theme-bg-hero,#dce6ef)]">
+            People, projects and ideas from <span className="text-[var(--theme-primary,#00f0ff)]">ISE.</span>
+          </h1>
+          <p className="mt-5 max-w-2xl font-cabinet text-base font-medium leading-relaxed text-white/75 sm:text-lg">
+            Find peers and graduates by role, skill, or company. Reach out for guidance, collaboration, referral advice, interview insights, and more.
+          </p>
+          <Link className="connect-button connect-button-primary mt-6" href="/connect/sign-up">
+            Create your profile
+          </Link>
+        </section>
 
         <Panel className="connect-directory-search mb-8 p-3 sm:p-4">
           <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_220px_auto]">

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ContourBackdrop from "@/components/ContourBackdrop";
 
 const Editor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -710,12 +711,8 @@ export default function PracticePage() {
   ];
 
   return (
-    <main className="relative min-h-screen w-full bg-[#050610] text-white selection:bg-sky-500 selection:text-white">
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[600px] sm:w-[900px] rounded-full bg-sky-500/10 blur-[140px]" />
-        <div className="absolute top-[40%] -right-40 h-[400px] w-[500px] rounded-full bg-blue-600/5 blur-[150px]" />
-        <div className="absolute -bottom-20 left-10 h-[350px] w-[450px] rounded-full bg-cyan-500/5 blur-[120px]" />
-      </div>
+    <main className="relative isolate min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)] selection:bg-sky-500 selection:text-white">
+      <ContourBackdrop />
 
       <Navbar />
 

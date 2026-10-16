@@ -18,6 +18,7 @@ export const NAV_LINKS = [
   { href: '/practice', label: 'Practice' },
   { href: '/achievements', label: 'Achievements' },
   { href: '/connect', label: 'Connect' },
+  { href: '/members', label: 'Members' },
   { href: '/about', label: 'About' },
 ];
 
@@ -243,7 +244,7 @@ const Navbar = () => {
         </div>
 
         {/* ── Desktop Links ── */}
-        <div className="hidden xl:flex items-center gap-4 lg:gap-5">
+        <div className="hidden xl:flex items-center gap-1.5 2xl:gap-3">
           {NAV_LINKS.map((link, i) => (
             <Link
               key={link.href}
@@ -260,7 +261,7 @@ const Navbar = () => {
               onPointerEnter={() => setHoveredLink(link.href)}
               className={`relative font-semibold uppercase cursor-pointer
                 ${isHomePage ? 'text-[#12304a]' : pathname === link.href || (link.href !== '/' && pathname.startsWith(`${link.href}/`)) ? 'text-[var(--theme-primary,#00f0ff)]' : 'text-white'}
-                isolate rounded-full px-3 py-2 text-sm tracking-wide lg:text-base lg:tracking-wider`}
+                isolate rounded-full px-2.5 py-1.5 text-xs tracking-wide lg:text-sm lg:tracking-wide`}
               style={{ textDecoration: 'none' }}
             >
               {hoveredLink === link.href && (

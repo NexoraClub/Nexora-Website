@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function AchievementsPage() {
   return (
-    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
+    <main className="relative min-h-screen w-full isolate bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
       <ContourBackdrop />
 
       <Navbar />

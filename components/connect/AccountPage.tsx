@@ -154,6 +154,7 @@ export default function AccountPage() {
   const [busy, setBusy] = useState(false)
   const [avatarUploading, setAvatarUploading] = useState(false)
   const [avatarFeedback, setAvatarFeedback] = useState<string | null>(null)
+  const [avatarPreviewFailed, setAvatarPreviewFailed] = useState(false)
   const avatarInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -255,6 +256,7 @@ export default function AccountPage() {
       })
       const data = await response.json()
       if (!response.ok) throw new Error(data.error || 'We could not upload that photo. Please try again.')
+      setAvatarPreviewFailed(false)
       update('avatarUrl', data.url)
       setAvatarFeedback('Photo uploaded. Save your profile to apply it.')
     } catch (error) {
@@ -492,8 +494,8 @@ export default function AccountPage() {
                   <span className="mb-2 block text-[12px] font-medium text-[#d8e2e9]">Profile photo</span>
                   <div className="flex flex-wrap items-center gap-4 rounded-xl border border-white/[0.08] bg-black/10 p-3">
                     <div className="connect-avatar h-16 w-16 rounded-xl">
-                      {draft.avatarUrl
-                        ? <Image src={draft.avatarUrl} alt="Profile photo preview" width={64} height={64} unoptimized className="h-full w-full object-cover" />
+                      {draft.avatarUrl && !avatarPreviewFailed
+                        ? <Image src={draft.avatarUrl} alt="Profile photo preview" width={64} height={64} unoptimized className="h-full w-full object-cover" onError={() => setAvatarPreviewFailed(true)} />
                         : <UserRound size={22} />}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -513,6 +515,20 @@ export default function AccountPage() {
                     <Button type="button" variant="secondary" loading={avatarUploading} disabled={busy} onClick={() => avatarInputRef.current?.click()}>
                       <Upload size={15} /> {draft.avatarUrl ? 'Change photo' : 'Upload photo'}
                     </Button>
+                  </div>
+                  <div className="mt-4">
+                    <Field
+                      label="Or use a photo link"
+                      type="url"
+                      value={draft.avatarUrl}
+                      onChange={(event) => {
+                        setAvatarPreviewFailed(false)
+                        setAvatarFeedback(null)
+                        update('avatarUrl', event.target.value)
+                      }}
+                      placeholder="https://example.com/your-photo.jpg"
+                      hint="Paste a direct, publicly accessible image URL. Your photo link is saved with your profile."
+                    />
                   </div>
                 </div>
                 <Field label="Location" value={draft.location} onChange={(event) => update('location', event.target.value)} placeholder="Mangaluru, India" />

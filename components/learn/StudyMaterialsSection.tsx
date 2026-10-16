@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { LearningResource } from "./learnData";
-import { BookOpen, Download, ExternalLink, Filter, FileText } from "./Icons";
+import { BookOpen, Download, Filter, FileText, ExternalLink } from "./Icons";
 
 interface StudyMaterialsSectionProps {
   resources: LearningResource[];
@@ -52,45 +52,48 @@ export default function StudyMaterialsSection({
     });
   }, [resources, searchQuery, selectedSemester, selectedCategory]);
 
+  // Split into 2 columns for a natural 2-column ledger
+  const leftCol = filteredResources.filter((_, i) => i % 2 === 0);
+  const rightCol = filteredResources.filter((_, i) => i % 2 === 1);
+
   return (
-    <section id="study-materials" className="relative mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <section id="study-materials" className="relative mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-12 py-14">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-sky-500/20 pb-6">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 pb-6 border-b border-[var(--theme-primary,#00f0ff)]/20">
         <div>
-          <div className="flex items-center gap-2 text-sky-400">
-            <BookOpen className="h-5 w-5" />
-            <span className="text-xs font-semibold uppercase tracking-widest text-sky-400">
+          <div className="flex items-center gap-2 text-[var(--theme-primary,#00f0ff)]">
+            <BookOpen className="h-4 w-4" />
+            <span className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--theme-primary,#00f0ff)]/70">
               Academic Library
             </span>
           </div>
-          <h2 className="mt-1 font-jersey text-3xl sm:text-4xl uppercase tracking-wider text-white">
-            Recently Added Resources
+          <h2 className="mt-2 font-clash font-bold text-3xl sm:text-4xl text-[var(--theme-bg-hero,#dce6ef)] tracking-tight">
+            Recently Added Resources<span className="text-[var(--theme-primary,#00f0ff)]">.</span>
           </h2>
-          <p className="mt-1 text-sm text-sky-100/70">
+          <p className="mt-1 font-cabinet font-medium text-sm text-white/70">
             Notes, syllabus breakdowns, solved model papers, and VTU reference material.
           </p>
         </div>
 
-        <div className="flex items-center gap-2 text-xs text-sky-200/80">
-          <span className="font-semibold text-white">{filteredResources.length}</span>{" "}
-          available items
+        <div className="font-mono text-xs text-white/50">
+          Showing <span className="text-[var(--theme-primary,#00f0ff)] font-semibold">{filteredResources.length}</span> items
         </div>
       </div>
 
-      {/* Filter bar */}
-      <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-sky-500/20 bg-black/40 p-3 sm:p-4">
-        {/* Semester selector */}
+      {/* Filter Toolbar */}
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 py-3 border-b border-[var(--theme-primary,#00f0ff)]/15">
+        {/* Semester Filter */}
         <div className="flex flex-wrap items-center gap-2">
-          <span className="flex items-center gap-1.5 text-xs font-medium text-sky-200/70 mr-1">
-            <Filter className="h-3.5 w-3.5" /> Semester:
+          <span className="flex items-center gap-1.5 font-mono text-xs text-white/50 mr-1">
+            <Filter className="h-3 w-3 text-[var(--theme-primary,#00f0ff)]" /> Semester:
           </span>
           <button
             type="button"
             onClick={() => setSelectedSemester("all")}
-            className={`rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
+            className={`px-3 py-1 font-mono text-xs uppercase tracking-wider transition-colors ${
               selectedSemester === "all"
-                ? "bg-sky-400 text-black shadow-[0_0_10px_rgba(56,189,248,0.4)]"
-                : "border border-white/10 text-white/70 hover:border-sky-400/50 hover:text-white"
+                ? "bg-[var(--theme-primary,#00f0ff)] text-[var(--theme-bg-main,#060913)] font-bold"
+                : "text-white/60 hover:text-white"
             }`}
           >
             All
@@ -100,10 +103,10 @@ export default function StudyMaterialsSection({
               key={sem}
               type="button"
               onClick={() => setSelectedSemester(sem)}
-              className={`rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
+              className={`px-3 py-1 font-mono text-xs uppercase tracking-wider transition-colors ${
                 selectedSemester === sem
-                  ? "bg-sky-400 text-black shadow-[0_0_10px_rgba(56,189,248,0.4)]"
-                  : "border border-white/10 text-white/70 hover:border-sky-400/50 hover:text-white"
+                  ? "bg-[var(--theme-primary,#00f0ff)] text-[var(--theme-bg-main,#060913)] font-bold"
+                  : "text-white/60 hover:text-white"
               }`}
             >
               Sem {sem}
@@ -111,17 +114,17 @@ export default function StudyMaterialsSection({
           ))}
         </div>
 
-        {/* Category selector */}
+        {/* Category Filter */}
         <div className="flex flex-wrap items-center gap-2">
           {categories.map((cat) => (
             <button
               key={cat.key}
               type="button"
               onClick={() => setSelectedCategory(cat.key)}
-              className={`rounded-lg px-3 py-1 text-xs font-semibold transition-all ${
+              className={`px-3 py-1 font-mono text-xs uppercase tracking-wider transition-colors ${
                 selectedCategory === cat.key
-                  ? "bg-sky-400 text-black shadow-[0_0_10px_rgba(56,189,248,0.4)]"
-                  : "border border-white/10 text-white/70 hover:border-sky-400/50 hover:text-white"
+                  ? "bg-[var(--theme-primary,#00f0ff)] text-[var(--theme-bg-main,#060913)] font-bold"
+                  : "text-white/60 hover:text-white"
               }`}
             >
               {cat.label}
@@ -130,86 +133,131 @@ export default function StudyMaterialsSection({
         </div>
       </div>
 
-      {/* Resource Cards Grid */}
-      <div className="mt-8">
+      {/* Resource Ledger - 2-Column Structured Ledger */}
+      <div className="mt-4">
         {filteredResources.length === 0 ? (
-          <div className="rounded-2xl border border-white/10 bg-black/40 py-16 text-center">
-            <FileText className="mx-auto h-12 w-12 text-sky-400/40" />
-            <h3 className="mt-4 text-base font-semibold text-white">
+          <div className="py-16 text-center border border-[var(--theme-primary,#00f0ff)]/15 bg-[#060a14]">
+            <FileText className="mx-auto h-8 w-8 text-[var(--theme-primary,#00f0ff)]/40" />
+            <h3 className="mt-3 font-clash font-bold text-base text-[var(--theme-bg-hero,#dce6ef)]">
               No study resources match your search or filter criteria.
             </h3>
-            <p className="mt-1 text-xs text-sky-100/60 max-w-md mx-auto">
-              Try adjusting your search keywords, clearing filters, or exploring different semesters.
+            <p className="mt-1 font-cabinet text-xs text-white/50 max-w-md mx-auto">
+              Try adjusting your search keywords or clearing filters to see all available study resources.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {filteredResources.map((item) => (
-              <div
-                key={item.id}
-                className="group relative flex flex-col justify-between rounded-xl border border-sky-400/20 bg-black/60 p-5 backdrop-blur-sm transition-all duration-300 hover:border-sky-400 hover:bg-black/80 hover:shadow-[0_0_20px_rgba(56,189,248,0.25)]"
-              >
-                <div>
-                  {/* Top metadata tags */}
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="rounded-md border border-sky-400/30 bg-sky-950/60 px-2 py-0.5 text-[11px] font-semibold text-sky-300">
-                      {item.semester ? `Semester ${item.semester}` : "General"}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12">
+            {/* Left Column */}
+            <div className="divide-y divide-[var(--theme-primary,#00f0ff)]/15">
+              {leftCol.map((item) => (
+                <div key={item.id} className="py-5 group">
+                  <div className="flex items-center justify-between font-mono text-xs text-white/50">
+                    <span className="text-[var(--theme-primary,#00f0ff)] font-semibold uppercase tracking-wider">
+                      {item.semester ? `Semester ${item.semester}` : "General"} · {item.subject}
                     </span>
-                    <span className="rounded bg-white/10 px-2 py-0.5 font-mono text-[10px] font-bold uppercase text-sky-200">
+                    <span className="flex items-center gap-1.5 text-white/40">
+                      <FileText className="h-3 w-3" />
                       {item.fileType || "PDF"}
                     </span>
                   </div>
 
-                  {/* Subject Name */}
-                  <p className="mt-3 text-xs font-medium uppercase tracking-wider text-sky-400">
-                    {item.subject}
-                  </p>
-
-                  {/* Title */}
-                  <h3 className="mt-1 text-base font-bold text-white group-hover:text-sky-300 transition-colors line-clamp-2">
+                  <h3 className="mt-1.5 font-clash font-bold text-base sm:text-lg text-[var(--theme-bg-hero,#dce6ef)] group-hover:text-[var(--theme-primary,#00f0ff)] transition-colors">
                     {item.title}
                   </h3>
 
-                  {/* Description */}
-                  <p className="mt-2 text-xs leading-relaxed text-sky-100/70 line-clamp-3">
+                  <p className="mt-1.5 font-cabinet text-xs sm:text-sm text-white/70 leading-relaxed">
                     {item.description}
                   </p>
 
-                  {/* Tags */}
-                  {item.tags && item.tags.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {item.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="rounded bg-sky-950/50 px-1.5 py-0.5 text-[10px] text-sky-300/80"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
+                  <div className="mt-3 flex items-center justify-between gap-4">
+                    {item.tags && item.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 font-mono text-[10px] text-white/40">
+                        {item.tags.map((tag) => (
+                          <span key={tag} className="border border-[var(--theme-primary,#00f0ff)]/20 px-1.5 py-0.5">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
 
-                {/* Footer Actions */}
-                <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-                  <span className="text-[11px] text-white/40">
-                    Added {new Date(item.uploadedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-                  </span>
-
-                  <div className="flex items-center gap-2">
                     <a
                       href={item.fileUrl || "#"}
                       target={item.fileUrl && item.fileUrl !== "#" ? "_blank" : undefined}
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-sky-400/40 bg-sky-950/40 px-3 py-1.5 text-xs font-semibold text-sky-300 transition-all hover:bg-sky-400 hover:text-black hover:shadow-[0_0_12px_rgba(56,189,248,0.4)]"
+                      className="shrink-0 inline-flex items-center gap-1.5 border border-[var(--theme-primary,#00f0ff)]/30 px-3 py-1 font-mono text-xs uppercase tracking-wider text-[var(--theme-primary,#00f0ff)] hover:bg-[var(--theme-primary,#00f0ff)] hover:text-[var(--theme-bg-main,#060913)] transition-all"
                     >
-                      <Download className="h-3.5 w-3.5" />
-                      <span>Download</span>
+                      {item.fileUrl && item.fileUrl.startsWith("http") ? (
+                        <>
+                          <span>Access</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </>
+                      ) : (
+                        <>
+                          <span>Download</span>
+                          <Download className="h-3 w-3" />
+                        </>
+                      )}
                     </a>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Right Column */}
+            <div className="divide-y divide-[var(--theme-primary,#00f0ff)]/15">
+              {rightCol.map((item) => (
+                <div key={item.id} className="py-5 group">
+                  <div className="flex items-center justify-between font-mono text-xs text-white/50">
+                    <span className="text-[var(--theme-primary,#00f0ff)] font-semibold uppercase tracking-wider">
+                      {item.semester ? `Semester ${item.semester}` : "General"} · {item.subject}
+                    </span>
+                    <span className="flex items-center gap-1.5 text-white/40">
+                      <FileText className="h-3 w-3" />
+                      {item.fileType || "PDF"}
+                    </span>
+                  </div>
+
+                  <h3 className="mt-1.5 font-clash font-bold text-base sm:text-lg text-[var(--theme-bg-hero,#dce6ef)] group-hover:text-[var(--theme-primary,#00f0ff)] transition-colors">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-1.5 font-cabinet text-xs sm:text-sm text-white/70 leading-relaxed">
+                    {item.description}
+                  </p>
+
+                  <div className="mt-3 flex items-center justify-between gap-4">
+                    {item.tags && item.tags.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5 font-mono text-[10px] text-white/40">
+                        {item.tags.map((tag) => (
+                          <span key={tag} className="border border-[var(--theme-primary,#00f0ff)]/20 px-1.5 py-0.5">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    <a
+                      href={item.fileUrl || "#"}
+                      target={item.fileUrl && item.fileUrl !== "#" ? "_blank" : undefined}
+                      rel="noopener noreferrer"
+                      className="shrink-0 inline-flex items-center gap-1.5 border border-[var(--theme-primary,#00f0ff)]/30 px-3 py-1 font-mono text-xs uppercase tracking-wider text-[var(--theme-primary,#00f0ff)] hover:bg-[var(--theme-primary,#00f0ff)] hover:text-[var(--theme-bg-main,#060913)] transition-all"
+                    >
+                      {item.fileUrl && item.fileUrl.startsWith("http") ? (
+                        <>
+                          <span>Access</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </>
+                      ) : (
+                        <>
+                          <span>Download</span>
+                          <Download className="h-3 w-3" />
+                        </>
+                      )}
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

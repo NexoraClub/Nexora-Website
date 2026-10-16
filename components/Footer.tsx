@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUp, Globe, Mail } from "lucide-react";
-import ContourBackdrop from "./ContourBackdrop";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -12,6 +11,7 @@ const NAV_LINKS = [
   { href: "/learn", label: "Learning Resources" },
   { href: "/achievements", label: "Student Achievements" },
   { href: "/connect", label: "Nexora Connect" },
+  { href: "/members", label: "Club Members & Team" },
   { href: "/about", label: "About Department" },
 ];
 
@@ -28,8 +28,6 @@ export default function Footer() {
 
   return (
     <footer className="relative bg-[var(--theme-bg-main,#060913)] text-white overflow-hidden border-t border-[var(--theme-primary,#00f0ff)]/20">
-      <ContourBackdrop />
-
       <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-10 lg:px-12 py-16 sm:py-20">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 sm:gap-10 pb-12 border-b border-white/10">
           {/* Brand Info */}
