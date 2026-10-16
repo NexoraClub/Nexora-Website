@@ -10,11 +10,7 @@ const SCROLL_FPS = 30;
 const LINE_ALPHA = 0.35;
 const VUNIT = 900;
 
-interface ContourBackdropProps {
-  className?: string;
-}
-
-export default function ContourBackdrop({ className = '' }: ContourBackdropProps) {
+export default function ContourBackdrop() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -158,7 +154,7 @@ export default function ContourBackdrop({ className = '' }: ContourBackdropProps
     <div
       ref={wrapRef}
       aria-hidden
-      className={`pointer-events-none absolute inset-0 z-0 overflow-hidden select-none ${className}`}
+      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none"
     >
       <canvas
         ref={canvasRef}

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { BookOpen, CalendarDays, Laptop, BellRing, ArrowRight } from "./Icons";
+import { BookOpen, CalendarDays, Code2, Bell, ArrowRight } from "./Icons";
 
 interface ExploreLearningProps {
   onCardClick?: (sectionId: string) => void;
@@ -18,124 +18,118 @@ export default function ExploreLearning({
   skillsCount = 6,
   announcementsCount = 3,
 }: ExploreLearningProps) {
-  const cards = [
+  const pathways = [
     {
       id: "study-materials",
+      index: "01",
       title: "Study Materials",
       description: "Notes, PDFs and question papers.",
       details: "Browse subject notes, past VTU question papers, and lab manuals organized by semester.",
       icon: BookOpen,
       countLabel: `${materialsCount} Resources`,
       actionLabel: "Browse Materials",
-      accent: "from-sky-500/20 to-blue-600/10",
-      borderGlow: "hover:border-sky-400 hover:shadow-[0_0_25px_rgba(56,189,248,0.35)]",
     },
     {
       id: "upcoming-exams",
+      index: "02",
       title: "Exam Corner",
       description: "Timetables and exam notices.",
       details: "Official Internal Assessments & Semester-End timetables, hall allocations, and exam regulations.",
       icon: CalendarDays,
       countLabel: `${examsCount} Scheduled`,
       actionLabel: "View Schedules",
-      accent: "from-cyan-500/20 to-teal-600/10",
-      borderGlow: "hover:border-cyan-400 hover:shadow-[0_0_25px_rgba(6,182,212,0.35)]",
     },
     {
       id: "skill-development",
+      index: "03",
       title: "Skill Development",
       description: "Courses, coding and tutorials.",
       details: "Hands-on tracks for Full-Stack, Cloud & Supabase, DSA roadmaps, UI/UX systems, and Open Source.",
-      icon: Laptop,
+      icon: Code2,
       countLabel: `${skillsCount} Learning Tracks`,
       actionLabel: "Start Learning",
-      accent: "from-indigo-500/20 to-purple-600/10",
-      borderGlow: "hover:border-indigo-400 hover:shadow-[0_0_25px_rgba(129,140,248,0.35)]",
     },
     {
       id: "latest-updates",
+      index: "04",
       title: "Latest Updates",
       description: "Academic announcements.",
       details: "Real-time notices, exam alerts, workshop registrations, and official department circulars.",
-      icon: BellRing,
+      icon: Bell,
       countLabel: `${announcementsCount} Recent`,
       actionLabel: "Read Notices",
-      accent: "from-amber-500/20 to-orange-600/10",
-      borderGlow: "hover:border-amber-400 hover:shadow-[0_0_25px_rgba(251,191,36,0.35)]",
     },
   ];
 
   return (
-    <section className="relative mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <section className="relative mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-12 py-10">
       {/* Section Header */}
-      <div className="mb-8 flex flex-col items-center text-center">
-        <h2 className="font-jersey text-2xl sm:text-3xl md:text-4xl uppercase tracking-wider text-white">
-          Explore Learning
-        </h2>
-        <p className="mt-2 text-sm sm:text-base text-sky-100/60 max-w-xl">
+      <div className="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+        <div>
+          <span className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--theme-primary,#00f0ff)]/70">
+            Repository Directory
+          </span>
+          <h2 className="mt-1 font-clash font-bold text-2xl sm:text-3xl text-[var(--theme-bg-hero,#dce6ef)] tracking-tight">
+            Explore Learning<span className="text-[var(--theme-primary,#00f0ff)]">.</span>
+          </h2>
+        </div>
+        <p className="font-cabinet text-sm text-white/60 max-w-md">
           Everything you need for semester excellence and technical career growth in one structured hub.
         </p>
       </div>
 
-      {/* 2-Column Grid on Tablet/Desktop */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:gap-8">
-        {cards.map((card) => {
-          const Icon = card.icon;
-          return (
-            <div
-              key={card.id}
-              onClick={() => {
-                const element = document.getElementById(card.id);
-                if (element) {
-                  element.scrollIntoView({ behavior: "smooth" });
-                }
-                onCardClick?.(card.id);
-              }}
-              className={`group relative flex cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-sky-400/20 bg-gradient-to-br ${card.accent} bg-black/60 p-6 sm:p-8 backdrop-blur-md transition-all duration-300 ${card.borderGlow}`}
-            >
-              {/* Subtle neon gradient shimmer */}
+      {/* Directory Ledger Grid - Human Designed, Architectural */}
+      <div className="border-y border-[var(--theme-primary,#00f0ff)]/20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[var(--theme-primary,#00f0ff)]/20">
+          {pathways.map((item) => {
+            const Icon = item.icon;
+            return (
               <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-sky-400/10 blur-2xl transition-all duration-300 group-hover:bg-sky-400/20"
-              />
-
-              <div>
-                {/* Card Top: Icon & Counter Badge */}
-                <div className="flex items-center justify-between">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-sky-400/40 bg-black/70 text-sky-300 shadow-[0_0_15px_rgba(56,189,248,0.25)] transition-transform duration-300 group-hover:scale-110 group-hover:text-sky-200">
-                    <Icon className="h-6 w-6" size={24} />
+                key={item.id}
+                onClick={() => {
+                  const element = document.getElementById(item.id);
+                  if (element) {
+                    element.scrollIntoView({ behavior: "smooth" });
+                  }
+                  onCardClick?.(item.id);
+                }}
+                className="group relative flex cursor-pointer flex-col justify-between p-6 sm:p-7 transition-colors duration-200 hover:bg-[var(--theme-primary,#00f0ff)]/5"
+              >
+                <div>
+                  {/* Item Index & Resource Counter */}
+                  <div className="flex items-center justify-between font-mono text-xs text-white/40 mb-5">
+                    <span className="text-[var(--theme-primary,#00f0ff)] font-bold">{item.index}</span>
+                    <span>{item.countLabel}</span>
                   </div>
-                  <span className="rounded-full border border-sky-400/30 bg-sky-950/60 px-3 py-1 text-xs font-medium text-sky-300">
-                    {card.countLabel}
-                  </span>
+
+                  {/* Icon & Title */}
+                  <div className="flex items-center gap-2.5">
+                    <Icon className="h-4 w-4 text-[var(--theme-primary,#00f0ff)] shrink-0" />
+                    <h3 className="font-clash font-bold text-lg sm:text-xl text-[var(--theme-bg-hero,#dce6ef)] group-hover:text-[var(--theme-primary,#00f0ff)] transition-colors">
+                      {item.title}
+                    </h3>
+                  </div>
+
+                  <p className="mt-2 font-cabinet font-medium text-xs sm:text-sm text-[var(--theme-primary,#00f0ff)]/80">
+                    {item.description}
+                  </p>
+
+                  <p className="mt-2.5 font-cabinet text-xs text-white/60 leading-relaxed">
+                    {item.details}
+                  </p>
                 </div>
 
-                {/* Card Title & Main Description */}
-                <h3 className="mt-5 text-xl font-semibold tracking-wide text-white transition-colors duration-200 group-hover:text-sky-300">
-                  {card.title}
-                </h3>
-                <p className="mt-1 text-sm font-medium text-sky-200/90">
-                  {card.description}
-                </p>
-
-                {/* Detailed description */}
-                <p className="mt-3 text-xs sm:text-sm leading-relaxed text-sky-100/60">
-                  {card.details}
-                </p>
+                {/* Text Action Link */}
+                <div className="mt-6 pt-4 border-t border-[var(--theme-primary,#00f0ff)]/10 flex items-center justify-between">
+                  <span className="font-mono text-xs uppercase tracking-wider text-[var(--theme-primary,#00f0ff)] group-hover:text-white transition-colors">
+                    {item.actionLabel}
+                  </span>
+                  <ArrowRight className="h-3.5 w-3.5 text-[var(--theme-primary,#00f0ff)] group-hover:translate-x-1 transition-transform" />
+                </div>
               </div>
-
-              {/* Action Button */}
-              <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/10">
-                <span className="text-xs sm:text-sm font-medium text-sky-400 group-hover:text-sky-300 transition-colors">
-                  {card.actionLabel}
-                </span>
-                <span className="flex h-8 w-8 items-center justify-center rounded-full border border-sky-400/30 bg-black/50 text-sky-400 transition-transform duration-300 group-hover:translate-x-1 group-hover:border-sky-400">
-                  <ArrowRight className="h-4 w-4" size={16} />
-                </span>
-              </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </section>
   );

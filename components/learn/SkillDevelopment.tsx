@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import { SkillResource } from "./learnData";
-import { Laptop, ExternalLink, Sparkles } from "./Icons";
+import { Laptop, ExternalLink } from "./Icons";
 
 interface SkillDevelopmentProps {
   skills: SkillResource[];
@@ -41,55 +41,41 @@ export default function SkillDevelopment({
     });
   }, [skills, searchQuery, selectedCategory]);
 
-  const getDifficultyColor = (diff: string) => {
-    switch (diff) {
-      case "Beginner":
-        return "text-emerald-400 border-emerald-400/30 bg-emerald-950/40";
-      case "Intermediate":
-        return "text-cyan-400 border-cyan-400/30 bg-cyan-950/40";
-      case "Advanced":
-        return "text-purple-400 border-purple-400/30 bg-purple-950/40";
-      default:
-        return "text-sky-400 border-sky-400/30 bg-sky-950/40";
-    }
-  };
-
   return (
-    <section id="skill-development" className="relative mx-auto w-full max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <section id="skill-development" className="relative mx-auto w-full max-w-7xl px-6 sm:px-10 lg:px-12 py-14">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 border-b border-sky-500/20 pb-6">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 pb-6 border-b border-[var(--theme-primary,#00f0ff)]/20">
         <div>
-          <div className="flex items-center gap-2 text-indigo-400">
-            <Laptop className="h-5 w-5" />
-            <span className="text-xs font-semibold uppercase tracking-widest text-indigo-300">
-              Future-Ready Skills
+          <div className="flex items-center gap-2 text-[var(--theme-primary,#00f0ff)]">
+            <Laptop className="h-4 w-4" />
+            <span className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--theme-primary,#00f0ff)]/70">
+              Technical Specializations
             </span>
           </div>
-          <h2 className="mt-1 font-jersey text-3xl sm:text-4xl uppercase tracking-wider text-white">
-            Skill Development & Tracks
+          <h2 className="mt-2 font-clash font-bold text-3xl sm:text-4xl text-[var(--theme-bg-hero,#dce6ef)] tracking-tight">
+            Skill Development &amp; Tracks<span className="text-[var(--theme-primary,#00f0ff)]">.</span>
           </h2>
-          <p className="mt-1 text-sm text-sky-100/70">
+          <p className="mt-1 font-cabinet font-medium text-sm text-white/70">
             Curated industry roadmaps for web architecture, cloud engineering, UI/UX, and competitive programming.
           </p>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs text-indigo-300">
-          <Sparkles className="h-4 w-4" />
-          <span>Handpicked by Nexora Mentors</span>
+        <div className="font-mono text-xs text-white/50">
+          Curated by Nexora Mentors
         </div>
       </div>
 
-      {/* Category Pills */}
-      <div className="mt-6 flex flex-wrap gap-2">
+      {/* Domain Filters */}
+      <div className="mt-6 flex flex-wrap gap-2 pb-3 border-b border-[var(--theme-primary,#00f0ff)]/15">
         {categories.map((cat) => (
           <button
             key={cat}
             type="button"
             onClick={() => setSelectedCategory(cat)}
-            className={`rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 ${
+            className={`px-3 py-1 font-mono text-xs uppercase tracking-wider transition-colors ${
               selectedCategory === cat
-                ? "bg-indigo-500 text-white shadow-[0_0_12px_rgba(99,102,241,0.5)]"
-                : "border border-white/10 bg-black/40 text-white/70 hover:border-indigo-400/50 hover:text-white"
+                ? "bg-[var(--theme-primary,#00f0ff)] text-[var(--theme-bg-main,#060913)] font-bold"
+                : "text-white/60 hover:text-white"
             }`}
           >
             {cat === "all" ? "All Skill Domains" : cat}
@@ -97,63 +83,51 @@ export default function SkillDevelopment({
         ))}
       </div>
 
-      {/* Grid of Skill Tracks */}
-      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/* Modular Course Curriculum Grid */}
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredSkills.length === 0 ? (
-          <div className="col-span-full rounded-2xl border border-white/10 bg-black/40 py-16 text-center">
-            <Laptop className="mx-auto h-12 w-12 text-indigo-400/40" />
-            <h3 className="mt-4 text-base font-semibold text-white">
+          <div className="col-span-full py-16 text-center border border-[var(--theme-primary,#00f0ff)]/15 bg-[#060a14]">
+            <Laptop className="mx-auto h-8 w-8 text-[var(--theme-primary,#00f0ff)]/40" />
+            <h3 className="mt-3 font-clash font-bold text-base text-[var(--theme-bg-hero,#dce6ef)]">
               No skill tracks match your current filter.
             </h3>
-            <p className="mt-1 text-xs text-sky-100/60">
+            <p className="mt-1 font-cabinet text-xs text-white/50">
               Select another domain or clear your search to explore all tracks.
             </p>
           </div>
         ) : (
-          filteredSkills.map((item) => (
+          filteredSkills.map((item, idx) => (
             <div
               key={item.id}
-              className="group relative flex flex-col justify-between rounded-xl border border-indigo-400/20 bg-black/60 p-6 backdrop-blur-sm transition-all duration-300 hover:border-indigo-400 hover:bg-black/80 hover:shadow-[0_0_20px_rgba(99,102,241,0.25)]"
+              className="group border border-[var(--theme-primary,#00f0ff)]/20 bg-[#060a14] p-6 flex flex-col justify-between hover:border-[var(--theme-primary,#00f0ff)]/50 transition-colors"
             >
               <div>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-indigo-400">
-                    {item.category}
+                <div className="flex items-center justify-between font-mono text-xs">
+                  <span className="text-[var(--theme-primary,#00f0ff)] font-bold">
+                    0{idx + 1} · {item.category}
                   </span>
-                  <span
-                    className={`rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${getDifficultyColor(
-                      item.difficulty
-                    )}`}
-                  >
+                  <span className="text-white/50 border border-white/15 px-2 py-0.5 text-[10px] uppercase font-semibold">
                     {item.difficulty}
                   </span>
                 </div>
 
-                <h3 className="mt-3 text-lg font-bold text-white group-hover:text-indigo-300 transition-colors">
+                <h3 className="mt-3 font-clash font-bold text-lg text-[var(--theme-bg-hero,#dce6ef)] group-hover:text-[var(--theme-primary,#00f0ff)] transition-colors">
                   {item.title}
                 </h3>
 
-                <p className="mt-2 text-xs leading-relaxed text-sky-100/70">
+                <p className="mt-2 font-cabinet text-xs sm:text-sm text-white/65 leading-relaxed">
                   {item.description}
                 </p>
 
-                <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px] text-white/50">
-                  <span className="text-sky-300/80 font-medium">By {item.provider}</span>
-                  {item.estimatedTime && (
-                    <>
-                      <span>•</span>
-                      <span>Est. {item.estimatedTime}</span>
-                    </>
-                  )}
+                <div className="mt-4 font-mono text-xs text-white/40">
+                  <span>Source: {item.provider}</span>
+                  {item.estimatedTime && <span> · Est. {item.estimatedTime}</span>}
                 </div>
 
-                {item.tags && (
-                  <div className="mt-3 flex flex-wrap gap-1.5">
+                {item.tags && item.tags.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1.5 font-mono text-[10px] text-white/40">
                     {item.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded bg-indigo-950/40 px-2 py-0.5 text-[10px] text-indigo-300"
-                      >
+                      <span key={tag} className="border border-[var(--theme-primary,#00f0ff)]/15 px-1.5 py-0.5">
                         #{tag}
                       </span>
                     ))}
@@ -161,17 +135,17 @@ export default function SkillDevelopment({
                 )}
               </div>
 
-              {/* Action Button */}
-              <div className="mt-6 pt-4 border-t border-white/10 flex items-center justify-between">
-                <span className="text-xs text-white/40">Free Academic Resource</span>
+              {/* Action Link */}
+              <div className="mt-6 pt-4 border-t border-[var(--theme-primary,#00f0ff)]/15 flex items-center justify-between">
+                <span className="font-mono text-xs text-white/40">Open Curriculum</span>
                 <a
                   href={item.externalLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-indigo-600 px-4 py-2 text-xs font-semibold text-white transition-all hover:bg-indigo-500 hover:shadow-[0_0_12px_rgba(99,102,241,0.5)]"
+                  className="inline-flex items-center gap-1.5 border border-[var(--theme-primary,#00f0ff)]/30 px-3 py-1 font-mono text-xs uppercase tracking-wider text-[var(--theme-primary,#00f0ff)] hover:bg-[var(--theme-primary,#00f0ff)] hover:text-[var(--theme-bg-main,#060913)] transition-all"
                 >
-                  <span>Start Learning</span>
-                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span>Start Track</span>
+                  <ExternalLink className="h-3 w-3" />
                 </a>
               </div>
             </div>
