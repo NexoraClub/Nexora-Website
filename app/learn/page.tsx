@@ -12,9 +12,7 @@ export const metadata: Metadata = {
 
 export default function LearnPage() {
   return (
-    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
-      <ContourBackdrop />
-
+    <div className="relative min-h-screen flex flex-col bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
       <Navbar />
 
       <main className="relative isolate flex-1 w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)] overflow-hidden">
