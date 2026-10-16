@@ -15,6 +15,7 @@ export const NAV_LINKS = [
   { href: '/events', label: 'Events' },
   { href: '/notices', label: 'Notices' },
   { href: '/learn', label: 'Learning Hub' },
+  { href: '/practice', label: 'Practice' },
   { href: '/achievements', label: 'Achievements' },
   { href: '/connect', label: 'Connect' },
   { href: '/about', label: 'About' },
