@@ -127,10 +127,17 @@ export function getConnectAppUrl(req: Request): URL {
 export function isSameOriginRequest(req: Request): boolean {
   const origin = req.headers.get('origin')
   if (!origin) return false
-  const appOrigin = getConnectAppUrl(req).origin
+  const host = req.headers.get('x-forwarded-host')?.split(',')[0]?.trim()
+    || req.headers.get('host')
+  if (!host) return false
+
+  const protocol = req.headers.get('x-forwarded-proto')?.split(',')[0]?.trim()
+    || new URL(req.url).protocol.replace(':', '')
 
   try {
-    return new URL(origin).origin === appOrigin
+    const originUrl = new URL(origin)
+    const requestUrl = new URL(`${protocol}://${host}`)
+    return originUrl.origin === requestUrl.origin
   } catch {
     return false
   }

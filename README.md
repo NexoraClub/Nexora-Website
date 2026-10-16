@@ -79,6 +79,7 @@ The project features a **public community portal** for students and visitors, al
 - Supabase member signup, sign-in, email confirmation, session, sign-out, password reset/update, pending profile approval, and self-service portfolio and knowledge-page APIs.
 - Public directory responses include only approved, public profiles and respect contact visibility settings.
 - Admin APIs support profile review, report/dispute triage, and audited roster changes.
+- Responsive member directory, public profiles, roster-verified signup, member workspace, portfolio editor, and knowledge-page editor.
 
 ---
 
@@ -288,6 +289,19 @@ The relational PostgreSQL schema in `prisma/schema.prisma` models all core entit
 
 Roster bulk imports use `{ "entries": [{ "usn": "...", "fullName": "..." }], "replace": false }`. Use `replace: true` only with the complete authoritative roster; omitted USNs are deactivated and associated profiles suspended.
 Configure Supabase Auth to require email confirmation and allow `${CONNECT_APP_URL}/api/connect/auth/callback` in its redirect URL allowlist. Connect signup/sign-in should use `createConnectSupabaseBrowserClient()` from `lib/connect/supabase-browser.ts` so the server APIs can validate the Supabase session cookies.
+
+### Nexora Connect Pages
+
+- `/connect` — searchable directory of approved, public members.
+- `/connect/sign-up` — official roster USN verification, account signup and email confirmation.
+- `/connect/sign-in` and `/connect/forgot-password` — member access and password recovery.
+- `/connect/dashboard` — create and manage a profile, portfolio, privacy and contact settings.
+- `/connect/knowledge` — private Markdown drafts and approved-member publishing.
+- `/connect/activity` — submit and follow up on profile reports and USN disputes.
+- `/connect/members/[slug]` — public member portfolio.
+- `/connect/reset-password` — choose a new password from the secure recovery link.
+- `/admin/connect/moderation` — administrator review queues for profiles, reports and USN disputes.
+- `/admin/connect/roster` — super-administrator management of the official USN roster.
 
 ### Administrative API Routes (Protected)
 

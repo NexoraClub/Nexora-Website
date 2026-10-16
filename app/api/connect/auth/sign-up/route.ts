@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
     const supabase = await createConnectSupabaseServerClient()
     const callback = new URL('/api/connect/auth/callback', getConnectAppUrl(req))
-    callback.searchParams.set('next', '/')
+    callback.searchParams.set('next', '/connect/start')
     const { error } = await supabase.auth.signUp({
       email,
       password: body.password,

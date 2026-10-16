@@ -16,6 +16,7 @@ const HOVER_SELECTOR = 'a, button, [role="button"], input, select, textarea, [da
 
 export default function CustomCursor() {
   const pathname = usePathname();
+  const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/');
   const hidden = useIsTouchDevice();
   const [hovering, setHovering] = useState(false);
   const [mode, setMode] = useState<CursorMode>('');
@@ -71,13 +72,18 @@ export default function CustomCursor() {
   useEffect(() => subscribeCursorMode(setMode), []);
 
   useEffect(() => {
+    document.body.classList.toggle('native-cursor', isAdminPage);
+    return () => document.body.classList.remove('native-cursor');
+  }, [isAdminPage]);
+
+  useEffect(() => {
     queueMicrotask(() => {
       setHovering(false);
       setCursorMode('');
     });
   }, [pathname]);
 
-  if (hidden) return null;
+  if (hidden || isAdminPage) return null;
 
   return (
     <>

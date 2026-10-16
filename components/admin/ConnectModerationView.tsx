@@ -1,0 +1,372 @@
+'use client'
+
+import { useCallback, useEffect, useState, type FormEvent } from 'react'
+import Link from 'next/link'
+import {
+  ArrowLeft,
+  Check,
+  ChevronLeft,
+  ChevronRight,
+  CircleAlert,
+  ClipboardCheck,
+  Flag,
+  MessageSquareWarning,
+  ShieldAlert,
+  UsersRound,
+} from 'lucide-react'
+
+type Tab = 'profiles' | 'reports' | 'disputes'
+type ProfileStatus = 'PENDING' | 'APPROVED' | 'REJECTED' | 'SUSPENDED'
+type ReviewStatus = 'OPEN' | 'IN_REVIEW' | 'RESOLVED' | 'DISMISSED'
+type Profile = {
+  authUserId: string
+  slug: string
+  usn: string
+  fullName: string
+  rosterName: string | null
+  rosterNameMatches: boolean
+  graduationYear: number
+  memberType: 'STUDENT' | 'ALUMNUS'
+  bio: string | null
+  approvalStatus: ProfileStatus
+  reviewNote: string | null
+  createdAt: string
+}
+type Report = {
+  id: string
+  target: 'PROFILE' | 'KNOWLEDGE_PAGE'
+  reason: string
+  details: string | null
+  status: ReviewStatus
+  resolutionNote: string | null
+  createdAt: string
+  profile: { slug: string; fullName: string; usn: string }
+}
+type Dispute = {
+  id: string
+  status: ReviewStatus
+  usn: string
+  details: string
+  resolutionNote: string | null
+  createdAt: string
+  claim: { profile: { fullName: string; slug: string; approvalStatus: ProfileStatus } }
+}
+type Pagination = { page: number; limit: number; total: number; totalPages: number }
+
+const tabs: Array<{ id: Tab; label: string; icon: typeof UsersRound }> = [
+  { id: 'profiles', label: 'Profiles', icon: UsersRound },
+  { id: 'reports', label: 'Reports', icon: Flag },
+  { id: 'disputes', label: 'Student number help', icon: MessageSquareWarning },
+]
+const statusOptions: Record<Tab, string[]> = {
+  profiles: ['PENDING', 'APPROVED', 'REJECTED', 'SUSPENDED', 'ALL'],
+  reports: ['OPEN', 'IN_REVIEW', 'RESOLVED', 'DISMISSED', 'ALL'],
+  disputes: ['OPEN', 'IN_REVIEW', 'RESOLVED', 'DISMISSED', 'ALL'],
+}
+
+function dateLabel(value: string) {
+  return new Intl.DateTimeFormat('en', { dateStyle: 'medium' }).format(new Date(value))
+}
+
+function statusLabel(status: string) {
+  const labels: Record<string, string> = {
+    PENDING: 'Waiting for review',
+    APPROVED: 'Ready to share',
+    REJECTED: 'Update requested',
+    SUSPENDED: 'Hidden',
+    OPEN: 'New',
+    IN_REVIEW: 'Being reviewed',
+    RESOLVED: 'Resolved',
+    DISMISSED: 'Closed',
+    ALL: 'All',
+  }
+  return labels[status] ?? status.replaceAll('_', ' ')
+}
+
+function StatusBadge({ status }: { status: string }) {
+  const tone = status === 'APPROVED' || status === 'RESOLVED'
+    ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
+    : status === 'REJECTED' || status === 'SUSPENDED' || status === 'DISMISSED'
+      ? 'border-rose-200 bg-rose-50 text-rose-700'
+      : 'border-amber-200 bg-amber-50 text-amber-800'
+  return <span className={`inline-flex rounded-full border px-2.5 py-1 text-[10px] font-semibold tracking-wide ${tone}`}>{statusLabel(status)}</span>
+}
+
+function ReviewForm({
+  profile = false,
+  approvalBlocked = false,
+  busy,
+  onSubmit,
+}: {
+  profile?: boolean
+  approvalBlocked?: boolean
+  busy: boolean
+  onSubmit: (status: string, note: string) => Promise<void>
+}) {
+  const [status, setStatus] = useState(profile ? 'APPROVED' : 'IN_REVIEW')
+  const [note, setNote] = useState('')
+  const noteRequired = profile ? status !== 'APPROVED' : status !== 'IN_REVIEW'
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    await onSubmit(status, note)
+    setNote('')
+  }
+
+  return (
+    <form onSubmit={submit} className="mt-4 grid gap-2 sm:grid-cols-[160px_minmax(0,1fr)_auto]">
+      <select
+        aria-label={profile ? 'Profile decision' : 'Review decision'}
+        value={status}
+        onChange={(event) => setStatus(event.target.value)}
+        className="h-10 rounded-xl border border-slate-200 bg-white px-3 text-xs outline-none focus:border-cyan-500"
+      >
+        {(profile ? ['APPROVED', 'REJECTED', 'SUSPENDED'] : ['IN_REVIEW', 'RESOLVED', 'DISMISSED']).map((option) => (
+          <option key={option} value={option}>{statusLabel(option)}</option>
+        ))}
+      </select>
+      <input
+        aria-label={profile ? 'Review note' : 'Note for the member'}
+        value={note}
+        onChange={(event) => setNote(event.target.value)}
+        maxLength={2000}
+        required={noteRequired}
+        placeholder={noteRequired ? 'Tell the member why' : 'Optional note for the member'}
+        className="h-10 min-w-0 rounded-xl border border-slate-200 bg-white px-3 text-xs outline-none placeholder:text-slate-400 focus:border-cyan-500"
+      />
+      <button
+        type="submit"
+        disabled={busy || (profile && approvalBlocked && status === 'APPROVED')}
+        className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#111827] px-4 text-xs font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        <Check size={14} /> {busy ? 'Saving…' : 'Save review'}
+      </button>
+    </form>
+  )
+}
+
+export default function ConnectModerationView() {
+  const [tab, setTab] = useState<Tab>('profiles')
+  const [filters, setFilters] = useState<Record<Tab, string>>({
+    profiles: 'PENDING',
+    reports: 'OPEN',
+    disputes: 'OPEN',
+  })
+  const [page, setPage] = useState(1)
+  const [profiles, setProfiles] = useState<Profile[]>([])
+  const [reports, setReports] = useState<Report[]>([])
+  const [disputes, setDisputes] = useState<Dispute[]>([])
+  const [pagination, setPagination] = useState<Pagination | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [authorized, setAuthorized] = useState<boolean | null>(null)
+  const [busyId, setBusyId] = useState('')
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
+
+  const load = useCallback(async (signal?: AbortSignal) => {
+    setLoading(true)
+    setError('')
+    const endpoint = tab === 'profiles' ? 'profiles' : tab
+    const params = new URLSearchParams({ status: filters[tab], page: String(page), limit: '20' })
+    try {
+      const response = await fetch(`/api/admin/connect/${endpoint}?${params}`, { cache: 'no-store', signal })
+      const data = await response.json()
+      if (response.status === 401 || response.status === 403) {
+        setAuthorized(false)
+        return
+      }
+      if (!response.ok) throw new Error(data.error || `Unable to load Connect ${tab}.`)
+      setAuthorized(true)
+      if (tab === 'profiles') setProfiles(data.profiles)
+      if (tab === 'reports') setReports(data.reports)
+      if (tab === 'disputes') setDisputes(data.disputes)
+      setPagination(data.pagination)
+    } catch (cause) {
+      if (cause instanceof DOMException && cause.name === 'AbortError') return
+      setError(cause instanceof Error ? cause.message : `Unable to load Connect ${tab}.`)
+    } finally {
+      if (!signal?.aborted) setLoading(false)
+    }
+  }, [filters, page, tab])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    const timer = window.setTimeout(() => void load(controller.signal), 0)
+    return () => {
+      window.clearTimeout(timer)
+      controller.abort()
+    }
+  }, [load])
+
+  async function review(endpoint: Tab, id: string, status: string, note: string) {
+    setBusyId(id)
+    setError('')
+    setSuccess('')
+    try {
+      const response = await fetch(`/api/admin/connect/${endpoint}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(endpoint === 'profiles'
+          ? { authUserId: id, status, reviewNote: note || null }
+          : { id, status, resolutionNote: note || null }),
+      })
+      const data = await response.json()
+      if (!response.ok) throw new Error(data.error || 'The review could not be saved.')
+      setSuccess('Review saved and added to the audit log.')
+      await load()
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'The review could not be saved.')
+    } finally {
+      setBusyId('')
+    }
+  }
+
+  function changeTab(next: Tab) {
+    setTab(next)
+    setPage(1)
+    setError('')
+    setSuccess('')
+  }
+
+  const count = pagination?.total ?? 0
+  const totalPages = pagination?.totalPages ?? 0
+
+  if (authorized === false) {
+    return (
+      <div className="min-h-screen bg-[#f8fafc] px-5 py-20 text-[#111827]">
+        <section className="mx-auto max-w-lg rounded-3xl border border-[#e2e8f0] bg-white p-8 text-center shadow-sm">
+          <span className="mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-amber-50 text-amber-700"><ShieldAlert size={22} /></span>
+          <p className="mt-5 text-[10px] font-semibold uppercase tracking-[.18em] text-amber-700">Page unavailable</p>
+          <h1 className="mt-2 font-clash text-3xl font-semibold">This page isn’t available.</h1>
+          <p className="mt-3 text-sm leading-6 text-slate-500">You can return to Nexora and continue exploring the community.</p>
+          <Link href="/" className="mt-6 inline-flex h-10 items-center gap-2 rounded-xl bg-[#111827] px-4 text-sm font-medium text-white">Return to Nexora <ArrowLeft size={14} /></Link>
+        </section>
+      </div>
+    )
+  }
+
+  return (
+    <main className="min-h-screen bg-[#f8fafc] px-4 py-7 text-[#111827] sm:px-8 sm:py-10">
+      <div className="mx-auto max-w-7xl">
+        <Link href="/admin" className="inline-flex items-center gap-2 text-xs text-slate-500 transition hover:text-slate-900"><ArrowLeft size={14} /> Admin dashboard</Link>
+        <header className="mt-6 flex flex-col gap-5 border-b border-slate-200 pb-7 md:flex-row md:items-end md:justify-between">
+          <div>
+            <p className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[.18em] text-[#0784a5]"><span className="h-1.5 w-1.5 rounded-full bg-[#08a6c8]" /> Nexora Connect · Community review</p>
+            <h1 className="mt-2 font-clash text-4xl font-semibold tracking-tight sm:text-5xl">Community review</h1>
+            <p className="mt-2 max-w-2xl text-sm text-slate-500">Check student profiles, respond to reports, and help with student number issues.</p>
+          </div>
+          <Link href="/admin/connect/roster" className="inline-flex h-10 items-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-4 text-xs font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 md:self-auto"><UsersRound size={14} /> Manage student list</Link>
+        </header>
+
+        <div className="mt-6 flex flex-wrap gap-2" role="tablist" aria-label="Connect review sections">
+          {tabs.map(({ id, label, icon: Icon }) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={tab === id}
+              onClick={() => changeTab(id)}
+              className={`inline-flex h-10 items-center gap-2 rounded-xl border px-4 text-xs font-medium transition ${tab === id ? 'border-[#111827] bg-[#111827] text-white' : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900'}`}
+            >
+              <Icon size={14} /> {label}
+            </button>
+          ))}
+        </div>
+
+        {(error || success) && (
+          <div role={error ? 'alert' : 'status'} className={`mt-5 flex items-start gap-2 rounded-xl border p-3 text-xs ${error ? 'border-rose-200 bg-rose-50 text-rose-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700'}`}>
+            {error ? <CircleAlert size={15} className="mt-0.5 shrink-0" /> : <Check size={15} className="mt-0.5 shrink-0" />}
+            <span>{error || success}</span>
+          </div>
+        )}
+
+        <section className="mt-5 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex flex-col gap-3 border-b border-slate-100 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+            <div>
+              <h2 className="font-semibold">{tabs.find((item) => item.id === tab)?.label}</h2>
+              <p className="mt-1 text-[11px] text-slate-500">{count} {count === 1 ? 'item' : 'items'} · Your decisions are saved in the admin history.</p>
+            </div>
+            <label className="flex items-center gap-2 text-[11px] font-medium text-slate-500">
+              Show
+              <select
+                value={filters[tab]}
+                onChange={(event) => {
+                  setFilters((current) => ({ ...current, [tab]: event.target.value }))
+                  setPage(1)
+                }}
+                className="h-9 rounded-lg border border-slate-200 bg-white px-2.5 text-xs text-slate-700 outline-none focus:border-cyan-500"
+              >
+                {statusOptions[tab].map((status) => <option key={status} value={status}>{statusLabel(status)}</option>)}
+              </select>
+            </label>
+          </div>
+
+          <div className="divide-y divide-slate-100">
+            {loading && <div className="px-5 py-14 text-center text-xs text-slate-400">Loading…</div>}
+            {!loading && tab === 'profiles' && profiles.length === 0 && <EmptyQueue text="No profiles match this status." />}
+            {!loading && tab === 'reports' && reports.length === 0 && <EmptyQueue text="No reports match this status." />}
+            {!loading && tab === 'disputes' && disputes.length === 0 && <EmptyQueue text="No student number requests to show here." />}
+
+            {!loading && tab === 'profiles' && profiles.map((profile) => (
+              <article key={profile.authUserId} className="p-4 sm:p-5">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2"><h3 className="font-semibold">{profile.fullName}</h3><StatusBadge status={profile.approvalStatus} /></div>
+                    <p className="mt-1 text-xs text-slate-500">{profile.usn} · {profile.memberType === 'ALUMNUS' ? 'Alumnus' : 'Student'} · Class of {profile.graduationYear}</p>
+                    <p className="mt-2 text-xs text-slate-600">{profile.bio || 'No biography provided.'}</p>
+                    <p className="mt-2 text-[10px] text-slate-400">Submitted {dateLabel(profile.createdAt)} · Name on department records: {profile.rosterName ?? 'No active student record found'}</p>
+                    {!profile.rosterNameMatches && <p className="mt-2 inline-flex items-center gap-1.5 rounded-lg bg-amber-50 px-2.5 py-1.5 text-[10px] text-amber-800"><CircleAlert size={12} /> The name doesn’t match department records, so this profile can’t be approved yet.</p>}
+                    {profile.reviewNote && <p className="mt-2 text-[11px] text-slate-500">Previous note: {profile.reviewNote}</p>}
+                  </div>
+                  <Link href={`/connect/members/${encodeURIComponent(profile.slug)}`} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-1 text-xs font-medium text-cyan-800 hover:text-cyan-950">View public profile <ChevronRight size={14} /></Link>
+                </div>
+                <ReviewForm
+                  profile
+                  approvalBlocked={!profile.rosterNameMatches}
+                  busy={busyId === profile.authUserId}
+                  onSubmit={(status, note) => review('profiles', profile.authUserId, status, note)}
+                />
+              </article>
+            ))}
+
+            {!loading && tab === 'reports' && reports.map((report) => (
+              <article key={report.id} className="p-4 sm:p-5">
+                <div className="flex flex-wrap items-center gap-2"><h3 className="font-semibold">{report.reason}</h3><StatusBadge status={report.status} /></div>
+                <p className="mt-1 text-xs text-slate-500">{report.target === 'PROFILE' ? 'Member profile' : 'Knowledge page'} · {report.profile.fullName} · {report.profile.usn} · submitted {dateLabel(report.createdAt)}</p>
+                {report.details && <p className="mt-3 whitespace-pre-wrap rounded-xl bg-slate-50 p-3 text-xs leading-5 text-slate-700">{report.details}</p>}
+                {report.resolutionNote && <p className="mt-2 text-[11px] text-slate-500">Previous resolution: {report.resolutionNote}</p>}
+                <div className="mt-3"><Link href={`/connect/members/${encodeURIComponent(report.profile.slug)}`} target="_blank" rel="noreferrer" className="text-xs font-medium text-cyan-800 hover:text-cyan-950">Open reported profile <ChevronRight size={13} className="inline" /></Link></div>
+                <ReviewForm busy={busyId === report.id} onSubmit={(status, note) => review('reports', report.id, status, note)} />
+              </article>
+            ))}
+
+            {!loading && tab === 'disputes' && disputes.map((dispute) => (
+              <article key={dispute.id} className="p-4 sm:p-5">
+                <div className="flex flex-wrap items-center gap-2"><h3 className="font-semibold">USN {dispute.usn}</h3><StatusBadge status={dispute.status} /></div>
+                <p className="mt-1 text-xs text-slate-500">Requested by {dispute.claim.profile.fullName} · profile: {statusLabel(dispute.claim.profile.approvalStatus)} · submitted {dateLabel(dispute.createdAt)}</p>
+                <p className="mt-3 whitespace-pre-wrap rounded-xl bg-slate-50 p-3 text-xs leading-5 text-slate-700">{dispute.details}</p>
+                {dispute.resolutionNote && <p className="mt-2 text-[11px] text-slate-500">Previous resolution: {dispute.resolutionNote}</p>}
+                <div className="mt-3"><Link href={`/connect/members/${encodeURIComponent(dispute.claim.profile.slug)}`} target="_blank" rel="noreferrer" className="text-xs font-medium text-cyan-800 hover:text-cyan-950">Open linked profile <ChevronRight size={13} className="inline" /></Link></div>
+                <ReviewForm busy={busyId === dispute.id} onSubmit={(status, note) => review('disputes', dispute.id, status, note)} />
+              </article>
+            ))}
+          </div>
+
+          <footer className="flex items-center justify-between border-t border-slate-100 px-4 py-3 sm:px-5">
+            <span className="text-[11px] text-slate-500">Page {pagination?.page ?? page} of {totalPages}</span>
+            <div className="flex gap-2">
+              <button type="button" aria-label="Previous page" disabled={page <= 1 || loading} onClick={() => setPage((current) => current - 1)} className="grid h-8 w-8 place-items-center rounded-lg border border-slate-200 text-slate-600 disabled:opacity-40"><ChevronLeft size={15} /></button>
+              <button type="button" aria-label="Next page" disabled={page >= totalPages || loading} onClick={() => setPage((current) => current + 1)} className="grid h-8 w-8 place-items-center rounded-lg border border-slate-200 text-slate-600 disabled:opacity-40"><ChevronRight size={15} /></button>
+            </div>
+          </footer>
+        </section>
+        <p className="mt-4 flex items-center gap-2 text-[10px] leading-5 text-slate-400"><ClipboardCheck size={13} /> Add a note when asking for changes or closing a request so the member understands the decision.</p>
+      </div>
+    </main>
+  )
+}
+
+function EmptyQueue({ text }: { text: string }) {
+  return <div className="px-5 py-14 text-center"><span className="mx-auto grid h-10 w-10 place-items-center rounded-xl bg-slate-50 text-slate-400"><ClipboardCheck size={18} /></span><p className="mt-3 text-xs text-slate-500">{text}</p></div>
+}

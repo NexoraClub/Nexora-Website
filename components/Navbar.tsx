@@ -16,6 +16,7 @@ export const NAV_LINKS = [
   { href: '/notices', label: 'Notices' },
   { href: '/learn', label: 'Learning Hub' },
   { href: '/achievements', label: 'Achievements' },
+  { href: '/connect', label: 'Connect' },
   { href: '/about', label: 'About' },
 ];
 
@@ -51,7 +52,7 @@ function TerminalMenu({
         className="terminal-scroll -mx-7 mt-9 flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-7 pb-4"
       >
         {NAV_LINKS.map((r, i) => {
-          const active = pathname === r.href;
+          const active = pathname === r.href || (r.href !== '/' && pathname.startsWith(`${r.href}/`));
           return (
             <Link
               key={r.href}
@@ -239,7 +240,7 @@ const Navbar = () => {
         {/* ── Desktop Links ── */}
         <div className="hidden xl:flex items-center gap-4 lg:gap-5">
           {NAV_LINKS.map((link, i) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               ref={(el) => { linkRefs.current[i] = el; }}
@@ -253,7 +254,7 @@ const Navbar = () => {
               onBlur={() => setHoveredLink(null)}
               onPointerEnter={() => setHoveredLink(link.href)}
               className={`relative font-semibold uppercase cursor-pointer
-                ${isHomePage ? 'text-[#12304a]' : 'text-white'}
+                ${isHomePage ? 'text-[#12304a]' : pathname === link.href || (link.href !== '/' && pathname.startsWith(`${link.href}/`)) ? 'text-[var(--theme-primary,#00f0ff)]' : 'text-white'}
                 isolate rounded-full px-3 py-2 text-sm tracking-wide lg:text-base lg:tracking-wider`}
               style={{ textDecoration: 'none' }}
             >
@@ -270,7 +271,7 @@ const Navbar = () => {
                 className="nav-bar absolute left-0 -bottom-1 w-full h-[2px] bg-[var(--theme-primary,#00f0ff)]"
                 style={{ transform: 'scaleX(0)', transformOrigin: 'left center', display: 'block' }}
               />
-            </a>
+            </Link>
           ))}
         </div>
 

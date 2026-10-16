@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: "/notices", label: "Department Notices" },
   { href: "/learn", label: "Learning Resources" },
   { href: "/achievements", label: "Student Achievements" },
+  { href: "/connect", label: "Nexora Connect" },
   { href: "/about", label: "About Department" },
 ];
 
