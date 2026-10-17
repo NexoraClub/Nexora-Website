@@ -21,7 +21,6 @@ import {
   Check,
   MouseRightClick,
   Users,
-  Code,
 } from "@phosphor-icons/react";
 import { useLenis } from "@/components/SmoothScroll";
 
