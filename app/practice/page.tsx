@@ -26,7 +26,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ContourBackdrop from "@/components/ContourBackdrop";
-import Marquee from "@/components/Marquee";
+
 
 const Editor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -1253,30 +1253,26 @@ export default function PracticePage() {
   ];
 
   return (
-    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)] selection:bg-[var(--theme-primary,#00f0ff)] selection:text-[var(--theme-bg-main,#060913)] overflow-x-hidden">
+    <main className="relative isolate min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)] selection:bg-[var(--theme-primary,#00f0ff)] selection:text-[var(--theme-bg-main,#060913)] overflow-x-hidden">
       {/* ── Ambient Topographical ASCII Contour Canvas ── */}
-      <ContourBackdrop />
+      <ContourBackdrop className="z-0" />
 
       {/* ── Site Floating Navigation ── */}
       <Navbar />
 
       {/* ── Main Arena Content ── */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 sm:pt-32 pb-24 sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
         {/* ── Header Section ── */}
-        <section className="mb-8 sm:mb-10">
-          {/* Eyebrow Badge */}
-          <div className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-[var(--theme-primary,#00f0ff)]/30 bg-[var(--theme-primary,#00f0ff)]/10 px-3.5 py-1 font-mono text-xs font-semibold uppercase tracking-[0.2em] text-[var(--theme-primary,#00f0ff)]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[var(--theme-primary,#00f0ff)] animate-pulse" />
-            <span>NEXORA &bull; PRACTICE ARENA</span>
-          </div>
+        <section className="mb-10 max-w-4xl">
+          <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--theme-primary,#00f0ff)]/70">
+            Department of ISE · Practice Arena
+          </p>
 
-          {/* Clean Editorial Title */}
-          <h1 className="font-clash font-bold text-3xl sm:text-4xl md:text-5xl tracking-tight text-[var(--theme-bg-hero,#dce6ef)]">
-            Code &amp; Practice Arena
+          <h1 className="font-clash text-[clamp(2.8rem,6.5vw,5.5rem)] font-bold leading-[0.95] tracking-tight text-[var(--theme-bg-hero,#dce6ef)]">
+            Practice <span className="text-[var(--theme-primary,#00f0ff)]">Arena.</span>
           </h1>
 
-          {/* Description */}
-          <p className="mt-3 max-w-2xl font-cabinet font-medium text-sm sm:text-base text-[var(--theme-primary,#00f0ff)]/80 leading-relaxed">
+          <p className="mt-5 max-w-2xl font-cabinet text-base font-medium leading-relaxed text-white/75 sm:text-lg">
             Sharpen your problem-solving skills across data structures, algorithms, and technical aptitude. Run code with instant compilation and test case verification.
           </p>
         </section>

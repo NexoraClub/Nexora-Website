@@ -56,6 +56,14 @@ const TAB_TITLES: Record<AdminTab, { title: string; description: string }> = {
     title: 'System Settings',
     description: 'Configure portal parameters, security preferences, and administrative profile.',
   },
+  'connect-moderation': {
+    title: 'Connect Community Review',
+    description: 'Review member profiles, reports, account access, and student number requests.',
+  },
+  'connect-roster': {
+    title: 'Connect Student List',
+    description: 'Manage the verified student list used for Connect registration.',
+  },
 }
 
 export default function AdminHeader({
@@ -92,7 +100,7 @@ export default function AdminHeader({
 
       <div className="flex items-center gap-2.5">
         {/* Quick action button */}
-        {onQuickAction && (
+        {onQuickAction && currentTab !== 'connect-moderation' && currentTab !== 'connect-roster' && (
           <button
             onClick={() => onQuickAction(currentTab)}
             className="flex items-center gap-1.5 rounded-xl bg-[#111827] px-3.5 py-2 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-[#273449] active:scale-[0.98]"

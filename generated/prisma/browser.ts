@@ -57,3 +57,63 @@ export type AuditLog = Prisma.AuditLogModel
  * 
  */
 export type ActiveSession = Prisma.ActiveSessionModel
+/**
+ * Model UsnClaim
+ * 
+ */
+export type UsnClaim = Prisma.UsnClaimModel
+/**
+ * Model ConnectRegistration
+ * 
+ */
+export type ConnectRegistration = Prisma.ConnectRegistrationModel
+/**
+ * Model UsnRosterEntry
+ * 
+ */
+export type UsnRosterEntry = Prisma.UsnRosterEntryModel
+/**
+ * Model ConnectAuthRateLimit
+ * 
+ */
+export type ConnectAuthRateLimit = Prisma.ConnectAuthRateLimitModel
+/**
+ * Model MemberProfile
+ * 
+ */
+export type MemberProfile = Prisma.MemberProfileModel
+/**
+ * Model MemberSocialLink
+ * 
+ */
+export type MemberSocialLink = Prisma.MemberSocialLinkModel
+/**
+ * Model MemberProject
+ * 
+ */
+export type MemberProject = Prisma.MemberProjectModel
+/**
+ * Model MemberExperience
+ * 
+ */
+export type MemberExperience = Prisma.MemberExperienceModel
+/**
+ * Model MemberAchievement
+ * 
+ */
+export type MemberAchievement = Prisma.MemberAchievementModel
+/**
+ * Model MemberKnowledgePage
+ * 
+ */
+export type MemberKnowledgePage = Prisma.MemberKnowledgePageModel
+/**
+ * Model ConnectReport
+ * 
+ */
+export type ConnectReport = Prisma.ConnectReportModel
+/**
+ * Model UsnDispute
+ * 
+ */
+export type UsnDispute = Prisma.UsnDisputeModel

@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Suspense } from "react";
 import localFont from "next/font/local";
 import { IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
@@ -61,14 +62,16 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-full flex-col font-sans">
-        <SmoothScroll>
-          <AudioProvider>
-            <ContextMenu />
-            <BottomNavCluster />
-            <Terminal />
-            {children}
-          </AudioProvider>
-        </SmoothScroll>
+        <Suspense fallback={<div className="min-h-screen bg-[#060913]" />}>
+          <SmoothScroll>
+            <AudioProvider>
+              <ContextMenu />
+              <BottomNavCluster />
+              <Terminal />
+              {children}
+            </AudioProvider>
+          </SmoothScroll>
+        </Suspense>
       </body>
     </html>
   );

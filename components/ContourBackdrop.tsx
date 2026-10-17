@@ -5,9 +5,9 @@ import { useEffect, useRef } from 'react';
 const CELL_W = 12;
 const CELL_H = 18;
 const CHARS = ['_', '.', '-', '~', '=', '‾'];
-const DRIFT_FPS = 12;
+const DRIFT_FPS = 24;
 const SCROLL_FPS = 30;
-const LINE_ALPHA = 0.28;
+const LINE_ALPHA = 0.35;
 const VUNIT = 900;
 
 export default function ContourBackdrop({ className }: { className?: string } = {}) {
@@ -159,7 +159,7 @@ export default function ContourBackdrop({ className }: { className?: string } = 
     <div
       ref={wrapRef}
       aria-hidden
-      className={`pointer-events-none absolute inset-0 overflow-hidden select-none ${className ?? 'z-0'}`}
+      className={`pointer-events-none absolute inset-0 overflow-hidden select-none ${className ?? '-z-10'}`}
     >
       <canvas
         ref={canvasRef}

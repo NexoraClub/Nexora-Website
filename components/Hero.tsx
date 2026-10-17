@@ -313,7 +313,7 @@ export default function Hero({ introStarted }: { introStarted: boolean }) {
          ───────────────────────────────────────────────────────────────────────────── */}
       <div className="relative z-20 bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
         <ContourBackdrop />
-        <div className="relative">
+        <div className="relative z-10">
           {/* Mission & Purpose Statement */}
           <section className="px-6 sm:px-10 md:px-16 lg:px-24 xl:px-32 py-20 sm:py-28 md:py-36">
             <p

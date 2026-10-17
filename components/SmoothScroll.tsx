@@ -40,8 +40,11 @@ export default function SmoothScrolling({ children }: { children: React.ReactNod
     const onTick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(onTick);
     gsap.ticker.lagSmoothing(0);
+    const contentResizeObserver = new ResizeObserver(() => lenis.resize());
+    contentResizeObserver.observe(document.body);
 
     return () => {
+      contentResizeObserver.disconnect();
       gsap.ticker.remove(onTick);
       gsap.ticker.lagSmoothing(500, 33);
       lenis.destroy();

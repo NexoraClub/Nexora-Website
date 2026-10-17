@@ -58,7 +58,19 @@ export const ModelName = {
   LearningResource: 'LearningResource',
   ContentCategory: 'ContentCategory',
   AuditLog: 'AuditLog',
-  ActiveSession: 'ActiveSession'
+  ActiveSession: 'ActiveSession',
+  UsnClaim: 'UsnClaim',
+  ConnectRegistration: 'ConnectRegistration',
+  UsnRosterEntry: 'UsnRosterEntry',
+  ConnectAuthRateLimit: 'ConnectAuthRateLimit',
+  MemberProfile: 'MemberProfile',
+  MemberSocialLink: 'MemberSocialLink',
+  MemberProject: 'MemberProject',
+  MemberExperience: 'MemberExperience',
+  MemberAchievement: 'MemberAchievement',
+  MemberKnowledgePage: 'MemberKnowledgePage',
+  ConnectReport: 'ConnectReport',
+  UsnDispute: 'UsnDispute'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -226,6 +238,197 @@ export const ActiveSessionScalarFieldEnum = {
 } as const
 
 export type ActiveSessionScalarFieldEnum = (typeof ActiveSessionScalarFieldEnum)[keyof typeof ActiveSessionScalarFieldEnum]
+
+
+export const UsnClaimScalarFieldEnum = {
+  usn: 'usn',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UsnClaimScalarFieldEnum = (typeof UsnClaimScalarFieldEnum)[keyof typeof UsnClaimScalarFieldEnum]
+
+
+export const ConnectRegistrationScalarFieldEnum = {
+  id: 'id',
+  authUserId: 'authUserId',
+  email: 'email',
+  usn: 'usn',
+  fullName: 'fullName',
+  emailConfirmedAt: 'emailConfirmedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConnectRegistrationScalarFieldEnum = (typeof ConnectRegistrationScalarFieldEnum)[keyof typeof ConnectRegistrationScalarFieldEnum]
+
+
+export const UsnRosterEntryScalarFieldEnum = {
+  usn: 'usn',
+  fullName: 'fullName',
+  isActive: 'isActive',
+  importedAt: 'importedAt'
+} as const
+
+export type UsnRosterEntryScalarFieldEnum = (typeof UsnRosterEntryScalarFieldEnum)[keyof typeof UsnRosterEntryScalarFieldEnum]
+
+
+export const ConnectAuthRateLimitScalarFieldEnum = {
+  ipHash: 'ipHash',
+  windowStartedAt: 'windowStartedAt',
+  attempts: 'attempts',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConnectAuthRateLimitScalarFieldEnum = (typeof ConnectAuthRateLimitScalarFieldEnum)[keyof typeof ConnectAuthRateLimitScalarFieldEnum]
+
+
+export const MemberProfileScalarFieldEnum = {
+  authUserId: 'authUserId',
+  slug: 'slug',
+  usn: 'usn',
+  fullName: 'fullName',
+  graduationYear: 'graduationYear',
+  memberType: 'memberType',
+  bio: 'bio',
+  avatarUrl: 'avatarUrl',
+  skills: 'skills',
+  interests: 'interests',
+  skillsInDevelopment: 'skillsInDevelopment',
+  helpAreas: 'helpAreas',
+  location: 'location',
+  phone: 'phone',
+  phonePublic: 'phonePublic',
+  contactEmail: 'contactEmail',
+  contactEmailPublic: 'contactEmailPublic',
+  visibility: 'visibility',
+  approvalStatus: 'approvalStatus',
+  reviewedById: 'reviewedById',
+  reviewNote: 'reviewNote',
+  reviewedAt: 'reviewedAt',
+  currentRole: 'currentRole',
+  company: 'company',
+  professionalJourney: 'professionalJourney',
+  openToCollaborate: 'openToCollaborate',
+  mentoringAvailable: 'mentoringAvailable',
+  referralAvailable: 'referralAvailable',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MemberProfileScalarFieldEnum = (typeof MemberProfileScalarFieldEnum)[keyof typeof MemberProfileScalarFieldEnum]
+
+
+export const MemberSocialLinkScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  label: 'label',
+  url: 'url',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MemberSocialLinkScalarFieldEnum = (typeof MemberSocialLinkScalarFieldEnum)[keyof typeof MemberSocialLinkScalarFieldEnum]
+
+
+export const MemberProjectScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  title: 'title',
+  description: 'description',
+  technologies: 'technologies',
+  repositoryUrl: 'repositoryUrl',
+  demoUrl: 'demoUrl',
+  seekingCollaborators: 'seekingCollaborators',
+  preferredTeammateSkills: 'preferredTeammateSkills',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MemberProjectScalarFieldEnum = (typeof MemberProjectScalarFieldEnum)[keyof typeof MemberProjectScalarFieldEnum]
+
+
+export const MemberExperienceScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  type: 'type',
+  role: 'role',
+  organization: 'organization',
+  description: 'description',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  isCurrent: 'isCurrent',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MemberExperienceScalarFieldEnum = (typeof MemberExperienceScalarFieldEnum)[keyof typeof MemberExperienceScalarFieldEnum]
+
+
+export const MemberAchievementScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  title: 'title',
+  description: 'description',
+  achievedAt: 'achievedAt',
+  url: 'url',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MemberAchievementScalarFieldEnum = (typeof MemberAchievementScalarFieldEnum)[keyof typeof MemberAchievementScalarFieldEnum]
+
+
+export const MemberKnowledgePageScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  draftMarkdown: 'draftMarkdown',
+  publishedMarkdown: 'publishedMarkdown',
+  draftUpdatedAt: 'draftUpdatedAt',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MemberKnowledgePageScalarFieldEnum = (typeof MemberKnowledgePageScalarFieldEnum)[keyof typeof MemberKnowledgePageScalarFieldEnum]
+
+
+export const ConnectReportScalarFieldEnum = {
+  id: 'id',
+  profileId: 'profileId',
+  target: 'target',
+  reporterAuthUserId: 'reporterAuthUserId',
+  reason: 'reason',
+  details: 'details',
+  status: 'status',
+  reviewedById: 'reviewedById',
+  resolutionNote: 'resolutionNote',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ConnectReportScalarFieldEnum = (typeof ConnectReportScalarFieldEnum)[keyof typeof ConnectReportScalarFieldEnum]
+
+
+export const UsnDisputeScalarFieldEnum = {
+  id: 'id',
+  usn: 'usn',
+  reporterAuthUserId: 'reporterAuthUserId',
+  details: 'details',
+  status: 'status',
+  reviewedById: 'reviewedById',
+  resolutionNote: 'resolutionNote',
+  reviewedAt: 'reviewedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UsnDisputeScalarFieldEnum = (typeof UsnDisputeScalarFieldEnum)[keyof typeof UsnDisputeScalarFieldEnum]
 
 
 export const SortOrder = {
