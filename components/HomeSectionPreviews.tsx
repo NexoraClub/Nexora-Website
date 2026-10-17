@@ -26,7 +26,6 @@ type PreviewItem = {
   context?: string
   pinned?: boolean
   image?: string
-  isSample?: boolean
 }
 
 type PreviewData = {
@@ -65,85 +64,6 @@ const EMPTY_VISUAL_COPY = {
   achievements: { eyebrow: 'MILESTONES / ISE', title: 'No published achievements listed.' },
 }
 
-const USE_SAMPLE_HOME_CONTENT = process.env.NODE_ENV === 'development'
-
-const SAMPLE_HOME_CONTENT: Pick<PreviewData, 'events' | 'resources' | 'notices' | 'achievements'> = {
-  events: [
-    {
-      title: 'ISE Build Night',
-      detail: 'An evening of quick prototypes, peer feedback, and project demos.',
-      label: 'COMMUNITY SESSION',
-      meta: 'SAMPLE DATE · OCT 2026',
-      isSample: true,
-    },
-    {
-      title: 'Campus Code Sprint',
-      detail: 'Small teams work through a focused problem-solving challenge.',
-      label: 'CODING EVENT',
-      meta: 'SAMPLE DATE · NOV 2026',
-      isSample: true,
-    },
-  ],
-  resources: [
-    {
-      title: 'Data Structures — Complete Notes',
-      detail: 'Data Structures',
-      label: 'SAMPLE NOTES',
-      meta: 'Semester 3',
-      isSample: true,
-    },
-    {
-      title: 'Operating Systems — Revision Guide',
-      detail: 'Operating Systems',
-      label: 'SAMPLE GUIDE',
-      meta: 'Semester 4',
-      isSample: true,
-    },
-    {
-      title: 'Database Systems — Solved Questions',
-      detail: 'Database Management Systems',
-      label: 'SAMPLE QUESTION PAPERS',
-      meta: 'Semester 5',
-      isSample: true,
-    },
-  ],
-  notices: [
-    {
-      title: 'Workshop registration now open',
-      detail: 'A sample department announcement showing how a longer notice summary will appear in this space.',
-      label: 'SAMPLE NOTICE',
-      meta: 'SAMPLE DATE',
-      isSample: true,
-    },
-  ],
-  achievements: [
-    {
-      title: 'Top Project — Campus Innovation Showcase',
-      detail: 'A sample achievement description showing how a published team accomplishment will read in the featured carousel.',
-      label: 'SAMPLE PROJECT AWARD',
-      context: 'Sample team · Sample campus showcase',
-      meta: 'SAMPLE DATE',
-      isSample: true,
-    },
-    {
-      title: 'Finalist — Inter-College Coding Sprint',
-      detail: 'A second sample achievement to preview the carousel transition and navigation controls.',
-      label: 'SAMPLE COMPETITION',
-      context: 'Sample team · Sample coding event',
-      meta: 'SAMPLE DATE',
-      isSample: true,
-    },
-    {
-      title: 'Best Design — Student Project Expo',
-      detail: 'A third sample item to show how multiple published achievements can be browsed.',
-      label: 'SAMPLE RECOGNITION',
-      context: 'Sample project · Sample expo',
-      meta: 'SAMPLE DATE',
-      isSample: true,
-    },
-  ],
-}
-
 function initials(name: string) {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join('').toUpperCase()
 }
@@ -156,7 +76,7 @@ function getMemberDetail(profile: CommunityProfile) {
 }
 
 function sectionDetail(error: string | undefined, fallback: string) {
-  return USE_SAMPLE_HOME_CONTENT ? fallback : error || fallback
+  return error || fallback
 }
 
 type PreviewKind = 'events' | 'learning' | 'notices' | 'achievements' | 'practice'
@@ -204,7 +124,6 @@ function FeatureVisual({ kind, items, emptyMessage }: { kind: PreviewKind; items
         {items.length ? items.slice(0, 2).map((item, index) => (
           <article className="home-event-ticket" key={`${item.title}-${index}`}>
             <div className="home-event-ticket-meta">
-              {item.isSample && <span className="home-sample-tag">Sample preview</span>}
               <span className="home-event-ticket-date">{item.meta || 'NEXORA EVENT'}</span>
             </div>
             <strong>{item.title}</strong>
@@ -223,7 +142,6 @@ function FeatureVisual({ kind, items, emptyMessage }: { kind: PreviewKind; items
           <article className="home-learning-resource" key={`${item.title}-${index}`}>
             <span className="home-learning-index">{String(index + 1).padStart(2, '0')}</span>
             <div>
-              {item.isSample && <span className="home-sample-tag">Sample preview</span>}
               <small>{item.label}{item.meta ? ` · ${item.meta}` : ''}</small>
               <strong>{item.title}</strong>
               <span>{item.detail}</span>
@@ -241,7 +159,6 @@ function FeatureVisual({ kind, items, emptyMessage }: { kind: PreviewKind; items
         {notice ? (
           <article className="home-notice-paper">
             <div className="home-notice-meta">
-              {notice.isSample && <span className="home-sample-tag">Sample preview</span>}
               <span>{notice.label}</span>
               {notice.pinned && <span className="home-notice-pinned">Pinned</span>}
             </div>
@@ -261,16 +178,10 @@ function FeatureVisual({ kind, items, emptyMessage }: { kind: PreviewKind; items
   return (
     <div className="home-feature-visual home-practice-terminal" aria-label="Practice coding and aptitude">
       <div className="home-terminal-bar" aria-hidden="true"><i /><i /><i /><span>nexora / practice</span></div>
-      <div className="home-terminal-content" aria-hidden="true">
-        <span className="home-sample-tag">Sample preview</span>
-        <span><b>$</b> sample challenge / binary search</span>
-        <strong>code<span>_</span></strong>
-        <p>Find the target in a sorted list.</p>
-        <div className="home-terminal-options">
-          <span>01 <b>SAMPLE CODING</b></span>
-          <span>02 <b>APTITUDE</b></span>
-        </div>
-        <small>Example challenge preview · Build a little. Learn a lot.</small>
+      <div className="home-terminal-content">
+        <span>Practice library</span>
+        <strong>Ready<span>_</span></strong>
+        <p>Explore coding challenges and aptitude practice.</p>
       </div>
     </div>
   )
@@ -326,7 +237,6 @@ function AchievementShowcase({ items, emptyMessage }: { items: PreviewItem[]; em
                 />
               )}
               <div className="home-achievement-badges">
-                {active.isSample && <span className="home-sample-tag">Sample preview</span>}
                 <span className="home-achievement-category">{active.label}</span>
               </div>
               <strong>{active.title}</strong>
@@ -448,26 +358,26 @@ export default function HomeSectionPreviews() {
 
       setPreview({
         profiles: profilesResult.status === 'fulfilled' ? profilesResult.value.profiles ?? [] : [],
-        events: USE_SAMPLE_HOME_CONTENT ? SAMPLE_HOME_CONTENT.events : events.slice(0, 2).map((event) => ({
+        events: events.slice(0, 2).map((event) => ({
           title: event.title,
           detail: event.description,
           label: event.category,
           meta: event.dateDisplay || event.startDate?.slice(0, 10) || undefined,
         })),
-        resources: USE_SAMPLE_HOME_CONTENT ? SAMPLE_HOME_CONTENT.resources : resources.slice(0, 3).map((resource) => ({
+        resources: resources.slice(0, 3).map((resource) => ({
           title: resource.title,
           detail: resource.subject,
           label: resource.category,
           meta: resource.semester ? `Semester ${resource.semester}` : undefined,
         })),
-        notices: USE_SAMPLE_HOME_CONTENT ? SAMPLE_HOME_CONTENT.notices : notices.slice(0, 1).map((notice) => ({
+        notices: notices.slice(0, 1).map((notice) => ({
           title: notice.title,
           detail: notice.summary || notice.date,
           label: notice.category,
           meta: notice.date,
           pinned: notice.isPinned,
         })),
-        achievements: USE_SAMPLE_HOME_CONTENT ? SAMPLE_HOME_CONTENT.achievements : achievements.slice(0, 5).map((achievement) => ({
+        achievements: achievements.slice(0, 5).map((achievement) => ({
           title: achievement.title,
           detail: achievement.description,
           label: achievement.category,
