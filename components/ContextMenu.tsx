@@ -8,7 +8,10 @@ import {
   CalendarBlank,
   Bell,
   BookOpen,
+  Code,
+  Handshake,
   Trophy,
+  UsersThree,
   Info,
   LinkSimple,
   ShareNetwork,
@@ -30,8 +33,7 @@ const NAV_ITEMS: { href: string; label: string; icon: typeof House }[] = [
   { href: "/learn", label: "Learning Hub", icon: BookOpen },
   { href: "/practice", label: "Practice", icon: Code },
   { href: "/achievements", label: "Achievements", icon: Trophy },
-  { href: "/members", label: "Members", icon: Users },
-  { href: "/connect", label: "Connect", icon: LinkSimple },
+  { href: "/about", label: "About", icon: Info },
 ];
 
 const HYPE_MESSAGES = [
@@ -75,8 +77,13 @@ export default function ContextMenu() {
   const [showHint, setShowHint] = useState(false);
   const [hintPos, setHintPos] = useState({ x: 0, y: 0 });
   const [hintMessage, setHintMessage] = useState(HINT_MESSAGES[0]);
+  const showHintRef = useRef(false);
 
   const close = useCallback(() => setVisible(false), []);
+  const updateHintVisibility = useCallback((show: boolean) => {
+    showHintRef.current = show;
+    setShowHint(show);
+  }, []);
 
   /* ─── Right-click hint system for desktop ─── */
   useEffect(() => {
@@ -90,12 +97,13 @@ export default function ContextMenu() {
 
     const markSeen = () => {
       discovered = true;
-      setShowHint(false);
+      updateHintVisibility(false);
       window.clearTimeout(timer);
     };
 
-    const onMove = (e: MouseEvent) =>
-      setHintPos({ x: e.clientX, y: e.clientY });
+    const onMove = (e: MouseEvent) => {
+      if (showHintRef.current) setHintPos({ x: e.clientX, y: e.clientY });
+    };
     window.addEventListener("mousemove", onMove);
     window.addEventListener("contextmenu", markSeen);
 
@@ -108,9 +116,9 @@ export default function ContextMenu() {
       lastIndex = index;
 
       setHintMessage(HINT_MESSAGES[index]);
-      setShowHint(true);
+      updateHintVisibility(true);
       timer = window.setTimeout(() => {
-        setShowHint(false);
+        updateHintVisibility(false);
         timer = window.setTimeout(poke, 15000 + Math.random() * 15000);
       }, 4000);
     };
@@ -122,7 +130,7 @@ export default function ContextMenu() {
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("contextmenu", markSeen);
     };
-  }, []);
+  }, [updateHintVisibility]);
 
   /* ─── Context menu listener ─── */
   useEffect(() => {
@@ -137,7 +145,7 @@ export default function ContextMenu() {
         return;
       e.preventDefault();
       setCopied(false);
-      setShowHint(false);
+      updateHintVisibility(false);
 
       const menu = menuRef.current;
       const pad = 8;
@@ -165,7 +173,7 @@ export default function ContextMenu() {
       window.removeEventListener("scroll", close, true);
       window.removeEventListener("resize", close);
     };
-  }, [close]);
+  }, [close, updateHintVisibility]);
 
   /* ─── Clamp menu to viewport on open ─── */
   useEffect(() => {
