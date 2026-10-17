@@ -90,7 +90,7 @@ export default function EventsPageContent({ initialEvents }: EventsPageContentPr
       <EventHero />
 
       {/* 2. Main Events Grid Section */}
-      <section id="events-grid" className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-12 pb-16">
+      <section id="events-grid" className="relative mx-auto max-w-7xl px-4 pt-28 pb-16 sm:px-6 lg:px-8">
         {/* Section Heading & Subtitle */}
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">

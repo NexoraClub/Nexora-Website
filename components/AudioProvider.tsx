@@ -34,7 +34,10 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
     audio.play().catch((error: unknown) => {
       if (requestId !== playRequestIdRef.current) return;
       playRequestedRef.current = false;
-      if (error instanceof DOMException && error.name === "AbortError") return;
+      if (
+        error instanceof DOMException &&
+        (error.name === "AbortError" || error.name === "NotAllowedError")
+      ) return;
       console.error("Audio play failed:", error);
     });
   }, []);

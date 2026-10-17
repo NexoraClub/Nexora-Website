@@ -111,7 +111,7 @@ export default function AchievementGallery({ initialAchievements }: AchievementG
       ref={galleryRef}
       id="achievements"
       aria-labelledby="achievements-title"
-      className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 pt-36 sm:px-8 sm:pb-24 sm:pt-40 lg:px-12"
+      className="relative z-10 mx-auto w-full max-w-7xl px-5 pb-20 pt-28 sm:px-8 sm:pb-24 lg:px-12"
     >
       <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-16">
         <p className="mb-4 text-xs font-bold uppercase tracking-[0.35em] text-[var(--theme-primary,#00f0ff)] font-terminal">

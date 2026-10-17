@@ -18,30 +18,42 @@ import {
   INITIAL_SKILLS,
 } from "./learnData";
 
+interface ApiResource {
+  id: string;
+  title: string;
+  subject: string;
+  semester?: number | string;
+  category?: LearningResource["category"];
+  description: string;
+  resourceType?: LearningResource["fileType"];
+  fileUrl?: string;
+  createdAt?: string;
+  tags?: string[];
+}
+
 export default function LearnPageContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [materials, setMaterials] = useState<LearningResource[]>(INITIAL_STUDY_MATERIALS);
-  const [exams, setExams] = useState<ExamSchedule[]>(INITIAL_EXAMS);
-  const [announcements, setAnnouncements] = useState<AcademicAnnouncement[]>(INITIAL_ANNOUNCEMENTS);
+  const [exams] = useState<ExamSchedule[]>(INITIAL_EXAMS);
+  const [announcements] = useState<AcademicAnnouncement[]>(INITIAL_ANNOUNCEMENTS);
   const [skills] = useState<SkillResource[]>(INITIAL_SKILLS);
-  const [isLoading, setIsLoading] = useState(false);
 
   // Real-time integration with backend database
   useEffect(() => {
     async function fetchFromDatabase() {
       try {
-        setIsLoading(true);
         const res = await fetch("/api/resources");
+        if (!res.ok) return;
         const data = await res.json();
         if (data.resources && data.resources.length > 0) {
-          const mapped: LearningResource[] = data.resources.map((r: any) => ({
+          const mapped: LearningResource[] = data.resources.map((r: ApiResource) => ({
             id: r.id,
             title: r.title,
             subject: r.subject,
             semester: r.semester || 3,
-            category: (r.category || "notes") as any,
+            category: r.category || "notes",
             description: r.description,
-            fileType: (r.resourceType || "PDF") as any,
+            fileType: r.resourceType || "PDF",
             fileUrl: r.fileUrl || "#",
             uploadedAt: r.createdAt ? new Date(r.createdAt).toISOString().slice(0, 10) : "2026-03-01",
             tags: r.tags || [],
@@ -50,8 +62,6 @@ export default function LearnPageContent() {
         }
       } catch (err) {
         console.warn("Fallback to initial study materials", err);
-      } finally {
-        setIsLoading(false);
       }
     }
 

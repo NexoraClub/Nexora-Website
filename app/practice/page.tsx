@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ContourBackdrop from "@/components/ContourBackdrop";
 
 const Editor = dynamic(() => import("@monaco-editor/react"), {
   ssr: false,
@@ -710,37 +711,27 @@ export default function PracticePage() {
   ];
 
   return (
-    <main className="relative min-h-screen w-full bg-[#050610] text-white selection:bg-sky-500 selection:text-white">
-      <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
-        <div className="absolute -top-40 left-1/2 -translate-x-1/2 h-[500px] w-[600px] sm:w-[900px] rounded-full bg-sky-500/10 blur-[140px]" />
-        <div className="absolute top-[40%] -right-40 h-[400px] w-[500px] rounded-full bg-blue-600/5 blur-[150px]" />
-        <div className="absolute -bottom-20 left-10 h-[350px] w-[450px] rounded-full bg-cyan-500/5 blur-[120px]" />
-      </div>
+    <main className="relative isolate min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)] selection:bg-sky-500 selection:text-white">
+      <ContourBackdrop className="z-0" />
 
       <Navbar />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 sm:pt-36 lg:px-8 lg:pt-40">
-        <section className="mb-10 text-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-500/10 px-4 py-1.5 text-xs font-semibold text-sky-300 backdrop-blur-md shadow-[0_0_12px_rgba(56,189,248,0.25)]">
-            <span className="h-2 w-2 rounded-full bg-sky-400 animate-pulse shadow-[0_0_8px_#38bdf8]" />
-            <span className="tracking-wider uppercase">Learn &amp; Practice</span>
-          </div>
-
-          <h1 className="font-jersey text-4xl sm:text-5xl md:text-6xl tracking-wide text-white drop-shadow-[0_0_18px_rgba(255,255,255,0.4)]">
-            PRACTICE <span className="text-sky-400 drop-shadow-[0_0_16px_rgba(56,189,248,0.7)]">ARENA</span>
-          </h1>
-
-          <p className="mx-auto mt-3 max-w-2xl text-base sm:text-lg text-sky-100/70 leading-relaxed">
-            Solve coding problems in Java, C or Python, and sharpen your aptitude with AI-generated questions.
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
+        <section className="mb-10 max-w-4xl">
+          <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-[var(--theme-primary,#00f0ff)]/70">
+            Department of ISE · Learn &amp; Practice
           </p>
 
-          <div
-            aria-hidden="true"
-            className="mx-auto mt-6 h-px w-32 sm:w-48 bg-gradient-to-r from-transparent via-sky-400 to-transparent shadow-[0_0_12px_rgba(56,189,248,0.8)]"
-          />
+          <h1 className="font-clash text-[clamp(2.8rem,6.5vw,5.5rem)] font-bold leading-[0.95] tracking-tight text-[var(--theme-bg-hero,#dce6ef)]">
+            Practice <span className="text-[var(--theme-primary,#00f0ff)]">Arena.</span>
+          </h1>
+
+          <p className="mt-5 max-w-2xl font-cabinet text-base font-medium leading-relaxed text-white/75 sm:text-lg">
+            Solve coding problems in Java, C or Python, and sharpen your aptitude with AI-generated questions.
+          </p>
         </section>
 
-        <div role="tablist" aria-label="Practice mode" className="mb-6 flex justify-center gap-2">
+        <div role="tablist" aria-label="Practice mode" className="mb-6 flex justify-start gap-2">
           {tabs.map((t) => (
             <button
               key={t.id}

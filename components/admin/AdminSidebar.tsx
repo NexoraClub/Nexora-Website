@@ -16,6 +16,8 @@ import {
   LogOut,
   X,
   ExternalLink,
+  ClipboardCheck,
+  UserRound,
 } from 'lucide-react'
 
 export type AdminTab =
@@ -30,6 +32,8 @@ export type AdminTab =
   | 'audit-logs'
   | 'sessions'
   | 'settings'
+  | 'connect-moderation'
+  | 'connect-roster'
 
 interface AdminSidebarProps {
   currentTab: AdminTab
@@ -79,6 +83,17 @@ export default function AdminSidebar({
         { id: 'settings' as AdminTab, label: 'Settings', icon: Settings },
       ],
     },
+    ...((userRole === 'ADMIN' || userRole === 'SUPER_ADMIN')
+      ? [{
+          title: 'Connect',
+          items: [
+            { id: 'connect-moderation' as AdminTab, label: 'Community review', icon: ClipboardCheck },
+            ...(userRole === 'SUPER_ADMIN'
+              ? [{ id: 'connect-roster' as AdminTab, label: 'Student list', icon: UserRound }]
+              : []),
+          ],
+        }]
+      : []),
   ]
 
   const sidebarContent = (

@@ -126,14 +126,14 @@ export default function NoticesPage() {
   }, [heroNotice, selectedCategory, searchQuery]);
 
   return (
-    <main className="relative min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
+    <main className="relative isolate min-h-screen w-full bg-[var(--theme-bg-main,#060913)] text-[var(--theme-bg-hero,#dce6ef)]">
       <ContourBackdrop />
 
       {/* Global Navbar */}
       <Navbar />
 
       {/* Main Noticeboard Content Container */}
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 sm:pt-36 lg:px-8 lg:pt-40">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
         
         {/* ========================================================================= */}
         {/* 1. PAGE HEADER */}
