@@ -7,13 +7,9 @@ import { ArrowLeft, ShieldCheck, Sparkles } from 'lucide-react'
 import { ConnectShell } from './ConnectShell'
 import { Feedback, Panel, PageHeading } from './ConnectUI'
 
-type AuthMode = 'sign-up' | 'sign-in' | 'start'
+type AuthMode = 'auth' | 'start'
 
-function AuthAside({ mode }: { mode: AuthMode }) {
-  const text = mode === 'sign-up'
-    ? { number: '01', heading: 'Your people,\\nyour next chapter.', detail: 'A welcoming place for the ISE community to share what they build and find people to build with.' }
-    : { number: '03', heading: 'A familiar place\\nto find your people.', detail: 'Meet the students and alumni making interesting things happen across the ISE community.' }
-
+function AuthAside() {
   return (
     <aside className="connect-auth-aside">
       <div className="connect-auth-orbit" aria-hidden>
@@ -22,10 +18,10 @@ function AuthAside({ mode }: { mode: AuthMode }) {
         <span className="connect-orbit-core"><Sparkles size={24} /></span>
       </div>
       <p className="connect-eyebrow">Nexora · Connect</p>
-      <p className="mt-5 whitespace-pre-line font-clash text-[clamp(2.3rem,4vw,3.8rem)] font-medium leading-[1.02] tracking-[-0.05em] text-white">{text.heading.replaceAll('\\n', '\n')}</p>
-      <p className="mt-5 max-w-sm text-sm leading-6 text-[#9caeba]">{text.detail}</p>
+      <p className="mt-5 whitespace-pre-line font-clash text-[clamp(2.3rem,4vw,3.8rem)] font-medium leading-[1.02] tracking-[-0.05em] text-white">Your people,{'\n'}your next chapter.</p>
+      <p className="mt-5 max-w-sm text-sm leading-6 text-[#9caeba]">A welcoming place for the ISE community to share what they build and find people to build with.</p>
       <div className="mt-12 flex items-center gap-3 border-t border-white/10 pt-5">
-        <span className="font-mono text-[10px] tracking-[0.18em] text-[#77d9f3]">{text.number}</span>
+        <span className="font-mono text-[10px] tracking-[0.18em] text-[#77d9f3]">01</span>
         <span className="h-px w-9 bg-[#77d9f3]/50" />
         <span className="text-[11px] text-[#80919f]">A verified community. Built around you.</span>
       </div>
@@ -84,21 +80,19 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
     )
   }
 
-  const isSignup = mode === 'sign-up'
-  const title = isSignup ? 'Join your community.' : 'Welcome back.'
-  const description = isSignup
-    ? 'Create your account with Google, then confirm your place in the department’s student list.'
-    : 'Pick up where you left off with the people and projects you care about.'
-
   return (
     <ConnectShell>
       <div className="mx-auto grid max-w-[1440px] gap-8 px-5 py-10 sm:px-8 sm:py-14 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14 lg:px-12 lg:py-16">
-        <div className="hidden lg:block"><AuthAside mode={mode} /></div>
+        <div className="hidden lg:block"><AuthAside /></div>
         <div className="mx-auto w-full max-w-[540px] lg:mx-0 lg:ml-auto">
           <Link href="/connect" className="connect-back-link"><ArrowLeft size={14} /> Back to the community</Link>
-          <PageHeading eyebrow={isSignup ? 'Make yourself at home' : 'Member access'} title={title} description={description} />
+          <PageHeading
+            eyebrow="Nexora Connect"
+            title="Connect with your community."
+            description="Continue with Google. New members can set up a profile; returning members will go straight to their Connect space."
+          />
           <Panel className="p-5 sm:p-8">
-            {(mode === 'sign-up' || mode === 'sign-in') && (
+            {mode === 'auth' && (
               <div className="space-y-4">
                 <form action="/api/connect/auth/google" method="get">
                   <button
@@ -111,22 +105,14 @@ export default function AuthPage({ mode }: { mode: AuthMode }) {
                       <path fill="#FBBC05" d="M12.6 27.6a12 12 0 0 1 0-7.2v-5.3H5.7a20 20 0 0 0 0 17.8l6.9-5.3Z" />
                       <path fill="#EA4335" d="M24 11.9c3 0 5.7 1 7.8 3.1l5.8-5.8A19.4 19.4 0 0 0 24 4 20 20 0 0 0 5.7 15.1l6.9 5.3c1.6-4.9 6.1-8.5 11.4-8.5Z" />
                     </svg>
-                    <span>{isSignup ? 'Sign up with Google' : 'Sign in with Google'}</span>
+                    <span>Continue with Google</span>
                   </button>
                 </form>
                 <p className="text-center text-[11px] leading-5 text-[#81919e]">
-                  {isSignup
-                    ? 'After Google verifies your email, we’ll ask for your student number and check it against department records.'
-                    : 'Use the Google account linked to your Nexora Connect profile.'}
+                  Use the Google account you want linked to your Nexora Connect profile.
                 </p>
                 {feedback && <Feedback message={feedback.message} kind="error" />}
               </div>
-            )}
-
-            {mode === 'sign-up' && (
-              <p className="mt-5 border-t border-white/[0.07] pt-5 text-center text-xs text-[#8797a4]">
-                Already a member? <Link href="/connect/sign-in" className="text-[#83d9f0] hover:underline">Sign in</Link>
-              </p>
             )}
           </Panel>
           <p className="mt-5 flex items-center justify-center gap-2 text-center text-[10px] text-[#72828f]">

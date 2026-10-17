@@ -72,13 +72,13 @@ export async function POST(req: Request) {
     const user = await getVerifiedMember()
     if (!user) {
       return NextResponse.json(
-        { error: 'Sign in with a verified email address to create a profile.' },
+        { error: 'Continue with a Google account that has a verified email address to create a profile.' },
         { status: 401 }
       )
     }
     if (!user.email || !user.email_confirmed_at) {
       return NextResponse.json(
-        { error: 'Continue with a verified Google account or confirm your email before creating a profile.' },
+        { error: 'Continue with a Google account that has a verified email address to create a profile.' },
         { status: 401 }
       )
     }

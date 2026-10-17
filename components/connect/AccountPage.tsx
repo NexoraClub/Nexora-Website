@@ -387,8 +387,8 @@ export default function AccountPage() {
           <Panel className="mx-auto max-w-xl p-8 text-center">
             <span className="connect-empty-icon"><LockKeyhole size={22} /></span>
             <p className="connect-eyebrow mt-5">Almost there</p>
-            <h1 className="mt-2 font-clash text-3xl text-white">Verify your email first.</h1>
-            <p className="mt-3 text-sm leading-6 text-[#aab6c2]">Follow the confirmation link we sent to your inbox. Once that’s done, this space will be ready for you.</p>
+            <h1 className="mt-2 font-clash text-3xl text-white">Use a verified Google account.</h1>
+            <p className="mt-3 text-sm leading-6 text-[#aab6c2]">This Google account does not have a verified email address. Sign out and continue with a verified Google account to set up your Connect profile.</p>
             <Button variant="secondary" className="mt-6" onClick={signOut}>Sign out</Button>
           </Panel>
         </div>

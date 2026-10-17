@@ -289,9 +289,143 @@ body::-webkit-scrollbar {
   color: white;
 }
 
+.connect-auth-dialog {
+  width: min(480px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgb(197 221 236 / 12%);
+  border-radius: 20px;
+  background: #0d1522;
+  padding: 0;
+  color: #dce7ed;
+  box-shadow: 0 28px 90px rgb(0 0 0 / 52%), inset 0 1px 0 rgb(255 255 255 / 3%);
+}
+
+.connect-auth-dialog[open] {
+  animation: connect-auth-dialog-in 180ms ease-out both;
+}
+
+.connect-auth-dialog::backdrop {
+  background: rgb(2 7 12 / 72%);
+  backdrop-filter: blur(5px);
+}
+
+.connect-auth-dialog-card {
+  position: relative;
+  padding: 34px;
+}
+
+.connect-auth-dialog-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid rgb(197 221 236 / 11%);
+  border-radius: 11px;
+  color: #9cabb7;
+  transition: color 150ms ease, background 150ms ease, border-color 150ms ease;
+}
+
+.connect-auth-dialog-close:hover {
+  border-color: rgb(197 221 236 / 22%);
+  background: rgb(255 255 255 / 5%);
+  color: white;
+}
+
+.connect-auth-dialog-close:focus-visible,
+.connect-google-button:focus-visible {
+  outline: 2px solid #8cdef3;
+  outline-offset: 3px;
+}
+
+.connect-auth-dialog-card h2 {
+  max-width: 14ch;
+  margin-top: 14px;
+  color: #f1f5f7;
+  font-family: var(--font-clash-display), sans-serif;
+  font-size: clamp(1.8rem, 5vw, 2.35rem);
+  font-weight: 600;
+  letter-spacing: -.04em;
+  line-height: 1.06;
+}
+
+.connect-auth-dialog-card > p:not(.connect-eyebrow):not(.connect-auth-dialog-note) {
+  margin-top: 12px;
+  color: #aab6c2;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.connect-auth-dialog-card form {
+  margin-top: 25px;
+}
+
+.connect-google-button {
+  display: inline-flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 1px solid #747775;
+  border-radius: 6px;
+  background: #fff;
+  padding: 0 16px;
+  color: #1f1f1f;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 140ms ease, box-shadow 140ms ease;
+}
+
+.connect-google-button:hover {
+  background: #f8faff;
+  box-shadow: 0 2px 7px rgb(0 0 0 / 18%);
+}
+
+.connect-auth-dialog-note {
+  margin-top: 16px;
+  color: #81919e;
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+@keyframes connect-auth-dialog-in {
+  from { opacity: 0; transform: translateY(6px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .connect-button:disabled {
   cursor: not-allowed;
   opacity: 0.48;
+}
+
+@media (max-width: 480px) {
+  .connect-auth-dialog-card {
+    padding: 29px 22px 24px;
+  }
+
+  .connect-auth-dialog-close {
+    top: 14px;
+    right: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .connect-auth-dialog[open] {
+    animation: none;
+  }
+
+  .connect-auth-dialog-close,
+  .connect-google-button {
+    transition: none;
+  }
 }
 
 .connect-input {
