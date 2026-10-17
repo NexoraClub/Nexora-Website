@@ -8,7 +8,10 @@ import {
   CalendarBlank,
   Bell,
   BookOpen,
+  Code,
+  Handshake,
   Trophy,
+  UsersThree,
   Info,
   LinkSimple,
   ShareNetwork,
@@ -25,7 +28,10 @@ const NAV_ITEMS: { href: string; label: string; icon: typeof House }[] = [
   { href: "/events", label: "Events", icon: CalendarBlank },
   { href: "/notices", label: "Notices", icon: Bell },
   { href: "/learn", label: "Learning Hub", icon: BookOpen },
+  { href: "/practice", label: "Practice", icon: Code },
   { href: "/achievements", label: "Achievements", icon: Trophy },
+  { href: "/connect", label: "Connect", icon: Handshake },
+  { href: "/members", label: "Members", icon: UsersThree },
   { href: "/about", label: "About", icon: Info },
 ];
 
