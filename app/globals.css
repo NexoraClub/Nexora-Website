@@ -70,41 +70,7 @@ body::-webkit-scrollbar {
   color: var(--theme-text-dark);
 }
 
-/* Custom Cursor: hide default mouse when pointer is fine (desktop) */
-@media (pointer: fine) {
-  * {
-    cursor: none !important;
-  }
-
-  body.native-cursor,
-  body.native-cursor * {
-    cursor: auto !important;
-  }
-
-  body.native-cursor a,
-  body.native-cursor a *,
-  body.native-cursor button:not(:disabled),
-  body.native-cursor button:not(:disabled) *,
-  body.native-cursor [role="button"]:not([aria-disabled="true"]),
-  body.native-cursor [role="button"]:not([aria-disabled="true"]) *,
-  body.native-cursor input[type="checkbox"],
-  body.native-cursor input[type="radio"],
-  body.native-cursor label,
-  body.native-cursor select,
-  body.native-cursor summary {
-    cursor: pointer !important;
-  }
-
-  body.native-cursor input:not([type="checkbox"]):not([type="radio"]),
-  body.native-cursor textarea {
-    cursor: text !important;
-  }
-
-  body.native-cursor button:disabled,
-  body.native-cursor [aria-disabled="true"] {
-    cursor: not-allowed !important;
-  }
-}
+/* Custom cursor disabled: default browser cursor is used */
 
 /* ─── Terminal-style mobile menu scanlines ─── */
 @keyframes terminal-blink {
