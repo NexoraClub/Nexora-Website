@@ -10,7 +10,7 @@ const SCROLL_FPS = 30;
 const LINE_ALPHA = 0.28;
 const VUNIT = 900;
 
-export default function ContourBackdrop() {
+export default function ContourBackdrop({ className }: { className?: string } = {}) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -99,6 +99,11 @@ export default function ContourBackdrop() {
     trackScroll();
     draw(0);
 
+    document.fonts?.ready.then(() => {
+      ctx.font = font;
+      draw(0);
+    });
+
     const ro = new ResizeObserver(measure);
     ro.observe(wrap);
     window.addEventListener('resize', measure);
@@ -154,7 +159,7 @@ export default function ContourBackdrop() {
     <div
       ref={wrapRef}
       aria-hidden
-      className="pointer-events-none absolute inset-0 -z-10 overflow-hidden select-none"
+      className={`pointer-events-none absolute inset-0 overflow-hidden select-none ${className ?? 'z-0'}`}
     >
       <canvas
         ref={canvasRef}
