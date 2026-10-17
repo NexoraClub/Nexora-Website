@@ -99,6 +99,11 @@ export default function ContourBackdrop({ className }: { className?: string } = 
     trackScroll();
     draw(0);
 
+    document.fonts?.ready.then(() => {
+      ctx.font = font;
+      draw(0);
+    });
+
     const ro = new ResizeObserver(measure);
     ro.observe(wrap);
     window.addEventListener('resize', measure);
@@ -154,7 +159,7 @@ export default function ContourBackdrop({ className }: { className?: string } = 
     <div
       ref={wrapRef}
       aria-hidden
-      className={`pointer-events-none absolute inset-0 ${className ?? '-z-10'} overflow-hidden select-none`}
+      className={`pointer-events-none absolute inset-0 overflow-hidden select-none ${className ?? '-z-10'}`}
     >
       <canvas
         ref={canvasRef}

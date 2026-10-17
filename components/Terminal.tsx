@@ -37,6 +37,7 @@ const NAV_COMMANDS: Record<string, string> = {
   notices: '/notices',
   achievements: '/achievements',
   about: '/about',
+  practice: '/practice',
 };
 
 const NO_ARG_COMMANDS = new Set([
