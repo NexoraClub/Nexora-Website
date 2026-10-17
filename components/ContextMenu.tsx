@@ -20,18 +20,18 @@ import {
   Sparkle,
   Check,
   MouseRightClick,
+  Users,
 } from "@phosphor-icons/react";
 import { useLenis } from "@/components/SmoothScroll";
 
 const NAV_ITEMS: { href: string; label: string; icon: typeof House }[] = [
   { href: "/", label: "Home", icon: House },
+  { href: "/about", label: "About", icon: Info },
   { href: "/events", label: "Events", icon: CalendarBlank },
   { href: "/notices", label: "Notices", icon: Bell },
   { href: "/learn", label: "Learning Hub", icon: BookOpen },
   { href: "/practice", label: "Practice", icon: Code },
   { href: "/achievements", label: "Achievements", icon: Trophy },
-  { href: "/connect", label: "Connect", icon: Handshake },
-  { href: "/members", label: "Members", icon: UsersThree },
   { href: "/about", label: "About", icon: Info },
 ];
 
