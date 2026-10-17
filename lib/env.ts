@@ -58,6 +58,7 @@ export const env = {
     'NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY',
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key'
   ),
+  SUPABASE_SERVICE_ROLE_KEY: getEnvVar('SUPABASE_SERVICE_ROLE_KEY'),
 
   // Security & Authentication
   ADMIN_JWT_SECRET: getEnvVar(
@@ -65,6 +66,8 @@ export const env = {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'nexora-admin-development-secret-2026',
     true
   ),
+  CONNECT_LOOKUP_HMAC_SECRET: getEnvVar('CONNECT_LOOKUP_HMAC_SECRET', '', true),
+  CONNECT_APP_URL: getEnvVar('CONNECT_APP_URL'),
 } as const;
 
 export default env;

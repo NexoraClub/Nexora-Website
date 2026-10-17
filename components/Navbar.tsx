@@ -17,6 +17,7 @@ export const NAV_LINKS = [
   { href: '/learn', label: 'Learning Hub' },
   { href: '/practice', label: 'Practice' },
   { href: '/achievements', label: 'Achievements' },
+  { href: '/connect', label: 'Connect' },
   { href: '/members', label: 'Members' },
   { href: '/about', label: 'About' },
 ];
@@ -53,7 +54,7 @@ function TerminalMenu({
         className="terminal-scroll -mx-7 mt-9 flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-7 pb-4"
       >
         {NAV_LINKS.map((r, i) => {
-          const active = pathname === r.href;
+          const active = pathname === r.href || (r.href !== '/' && pathname.startsWith(`${r.href}/`));
           return (
             <Link
               key={r.href}
@@ -123,13 +124,17 @@ const Navbar = () => {
   };
 
   const closeMenu = () => {
-    gsap.set(menuPanelRef.current, { pointerEvents: 'none' });
-    gsap.to(menuPanelRef.current, {
-      opacity: 0,
-      duration: 0.22,
-      ease: 'power2.in',
-      onComplete: () => setMenuOpen(false),
-    });
+    const menuPanel = menuPanelRef.current;
+    if (menuPanel) {
+      gsap.killTweensOf(menuPanel);
+      gsap.set(menuPanel, { pointerEvents: 'none' });
+      gsap.to(menuPanel, {
+        opacity: 0,
+        duration: 0.22,
+        ease: 'power2.in',
+      });
+    }
+    setMenuOpen(false);
   };
 
   /* ─── Lock scroll when menu is open ─── */
@@ -241,7 +246,7 @@ const Navbar = () => {
         {/* ── Desktop Links ── */}
         <div className="hidden xl:flex items-center gap-1.5 2xl:gap-3">
           {NAV_LINKS.map((link, i) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               ref={(el) => { linkRefs.current[i] = el; }}
@@ -255,8 +260,8 @@ const Navbar = () => {
               onBlur={() => setHoveredLink(null)}
               onPointerEnter={() => setHoveredLink(link.href)}
               className={`relative font-semibold uppercase cursor-pointer
-                ${isHomePage ? 'text-[#12304a]' : 'text-white'}
-                isolate rounded-full px-2.5 py-1.5 text-xs 2xl:text-sm tracking-wide 2xl:tracking-wider`}
+                ${isHomePage ? 'text-[#12304a]' : pathname === link.href || (link.href !== '/' && pathname.startsWith(`${link.href}/`)) ? 'text-[var(--theme-primary,#00f0ff)]' : 'text-white'}
+                isolate rounded-full px-2.5 py-1.5 text-xs tracking-wide lg:text-sm lg:tracking-wide`}
               style={{ textDecoration: 'none' }}
             >
               {hoveredLink === link.href && (
@@ -272,7 +277,7 @@ const Navbar = () => {
                 className="nav-bar absolute left-0 -bottom-1 w-full h-[2px] bg-[var(--theme-primary,#00f0ff)]"
                 style={{ transform: 'scaleX(0)', transformOrigin: 'left center', display: 'block' }}
               />
-            </a>
+            </Link>
           ))}
         </div>
 

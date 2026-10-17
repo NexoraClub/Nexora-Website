@@ -116,7 +116,7 @@ export default function AboutPage() {
 
       <Navbar />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 sm:pt-36 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 pt-28 pb-20 sm:px-6 lg:px-8">
         {/* 1. Header Hero Banner */}
         <section className="relative mb-16 overflow-hidden rounded-2xl border border-[var(--theme-primary,#00f0ff)]/30 bg-[#060913]/50 backdrop-blur-md p-8 sm:p-12 lg:p-16 shadow-[0_0_50px_rgba(0,240,255,0.08)]">
           <div className="terminal-scanlines opacity-20 pointer-events-none" />
