@@ -86,12 +86,15 @@ export default function DirectoryPage() {
 
   useEffect(() => {
     const controller = new AbortController()
-    const timer = window.setTimeout(() => void loadProfiles(controller.signal), 220)
+    const timer = window.setTimeout(
+      () => void loadProfiles(controller.signal),
+      query.trim() ? 220 : 0
+    )
     return () => {
       window.clearTimeout(timer)
       controller.abort()
     }
-  }, [loadProfiles])
+  }, [loadProfiles, query])
 
   useEffect(() => {
     const dialog = authDialogRef.current
